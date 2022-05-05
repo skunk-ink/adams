@@ -1,7 +1,7 @@
 # adams
 Automated Decentralization and Managment Suite (A.D.A.M.S.)
 
-"""               _                                    
+```               _                                    
       __ _     __| |     __ _       _ _ _      ____    
      / _` |   / _` |    / _` |     | ` ` |    / __/    
     | (_| |  | (_| |   | (_| |     | | | |    \__ \    
@@ -18,4 +18,4 @@ Automated Decentralization and Managment Suite (A.D.A.M.S.)
                  ███               ███                 
     Automated Decentralization And Management System   
                     ▀▀▀█████████▀▀▀                    
-"""
+```
