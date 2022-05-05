@@ -23,20 +23,12 @@
 ```
 
 ### **How to run**
-Before operating you will need to add your Coinbase API keys to the `keyfile` located under `data/keyfile.dat`. Kraken has not been implemented.
-
 ```
 python3 adams.py
 ```
 
 ### **Dependancies**
-
-#### APT
 ```
 sudo apt install git pip npm autotools libtool unbound libunbound-dev
-```
-
-#### PIP
-```
 pip install getch
 ```
