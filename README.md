@@ -1,7 +1,8 @@
-# adams
-Automated Decentralization and Managment Suite (A.D.A.M.S.)
+# **A.D.A.M.S**
+## Automated Decentralization and Managment Suite
 
-```               _                                    
+```
+                  _                                    
       __ _     __| |     __ _       _ _ _      ____    
      / _` |   / _` |    / _` |     | ` ` |    / __/    
     | (_| |  | (_| |   | (_| |     | | | |    \__ \    
@@ -18,4 +19,20 @@ Automated Decentralization and Managment Suite (A.D.A.M.S.)
                  ███               ███                 
     Automated Decentralization And Management System   
                     ▀▀▀█████████▀▀▀                    
+
+```
+
+### **How to run**
+Before operating you will need to add your Coinbase API keys to the `keyfile` located under `data/keyfile.dat`. Kraken has not been implemented.
+
+```
+python3 adams.py
+```
+
+### **Dependancies**
+```
+sudo apt install git pip npm autotools libtool unbound libunbound-dev
+```
+```
+pip install getch
 ```
