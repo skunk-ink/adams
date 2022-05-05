@@ -1,5 +1,5 @@
 # **A.D.A.M.S**
-## Automated Decentralization and Managment Suite
+## Automated Decentralization and Managment System
 
 ```
                   _                                    
