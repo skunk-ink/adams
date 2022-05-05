@@ -7,9 +7,9 @@
                  ███               ███                 
                 ██                  ███                
                ██        ▄▄█▄▄        ██               
-               ██      ███───███      ██               
+                       ███───███                       
                ██     ███──█──███     ██               
-               ██      ██──▄──██      ██               
+                       ██──▄──██                       
                ██        ▀▀█▀▀        ██               
                 ██                   ██                
                  ███               ███                 
@@ -103,11 +103,11 @@ class adams(object):
                 
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
-                if user_input.upper() == "1" or user_input.upper() == "C":
+                if user_input.upper() == "1" or user_input.upper() == "I":
                     install.menu()
-                elif user_input.upper() == "2" or user_input.upper() == "K":
+                elif user_input.upper() == "2" or user_input.upper() == "C":
                     config.menu()
-                elif user_input.upper() == "3" or user_input.upper() == "N":
+                elif user_input.upper() == "3" or user_input.upper() == "U":
                     upgrade.menu()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     self.clear_screen()    # Clear console window
@@ -131,7 +131,5 @@ class adams(object):
 
 if __name__ == '__main__':
     splash()
-    #print(sys.argv[0])
-    #sleep(5)
     adams()
 #################################################### END: __main__
