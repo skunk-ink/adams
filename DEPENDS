@@ -1,5 +1,4 @@
-# System Dependencies
-
+# SYSTEM
 git
 pip
 npm
@@ -8,6 +7,5 @@ libtool
 unbound
 libunbound-dev
 
-
-# Python Dependencies
+# PYTHON
 getch

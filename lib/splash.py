@@ -7,9 +7,9 @@
                  ███               ███                 
                 ██                  ███                
                ██        ▄▄█▄▄        ██               
-               ██      ███───███      ██               
+                       ███───███                       
                ██     ███──█──███     ██               
-               ██      ██──▄──██      ██               
+                       ██──▄──██                       
                ██        ▀▀█▀▀        ██               
                 ██                   ██                
                  ███               ███                 
@@ -41,23 +41,23 @@ class splash(object):
     def print_splash(self):
         #Pallets: ░ ▄ █ ─ ` 
         print()
-        print(colours().white("\t                  _                                    "))
-        print(colours().white("\t      __ _     __| |     __ _       _ _ _     ____     "))
-        print(colours().white("\t     / _` |   / _` |    / _` |     | ` ` |   / __/     "))
-        print(colours().white("\t    | (_| |  | (_| |   | (_| |     | | | |   \__ \     "))
-        print(colours().white("\t     \__,_|⍟  \__,_|") + colours().cyan("▄") + colours().white("⍟") + colours().cyan(" █") + colours().white("\__,_|") + colours().cyan("██") + colours().white("⍟") + colours().cyan(" ▄") + colours().white("|_|_|_| ⍟ /___/ ⍟ "))
-        print(colours().cyan("\t                   ████         ████                   "))
-        print(colours().cyan("\t                 ███               ███                 "))
-        print(colours().cyan("\t                ██                  ███                "))
-        print(colours().cyan("\t               ██        ") + colours().blue("▄▄█▄▄") + colours().cyan("        ██"))
-        print(colours().cyan("\t               ██      ") + colours().blue("███") + colours().white_bg("───") + colours().blue("███") + colours().cyan("      ██               "))
-        print(colours().cyan("\t               ██     ") + colours().blue("███") + colours().white_bg("──") + colours().blue("█") + colours().white_bg("──") + colours().blue("███") + colours().cyan("     ██               "))
-        print(colours().cyan("\t               ██      ") + colours().blue("██") + colours().white_bg("──") + colours().blue(colours().white_bg("▄")) + colours().white_bg("──") + colours().blue("██") + colours().cyan("      ██               "))
-        print(colours().cyan("\t               ██        ") + colours().blue("▀▀█▀▀") + colours().cyan("        ██               "))
-        print(colours().cyan("\t                ██                   ██                "))
-        print(colours().cyan("\t                 ███               ███                 "))
-        print(colours().white("\t    Automated Decentralization And Management System   "))
-        print(colours().cyan("\t                    ▀▀▀█████████▀▀▀                    "))
+        print(colours().yellow("\t                  _                                    "))
+        print(colours().yellow("\t      __ _     __| |     __ _       _ _ _     ____     "))
+        print(colours().yellow("\t     / _` |   / _` |    / _` |     | ` ` |   / __/     "))
+        print(colours().yellow("\t    | (_| |  | (_| |   | (_| |     | | | |   \__ \     "))
+        print(colours().yellow("\t     \__,_|⍟  \__,_|") + colours().blue("▄") + colours().yellow("⍟") + colours().blue(" █") + colours().yellow("\__,_|") + colours().blue("██") + colours().yellow("⍟") + colours().blue(" ▄") + colours().yellow("|_|_|_| ⍟ /___/ ⍟ "))
+        print(colours().blue("\t                   ████         ████                   "))
+        print(colours().blue("\t                 ███               ███                 "))
+        print(colours().blue("\t                ██                  ███                "))
+        print(colours().blue("\t               ██        ") + colours().blue("▄▄█▄▄") + colours().blue("        ██"))
+        print(colours().blue("\t                       ") + colours().blue("███") + colours().white_bg("───") + colours().blue("███") + colours().blue("                       "))
+        print(colours().blue("\t               ") + colours().white("██     ") + colours().blue("███") + colours().white_bg("──") + colours().blue("█") + colours().white_bg("──") + colours().blue("███") + colours().white("     ██               "))
+        print(colours().blue("\t                       ") + colours().blue("██") + colours().white_bg("──") + colours().blue(colours().white_bg("▄")) + colours().white_bg("──") + colours().blue("██") + colours().blue("                       "))
+        print(colours().blue("\t               ██        ") + colours().blue("▀▀█▀▀") + colours().blue("        ██               "))
+        print(colours().blue("\t                ██                   ██                "))
+        print(colours().blue("\t                 ███               ███                 "))
+        print(colours().yellow("\t    Automated Decentralization And Management System   "))
+        print(colours().blue("\t                    ▀▀▀█████████▀▀▀                    "))
         print(colours().white("\t                                                       "))
         print(colours().white("\t                     press any key                     "))
         print(colours().white("\t                                                       "))
