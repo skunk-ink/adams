@@ -1,0 +1,13 @@
+# System Dependencies
+
+git
+pip
+npm
+autotools
+libtool
+unbound
+libunbound-dev
+
+
+# Python Dependencies
+getch
