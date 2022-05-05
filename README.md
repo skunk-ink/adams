@@ -30,9 +30,13 @@ python3 adams.py
 ```
 
 ### **Dependancies**
+
+#### APT
 ```
 sudo apt install git pip npm autotools libtool unbound libunbound-dev
 ```
+
+#### PIP
 ```
 pip install getch
 ```
