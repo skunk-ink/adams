@@ -1,42 +1,21 @@
 # WINDOWS
 
 # LINUX
-autoconf
-automake
-autotools-dev
-bison
-default-libmysqlclient-dev
-flex
-g++
-gawk
-git
-libboost-all-dev
-libcurl4
-libcurl4-openssl-dev
-libgeoip-dev
-libgeoip1
-libluajit-5.1-dev
-libmaxminddb-dev
-libmaxminddb0
-libpq-dev
-libsodium-dev
-libsqlite3-dev
-libssl-dev
-libsystemd-dev
-libsystemd0
-libtolua-dev
-libtool
-libunbound-dev
-libyaml-cpp-dev
-lua-yaml-dev
-lua5.3
-luajit
-make
 npm
 pip
+g++
+libboost-all-dev
+libtool make
+pkg-config
+default-libmysqlclient-dev
+libssl-dev
+libluajit-5.1-dev
 python3-venv
+autoconf
+automake
 ragel
-unbound
+bison
+flex
 
 # PYTHON
 getch
