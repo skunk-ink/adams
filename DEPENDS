@@ -1,12 +1,41 @@
 # WINDOWS
 
 # LINUX
+autoconf
+automake
 autotools-dev
+bison
+default-libmysqlclient-dev
+flex
+g++
+gawk
 git
+libboost-all-dev
+libcurl4
+libcurl4-openssl-dev
+libgeoip-dev
+libgeoip1
+libluajit-5.1-dev
+libmaxminddb-dev
+libmaxminddb0
+libpq-dev
+libsodium-dev
+libsqlite3-dev
+libssl-dev
+libsystemd-dev
+libsystemd0
+libtolua-dev
 libtool
 libunbound-dev
+libyaml-cpp-dev
+lua-yaml-dev
+lua5.3
+luajit
+make
 npm
 pip
+python3-venv
+ragel
 unbound
 
 # PYTHON
@@ -14,6 +43,9 @@ getch
 
 # ADAMS
 https://github.com/SkynetLabs/skynet-webportal.git
+https://github.com/SkynetLabs/ansible-playbooks.git
+https://github.com/SkynetLabs/ansible-private-sample.git
 https://github.com/handshake-org/hsd.git
+https://github.com/PowerDNS/pdns.git
 
 # EOF
