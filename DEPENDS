@@ -2,7 +2,7 @@
 
 # LINUX
 npm
-pip
+python3-pip
 g++
 libboost-all-dev
 libtool make
