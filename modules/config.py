@@ -1,16 +1,16 @@
 """               _                                    
-      __ _     __| |     __ _       _ _ _      ____    
-     / _` |   / _` |    / _` |     | ` ` |    / __/    
-    | (_| |  | (_| |   | (_| |     | | | |    \__ \    
-     \__,_|⍟ \__,_|▄⍟█\__,_|██⍟▄|_|_|_| ⍟ /___/ ⍟ 
-                   ████         ████                   
+     __ _      __| |     __ _      _ _ _      ____     
+    / _` |    / _` |    / _` |    | ` ` |    / __/     
+   | (_| |   | (_| |   | (_| |    | | | |    \__ \     
+    \__,_| ⍟ \__,_|▄⍟▄\__,_|█⍟▄|_|_|_| ⍟ /___/ ⍟  
+                   ███           ███                   
                  ███               ███                 
-                ██                  ███                
-               ██        ▄▄█▄▄        ██               
-                       ███───███                       
-               ██     ███──█──███     ██               
-                       ██──▄──██                       
-               ██        ▀▀█▀▀        ██               
+                ██                   ██                
+                         ▄▄█▄▄                         
+               ▄       ███───███       ▄               
+              ███     ███──█──███     ███              
+               ▀       ██──▄──██       ▀               
+                         ▀▀█▀▀                         
                 ██                   ██                
                  ███               ███                 
     Automated Decentralization And Management System   
@@ -20,9 +20,9 @@
 import os
 
 from time import sleep as sleep
-from lib.colours import colours as colours
+from modules.colours import colours as colours
 
-class menu(object):
+class cli(object):
     def __init__(self):
         self.clear_screen
         print(colours.error(self, "config.py not yet complete."))

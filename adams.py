@@ -1,16 +1,16 @@
 """               _                                    
-      __ _     __| |     __ _       _ _ _      ____    
-     / _` |   / _` |    / _` |     | ` ` |    / __/    
-    | (_| |  | (_| |   | (_| |     | | | |    \__ \    
-     \__,_|⍟ \__,_|▄⍟█\__,_|██⍟▄|_|_|_| ⍟ /___/ ⍟ 
-                   ████         ████                   
+     __ _      __| |     __ _      _ _ _      ____     
+    / _` |    / _` |    / _` |    | ` ` |    / __/     
+   | (_| |   | (_| |   | (_| |    | | | |    \__ \     
+    \__,_| ⍟ \__,_|▄⍟▄\__,_|█⍟▄|_|_|_| ⍟ /___/ ⍟  
+                   ███           ███                   
                  ███               ███                 
-                ██                  ███                
-               ██        ▄▄█▄▄        ██               
-                       ███───███                       
-               ██     ███──█──███     ██               
-                       ██──▄──██                       
-               ██        ▀▀█▀▀        ██               
+                ██                   ██                
+                         ▄▄█▄▄                         
+               ▄       ███───███       ▄               
+              ███     ███──█──███     ███              
+               ▀       ██──▄──██       ▀               
+                         ▀▀█▀▀                         
                 ██                   ██                
                  ███               ███                 
     Automated Decentralization And Management System   
@@ -19,14 +19,14 @@
 
 import os
 import sys as platform
-import lib.install as install
-import lib.config as config
-import lib.upgrade as upgrade
-import lib.error_handler as error
+import modules.install as install
+import modules.config as config
+import modules.upgrade as upgrade
+import modules.error_handler as error
 
 from time import sleep as sleep
-from lib.colours import colours as colours
-from lib.splash import splash as splash
+from modules.colours import colours as colours
+from modules.splash import splash as splash
 
 
 if platform == "linux":
@@ -104,11 +104,11 @@ class adams(object):
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
-                    install.menu()
+                    install.run()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
-                    config.menu()
+                    config.cli()
                 elif user_input.upper() == "3" or user_input.upper() == "U":
-                    upgrade.menu()
+                    upgrade.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     self.clear_screen()    # Clear console window
                     exit(0)

@@ -1,11 +1,19 @@
-# SYSTEM
+# WINDOWS
+
+# LINUX
+autotools-dev
 git
-pip
-npm
-autotools
 libtool
-unbound
 libunbound-dev
+npm
+pip
+unbound
 
 # PYTHON
 getch
+
+# ADAMS
+https://github.com/SkynetLabs/skynet-webportal.git
+https://github.com/handshake-org/hsd.git
+
+# EOF
