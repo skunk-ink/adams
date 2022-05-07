@@ -93,13 +93,13 @@ class run():
 
                     if package != "":
                         print(colours.green(self, " [+] ") + "Installing " + str(package))
-                        subprocess.run(["sudo", "apt", "-qq", "install", "-y", package], check=True)
+                        subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
                 elif addPythonPackage == True:
 
                     if package != "":
                         print(colours.green(self, " [+] ") + "Installing " + str(package))
-                        subprocess.run(["pip", "-q", "install", package], check=True)
+                        subprocess.run(["pip", "install", package], check=True)
 
                 elif addAdamsPackage == True:
 
