@@ -37,7 +37,7 @@ class run():
         POWERDNS_PATH = PATH + '/pdns/'
         LOG_FILE = DATA_PATH + "install.log"
 
-        DEPENDS = open("../DEPENDS", "r")
+        DEPENDS = open("./DEPENDS", "r")
         setInstall = False
         addWinPackage = False
         addLinuxPackage = False
