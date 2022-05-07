@@ -19,6 +19,7 @@
 
 import os
 import sys as platform
+
 import modules.install as install
 import modules.config as config
 import modules.upgrade as upgrade

@@ -6,3 +6,6 @@ data/install.log
 pdns
 skynet-webportal
 hsd
+build
+dist
+adams.spec
