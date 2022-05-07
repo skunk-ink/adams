@@ -109,7 +109,7 @@ class run():
                         if package.endswith("skynet-webportal.git"):
                             if os.path.isdir(SKYNET_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing Skynet Webportal")
-                                subprocess.run(["git", "clone", package], check=True)
+                                subprocess.run(["git", "clone", package], cwd=PATH, check=True)
                                 subprocess.run(["npm", "install", "yarn"], cwd=SKYNET_PATH)
                                 subprocess.run(["yarn", "build"], cwd=SKYNET_PATH)
                                 print()
@@ -119,7 +119,7 @@ class run():
                         elif package.endswith("ansible-playbooks.git"):
                             if os.path.isdir(ANSIBLE_PLAYBOOKS_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing Ansible-Playbooks")
-                                subprocess.run(["git", "clone", package], check=True)
+                                subprocess.run(["git", "clone", package], cwd=PATH, check=True)
                                 print()
                             else:
                                 print(colours.red(self, " [-] ") + "Ansible-Playbooks Installation Detected!")
@@ -127,7 +127,7 @@ class run():
                         elif package.endswith("ansible-private-sample.git"):
                             if os.path.isdir(ANSIBLE_PRIVATE_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing Ansible-Private")
-                                subprocess.run(["git", "clone", package, "ansible-private"], check=True)
+                                subprocess.run(["git", "clone", package, "ansible-private"], cwd=PATH, check=True)
                                 print()
                             else:
                                 print(colours.red(self, " [-] ") + "Ansible-Private Installation Detected!")
@@ -135,7 +135,7 @@ class run():
                         elif package.endswith("hsd.git"):
                             if os.path.isdir(HSD_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
-                                subprocess.run(["git", "clone", package], check=True)
+                                subprocess.run(["git", "clone", package], cwd=PATH, check=True)
                                 subprocess.run(["npm", "install", "--production"], cwd=HSD_PATH)
                                 print()
                             else:
@@ -144,7 +144,7 @@ class run():
                         elif package.endswith("pdns.git"):
                             if os.path.isdir(POWERDNS_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing PowerDNS")
-                                subprocess.run(["git", "clone", package], check=True)
+                                subprocess.run(["git", "clone", package], cwd=PATH, check=True)
                                 subprocess.run(["autoreconf", "-vi"], cwd=POWERDNS_PATH)
                                 subprocess.run(["./configure"], cwd=POWERDNS_PATH)
                                 subprocess.run(["make"], cwd=POWERDNS_PATH)
