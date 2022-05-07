@@ -48,7 +48,7 @@ class run():
 
         # Install packages for Linux
         if platform == "linux":
-            logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
+            #logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
             
             setInstall = True
 
