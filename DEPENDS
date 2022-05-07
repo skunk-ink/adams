@@ -17,6 +17,15 @@ automake
 ragel
 bison
 flex
+libcurl4-openssl-dev
+luajit
+lua-yaml-dev
+libyaml-cpp-dev
+libtolua-dev
+lua5.3
+libcurl4
+gawk
+libsqlite3-dev
 
 # PYTHON
 getch
