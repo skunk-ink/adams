@@ -30,12 +30,11 @@ class cli(object):
         
         from modules.main import main as main
         main()
-
-    ### START: clear_screen()
+#################################################### END: __init__(self)
 
     def clear_screen(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-    #################################################### END: clear_screen()
+#################################################### END: clear_screen()
 
 
 

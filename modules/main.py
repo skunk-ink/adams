@@ -45,26 +45,21 @@ class main(object):
     menu_prompt = ""    # Initialize string: menu_prompt
     api = ""
     
-### START: __init__()
-
     def __init__(self):
         self.clear_screen()
         self.set_menu("MAIN")
         self.main_menu()
 #################################################### END: __init__()
-### START: get_input(prompt)
 
     def get_input(self, prompt):
         user_input = input(colours().prompt(prompt))
         return user_input         
 #################################################### END: get_input(prompt)
-### START: print_header()
 
     def print_header(self):
         self.clear_screen()  # Clear console window
         print(colours().title("\n\t" + self.menu_title[1] + "\n\n"))   # Print menu title
 #################################################### END: print_header()
-### START: print_options()
 
     def print_options(self):
         for key, value in self.menu_options.items():
@@ -74,7 +69,6 @@ class main(object):
                 print("\t    " + colours().cyan(str(key)) + ": " + str(value))
         print()
 #################################################### END: print_options()
-### START: set_menu(menu_id)
 
     def set_menu(self, menu_id):
         global menu_title
@@ -89,10 +83,7 @@ class main(object):
                             "3" : "Upgrade",
                             "SPACE" : "", 
                             "Q" : "Quit"}
-
-
 #################################################### END: set_menu(menu_id)
-### START: main_menu()
 
     def main_menu(self):
         self.set_menu("MAIN")
@@ -121,14 +112,9 @@ class main(object):
             main()
 #################################################### END: main_menu()
 
-### START: clear_screen()
-
     def clear_screen(self):
         os.system('cls' if os.name == 'nt' else 'clear')
 #################################################### END: clear_screen()
-
-
-### START: __main__
 
 if __name__ == '__main__':
     splash()
