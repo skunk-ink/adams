@@ -24,5 +24,5 @@
 
 ### **How to run**
 ```
-python3 adams.py
+./build.sh && ./adams
 ```

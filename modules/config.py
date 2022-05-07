@@ -20,7 +20,7 @@
 import os
 
 from time import sleep as sleep
-from modules.colours import colours as colours
+from colours import colours as colours
 
 class cli(object):
     def __init__(self):
@@ -28,8 +28,8 @@ class cli(object):
         print(colours.error(self, "config.py not yet complete."))
         sleep(1)
         
-        from adams import adams as adams
-        adams()
+        from modules.main import main as main
+        main()
 
     ### START: clear_screen()
 

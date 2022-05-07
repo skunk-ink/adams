@@ -20,7 +20,7 @@
 import time
 import os
 from sys import platform
-from modules.colours import colours as colours
+from colours import colours as colours
 
 if platform == "linux":
     from getch import getch as getch

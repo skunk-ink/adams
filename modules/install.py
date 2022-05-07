@@ -24,7 +24,7 @@ import subprocess
 from sys import platform
 from time import sleep as sleep
 from getch import getch as getch
-from modules.colours import colours as colours
+from colours import colours as colours
 
 class run():
     def __init__(self):
@@ -37,7 +37,7 @@ class run():
         POWERDNS_PATH = PATH + '/pdns/'
         LOG_FILE = DATA_PATH + "install.log"
 
-        DEPENDS = open("DEPENDS", "r")
+        DEPENDS = open("../DEPENDS", "r")
         setInstall = False
         addWinPackage = False
         addLinuxPackage = False
@@ -146,7 +146,7 @@ class run():
                                 subprocess.run(["autoreconf", "-vi"], cwd=POWERDNS_PATH)
                                 subprocess.run(["./configure"], cwd=POWERDNS_PATH)
                                 subprocess.run(["make"], cwd=POWERDNS_PATH)
-                                subprocess.run(["make", "install"], cwd=POWERDNS_PATH)
+                                #subprocess.run(["make", "install"], cwd=POWERDNS_PATH)
                                 #subprocess.run(["make", "html-docs"], cwd=POWERDNS_PATH + "docs")
                                 print()
                             else:
