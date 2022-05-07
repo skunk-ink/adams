@@ -25,7 +25,9 @@ libtolua-dev
 lua5.3
 libcurl4
 gawk
+sqlite3
 libsqlite3-dev
+cmdtest
 
 # PYTHON
 getch

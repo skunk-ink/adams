@@ -93,13 +93,13 @@ class run():
 
                     if package != "":
                         print(colours.green(self, " [+] ") + "Installing " + str(package))
-                        subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
+                        subprocess.run(["sudo", "apt", "-qqq", "install", "-y", package], check=True)
 
                 elif addPythonPackage == True:
 
                     if package != "":
                         print(colours.green(self, " [+] ") + "Installing " + str(package))
-                        subprocess.run(["pip", "install", package], check=True)
+                        subprocess.run(["pip", "-q", "install", package], check=True)
 
                 elif addAdamsPackage == True:
 
@@ -108,10 +108,9 @@ class run():
                             if os.path.isdir(SKYNET_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing Skynet Webportal")
                                 subprocess.run(["git", "clone", package], check=True)
-                                #subprocess.run(["npm", "install", "yarn"], cwd=SKYNET_PATH)
-                                #subprocess.run(["yarn", "build"], cwd=SKYNET_PATH)
+                                subprocess.run(["npm", "install", "yarn"], cwd=SKYNET_PATH)
+                                subprocess.run(["yarn", "build"], cwd=SKYNET_PATH)
                                 print()
-                                sleep(5)
                             else:
                                 print(colours.red(self, " [-] ") + "Skynet Webportal Installation Detected!")
 
@@ -135,7 +134,7 @@ class run():
                             if os.path.isdir(HSD_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
                                 subprocess.run(["git", "clone", package], check=True)
-                                subprocess.run(["npm", "install"], cwd=HSD_PATH)
+                                subprocess.run(["npm", "install", "--production"], cwd=HSD_PATH)
                                 print()
                             else:
                                 print(colours.red(self, " [-] ") + "Handshake Daemon Installation Detected!")
@@ -146,6 +145,8 @@ class run():
                                 subprocess.run(["git", "clone", package], check=True)
                                 subprocess.run(["autoreconf", "-vi"], cwd=POWERDNS_PATH)
                                 subprocess.run(["./configure"], cwd=POWERDNS_PATH)
+                                subprocess.run(["make"], cwd=POWERDNS_PATH)
+                                subprocess.run(["make", "install"], cwd=POWERDNS_PATH)
                                 #subprocess.run(["make", "html-docs"], cwd=POWERDNS_PATH + "docs")
                                 print()
                             else:
