@@ -22,7 +22,7 @@ import os
 from time import sleep as sleep
 from colours import colours as colours
 
-class cli:
+class cli(object):
     def __init__(self):
         self.clear_screen
         print(colours.error(self, "config.py not yet complete."))

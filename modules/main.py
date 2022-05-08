@@ -38,7 +38,7 @@ elif platform == "win32":
     DATA_PATH = os.getcwd() + '\data\\'     # Windows directory format
 
 
-class main:
+class main(object):
 
     menu_title = ""     # Initialize string: menu_title
     menu_options = {}   # Initialize array: menu_options
