@@ -44,7 +44,7 @@ alert = '\033[1m\033[41m'
 endc = '\033[0m'
 
 
-class colours(object):
+class colours():
     
         # Font Colours
     def black(self, text):
