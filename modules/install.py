@@ -70,7 +70,7 @@ class run():
 
                 elif package.startswith("# LINUX"):
                     addWinPackage = False
-                    addLinuxPackage = True      # Toggle to install Linux Dependencies
+                    addLinuxPackage = False      # Toggle to install Linux Dependencies
                     addPythonPackage = False
                     addSkynetPackage = False
                     addHNSPackage = False
@@ -80,7 +80,7 @@ class run():
                 elif package.startswith("# PYTHON"):
                     addWinPackage = False
                     addLinuxPackage = False
-                    addPythonPackage = True     # Toggle to install Python Dependencies
+                    addPythonPackage = False     # Toggle to install Python Dependencies
                     addSkynetPackage = False
                     addHNSPackage = False
                     addPDNSPackage = False
@@ -90,7 +90,7 @@ class run():
                     addWinPackage = False
                     addLinuxPackage = False
                     addPythonPackage = False
-                    addSkynetPackage = True     # Toggle to install Skynet-Webportal and Dependencies
+                    addSkynetPackage = False     # Toggle to install Skynet-Webportal and Dependencies
                     addHNSPackage = False
                     addPDNSPackage = False
                     print(colours.red(self, "\nInstalling Skynet-Webportal..."))
@@ -100,7 +100,7 @@ class run():
                     addLinuxPackage = False
                     addPythonPackage = False
                     addSkynetPackage = False
-                    addHNSPackage = True        # Toggle to install HNS Node and Dependencies
+                    addHNSPackage = False        # Toggle to install HNS Node and Dependencies
                     addPDNSPackage = False
                     print(colours.red(self, "\nInstalling HNS Node..."))
                     
@@ -241,7 +241,7 @@ class run():
 
     def addPDNSSources(self):
         # Check for existing PowerDNS APT sources
-        if not os.path.isfile("/etc/apt/sources.list.d/pdns.list"):
+        if os.path.isfile("/etc/apt/sources.list.d/pdns.list") == False:
             with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
                 sources = sourceFile.readlines()
 
