@@ -241,20 +241,21 @@ class run():
 
     def addPDNSSources(self):
         # Check for existing PowerDNS APT sources
-        with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
-            sources = sourceFile.readlines()
+        if not os.path.isfile("/etc/apt/sources.list.d/pdns.list"):
+            with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
+                sources = sourceFile.readlines()
 
-        for line in sources:
-            # If PowerDNS APT source does not exist, add it to /etc/apt/sources.list.d/pdns.list
-            if 'http://repo.powerdns.com/ubuntu' not in line:
-                addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
-                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-                addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
-                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-                subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
+            for line in sources:
+                # If PowerDNS APT source does not exist, add it to /etc/apt/sources.list.d/pdns.list
+                if 'http://repo.powerdns.com/ubuntu' not in line:
+                    addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
+                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                    addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
+                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                    subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
 #################################################### END: addPDNSSources(self)
 
     def checkResolver(self):
