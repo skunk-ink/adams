@@ -17,26 +17,21 @@ automake
 ragel
 bison
 flex
-libcurl4-openssl-dev
-luajit
-lua-yaml-dev
-libyaml-cpp-dev
-libtolua-dev
-lua5.3
-libcurl4
-gawk
-sqlite3
-libsqlite3-dev
-cmdtest
 
 # PYTHON
 getch
 
-# ADAMS
+# SKYNET
 https://github.com/SkynetLabs/skynet-webportal.git
 https://github.com/SkynetLabs/ansible-playbooks.git
 https://github.com/SkynetLabs/ansible-private-sample.git
+
+# HNS
 https://github.com/handshake-org/hsd.git
-https://github.com/PowerDNS/pdns.git
+
+# PDNS
+sqlite3
+pdns-server
+pdns-backend-sqlite3
 
 # EOF
