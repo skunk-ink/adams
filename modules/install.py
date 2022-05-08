@@ -144,8 +144,8 @@ class run():
                             if os.path.isdir(self.SKYNET_PATH) == False:
                                 print(colours.green(self, " [+] ") + "Installing Skynet Webportal")
                                 subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                subprocess.run(["npm", "install", "yarn"], cwd=self.SKYNET_PATH)
-                                subprocess.run(["yarn", "build"], cwd=self.SKYNET_PATH)
+                                subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
+                                subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
                                 print()
                             else:
                                 print(colours.yellow(self, " [!] ") + "Skynet Webportal Installation Detected!")
