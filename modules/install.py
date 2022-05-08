@@ -241,7 +241,7 @@ class run():
 
     def addPDNSSources(self):
         # Check for existing PowerDNS APT sources
-        if os.path.isfile("/etc/apt/sources.list.d/pdns.list") == False:
+        if os.path.exists("/etc/apt/sources.list.d/pdns.list") == False:
             with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
                 sources = sourceFile.readlines()
 
