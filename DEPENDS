@@ -18,6 +18,8 @@ ragel
 bison
 flex
 
+# MACOS
+
 # PYTHON
 getch
 
@@ -26,7 +28,7 @@ https://github.com/SkynetLabs/skynet-webportal.git
 https://github.com/SkynetLabs/ansible-playbooks.git
 https://github.com/SkynetLabs/ansible-private-sample.git
 
-# HNS
+# HSD
 https://github.com/handshake-org/hsd.git
 
 # PDNS

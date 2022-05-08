@@ -13,7 +13,7 @@
                          ▀▀█▀▀                         
                 ██                   ██                
                  ███               ███                 
-    Automated Decentralization And Management System   
+    Automated Decentralization And Management platformtem   
                     ▀▀▀█████████▀▀▀                    
 """
 
@@ -38,7 +38,7 @@ elif platform == "win32":
     DATA_PATH = os.getcwd() + '\data\\'     # Windows directory format
 
 
-class main(object):
+class main:
 
     menu_title = ""     # Initialize string: menu_title
     menu_options = {}   # Initialize array: menu_options
@@ -76,7 +76,7 @@ class main(object):
         
         if menu_id.upper() == "MAIN":   # If Main menu requested do the following
             self.menu_title = ["MAIN", 
-                          "Automated Decentralization And Management System (A.D.A.M.S.)"]
+                          "Automated Decentralization And Management platformtem (A.D.A.M.S.)"]
                           
             self.menu_options = {"1" : "Install", 
                             "2" : "Configure",
@@ -103,7 +103,7 @@ class main(object):
                     upgrade.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     self.clear_screen()    # Clear console window
-                    exit(0)
+                    platform.exit(0)
         except AttributeError as e:
             print(colours().error(str(e)))
             sleep(2)

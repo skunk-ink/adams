@@ -21,14 +21,15 @@ import os
 
 from time import sleep as sleep
 from colours import colours as colours
+from modules.error_handler import MethodNotFound
 
-class cli(object):
+class cli:
     def __init__(self):
         self.clear_screen
         print(colours.error(self, "upgrade.py not yet complete."))
         sleep(1)
         
-        from modules.main import main as main
+        from main import main as main
         main()
 #################################################### END: __init__(self)
 
