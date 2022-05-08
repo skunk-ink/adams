@@ -21,7 +21,7 @@ import os
 
 from time import sleep as sleep
 from colours import colours as colours
-from modules.error_handler import MethodNotFound
+from error_handler import MethodNotFound
 
 class cli:
     def __init__(self):
