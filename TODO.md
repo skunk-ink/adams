@@ -22,6 +22,8 @@
         - ragel
         - bison
         - flex
+        - zip
+        - unzip
 - [ ] **MacOS**
 - [x] **Python**
     - PIP
@@ -34,15 +36,15 @@
 - [x] **HNS Full Node Install**
     - GIT
         - https://github.com/handshake-org/hsd.git
+- [ ] **NGINX install**
+    - Debian
+        - nginx
 - [ ] **PowerDNS install**
     - Debian
         - sqlite3
         - pdns-server
         - pdns-backend-sqlite3
         - pdnsmanager-2.1.0.tar.gz
-- [ ] **NGINX install**
-    - Debian
-        - nginx
 
 ## System Configuration Module
  - [ ] Skynet Portal
