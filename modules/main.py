@@ -109,10 +109,6 @@ class main:
             main()
     #################################################### END: main_menu()
 
-    def clear_screen(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
-    #################################################### END: clear_screen()
-
 if __name__ == '__main__':
     splash()
     main()

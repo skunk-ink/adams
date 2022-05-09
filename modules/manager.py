@@ -290,13 +290,9 @@ class cli:
             pass
     #################################################### END: hsdManager()
 
-    def clear_screen(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
-        
-    #################################################### END: clear_screen()
-
 if __name__ == '__main__':
     os.system('cls')
     print(colours.error("config.py not yet complete."))
     cli()
     sleep(1)
+#################################################### END: __main__
