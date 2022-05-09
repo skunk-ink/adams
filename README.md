@@ -44,7 +44,7 @@ With an intuitive user interface, A.D.A.M.S empowers users of all skill levels t
 
 > Note: A.D.A.M.S is currently only compatible with Ubuntu systems. Windows and MacOS compatibility will be a future development.
 
-## Ubuntu 20.04 LTS
+### **Ubuntu 20.04 LTS**
 ```
 ./build.sh && ./adams
 ```
