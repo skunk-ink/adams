@@ -1,5 +1,5 @@
 
-# TODO
+# A.D.A.M.S. TODO
 - [ ] [Installer Module](#installer-module)
     - [ ] [Detect Dependencies](#detect-dependencies)
     - [ ] [Install Dependencies](#install-dependencies)
@@ -27,7 +27,7 @@
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
             - [ ] Install
-- [ ] [System Configuration Module](#system-configuration-module)
+- [ ] [Manager Module](#system-configuration-module)
     - [ ] [Skynet Webportal](#skynet-webportal)
     - [ ] [Handshake Daemon](#handshake-daemon)
     - [ ] [NGINX Webserver](#nginx)
