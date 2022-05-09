@@ -3,9 +3,10 @@ lib/__pycache__
 ansible-playbooks
 ansible-private
 data/install.log
-pdns
 skynet-webportal
 hsd
+pdns
+pdnsmanager
 build
 adams
 adams.spec

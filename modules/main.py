@@ -22,7 +22,6 @@ import sys as platform
 
 import install as install
 import config as config
-import upgrade as upgrade
 import error_handler as error
 
 from time import sleep as sleep
@@ -49,17 +48,17 @@ class main:
         self.clear_screen()
         self.set_menu("MAIN")
         self.main_menu()
-#################################################### END: __init__()
+    #################################################### END: __init__()
 
     def get_input(self, prompt):
         user_input = input(colours().prompt(prompt))
         return user_input         
-#################################################### END: get_input(prompt)
+    #################################################### END: get_input(prompt)
 
     def print_header(self):
         self.clear_screen()  # Clear console window
         print(colours().title("\n\t" + self.menu_title[1] + "\n\n"))   # Print menu title
-#################################################### END: print_header()
+    #################################################### END: print_header()
 
     def print_options(self):
         for key, value in self.menu_options.items():
@@ -68,7 +67,7 @@ class main:
             else:
                 print("\t    " + colours().cyan(str(key)) + ": " + str(value))
         print()
-#################################################### END: print_options()
+    #################################################### END: print_options()
 
     def set_menu(self, menu_id):
         global menu_title
@@ -79,11 +78,10 @@ class main:
                           "Automated Decentralization And Management System (A.D.A.M.S.)"]
                           
             self.menu_options = {"1" : "Install", 
-                            "2" : "Configure",
-                            "3" : "Upgrade",
+                            "2" : "Configuration",
                             "SPACE" : "", 
                             "Q" : "Quit"}
-#################################################### END: set_menu(menu_id)
+    #################################################### END: set_menu(menu_id)
 
     def main_menu(self):
         self.set_menu("MAIN")
@@ -99,8 +97,6 @@ class main:
                     install.run()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
                     config.cli()
-                elif user_input.upper() == "3" or user_input.upper() == "U":
-                    upgrade.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     self.clear_screen()    # Clear console window
                     platform.exit(0)
@@ -110,11 +106,11 @@ class main:
             self.main_menu()
         except KeyboardInterrupt:
             main()
-#################################################### END: main_menu()
+    #################################################### END: main_menu()
 
     def clear_screen(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-#################################################### END: clear_screen()
+    #################################################### END: clear_screen()
 
 if __name__ == '__main__':
     splash()
