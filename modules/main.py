@@ -20,8 +20,8 @@
 import os
 import sys as platform
 
-import install as install
-import config as config
+import modules.installer as installer
+import modules.manager as manager
 import error_handler as error
 
 from time import sleep as sleep
@@ -94,9 +94,9 @@ class main:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
-                    install.run()
+                    installer.run()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
-                    config.cli()
+                    manager.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     self.clear_screen()    # Clear console window
                     platform.exit(0)
