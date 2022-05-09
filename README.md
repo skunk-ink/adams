@@ -5,6 +5,7 @@
 
 - [About](#about)
 - [Install](#how-to-run)
+  - [Ubuntu 20.04 LTS](#ubuntu-2004-lts)
 - [Features](#features)
   - [Skynet Webportal](#skynet-webportal)
   - [Handshake Full Node](#handshake-full-node)
@@ -42,6 +43,8 @@ With an intuitive user interface, A.D.A.M.S empowers users of all skill levels t
 > Note: A.D.A.M.S is currently only compatible with Ubuntu systems. Windows and MacOS compatibility will be a future development.
 
 # **Install**
+
+## Ubuntu 20.04 LTS
 ```
 ./build.sh && ./adams
 ```
