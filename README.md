@@ -1,5 +1,6 @@
 # **A.D.A.M.S**
 ## **Automated Decentralization And Managment System**
+
 ***
 
 - [About](#about)
@@ -12,6 +13,7 @@
 - [User Manual](#user-manual)
 
 ***
+
 ```
                   _                                    
      __ _      __| |     __ _      _ _ _      ____     
