@@ -51,19 +51,19 @@ With an intuitive user interface, A.D.A.M.S empowers users of all skill levels t
 
 # **Features**
 
-## **Skynet Webportal**
+### **Skynet Webportal**
 A Skynet Portal is the doorway in which a you can access [Skynet](https://skynetlabs.com/about), and like any real doorway you do not own, it can be closed. This is why it is imparitive that users have the tools necessary to quickly and easily deploy a Skynet Portal of their own.
 
-## **Handshake Full Node**
+### **Handshake Full Node**
 
 The [Handshake protocol (HNS)](https://handshake.org/) is a decentralized naming and certificate authority. A fundamental part of the decentralized internet, Handshake provides users with the ability to fully own their domain name. Effectively breaking the monopolistic strangle hold ICANN has enjoyed for so long. No longer are website and application developers at the whims of a third-party central authority.
 
 By running a Handshake full node A.D.A.M.S is also able to break the need for a user to rely on third-party owned, and operated, DNS servers. Ensuring that the point of access to their personal Skynet Portal is always under their control.
 
-## **NGINX Webserver**
+### **NGINX Webserver**
 The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preformance open-source webserver which is used by A.D.A.M.S. to provide users with a easy to use and remotely accessible user interface. Ensuring that no matter where they are, a user can manage and maintain their personal Skynet Portal.
 
-## **PowerDNS**
+### **PowerDNS**
 [PowerDNS](https://www.powerdns.com/) is a light-weight open-source DNS server. Used in conjunction with the Handshake full node, PowerDNS provides users to resolve their own Handshake domain names.
 
 # **User Manual**
