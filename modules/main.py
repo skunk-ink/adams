@@ -20,8 +20,8 @@
 import os
 import sys as platform
 
-import modules.installer as installer
-import modules.manager as manager
+import installer as installer
+import manager as manager
 import error_handler as error
 
 from time import sleep as sleep

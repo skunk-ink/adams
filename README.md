@@ -8,8 +8,8 @@
   - [Ubuntu 20.04 LTS](#ubuntu-2004-lts)
 - [Features](#features)
   - [Skynet Webportal](#skynet-webportal)
-  - [Handshake Full Node](#handshake-full-node)
-  - [NGIX Web Server](#nginx-webserver)
+  - [Handshake Daemon](#handshake-daemon)
+  - [NGIX Webserver](#nginx-webserver)
   - [PowerDNS](#powerdns)
 - [User Manual](#user-manual)
 
@@ -54,7 +54,7 @@ With an intuitive user interface, A.D.A.M.S empowers users of all skill levels t
 ## Skynet Webportal
 A Skynet Portal is the doorway in which a you can access [Skynet](https://skynetlabs.com/about), and like any real doorway you do not own, it can be closed. This is why it is imparitive that users have the tools necessary to quickly and easily deploy a Skynet Portal of their own.
 
-## Handshake Full Node
+## Handshake Daemon
 
 The [Handshake protocol (HNS)](https://handshake.org/) is a decentralized naming and certificate authority. A fundamental part of the decentralized internet, Handshake provides users with the ability to fully own their domain name. Effectively breaking the monopolistic strangle hold ICANN has enjoyed for so long. No longer are website and application developers at the whims of a third-party central authority.
 
