@@ -62,7 +62,7 @@ class cli:
                           
             menu_options = [colours().cyan("1") + ": Skynet Webportal",
                             colours().cyan("2") + ": Handshake Daemon",
-                            colours().cyan("3") + ": NGINX",
+                            colours().cyan("3") + ": NGINX Webserver",
                             colours().cyan("4") + ": PowerDNS",
                             "",
                             colours().cyan("B") + ": Back to A.D.A.M.S.",

@@ -33,9 +33,15 @@
             - [ ] Install
 - [ ] [Manager Module](#system-configuration-module)
     - [ ] [Skynet Webportal](#skynet-webportal)
+        - [ ] [Wallet Management](#wallet)
+        - [ ] [Contract Management](#contracts)
+        - [ ] [Blocklists Management](#blocklists)
     - [ ] [Handshake Daemon](#handshake-daemon)
+        - [ ] [Wallet Management](#wallet-1)
+        - [ ] [HNS Records Management](#hns-records-management)
     - [ ] [NGINX Webserver](#nginx)
     - [ ] [PowerDNS Server](#powerdns-server)
+        - [ ] [DNS Records Management](#dns-records-management)
 
 # Binary Builder Script
 - ### Windows
@@ -99,7 +105,13 @@
 
 # Manager Module
 - ### **Skynet Webportal**
+    - #### Wallet Management
+    - #### Contracts Management
+    - #### Blocklists Management
 - ### **Handshake Daemon**
+    - #### Wallet Management
+    - #### HNS Records Management
 - ### **NGINX Webserver**
 - ### **PowerDNS Server**
+    - #### DNS Records Management
  
