@@ -22,6 +22,7 @@
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
             - [x] Download
             - [ ] Install
+            - [ ] Configure
         - [x] [Handshake Daemon](#hns-daemon-install)
             - [x] Download
             - [x] Install
@@ -31,6 +32,11 @@
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
             - [ ] Install
+    - [ ] [Configuration](#configurations)
+        - [ ] [Skynet Webportal Configuration](#skynet-webportal-configuration)
+        - [ ] [Handshake Daemon Configuration](#handshake-daemon-configuration)
+        - [ ] [NGINX Webserver Configuration](#nginx-webserver-configuration)
+        - [ ] [PowerDNS Configuration](#powerdns-configuration)
 - [ ] [**Manager Module**](#system-configuration-module)
     - [ ] [Skynet Webportal](#skynet-webportal)
         - [ ] [Wallet Management](#wallet)
@@ -102,6 +108,11 @@
             - pdns-backend-sqlite3
         - WGET
             - pdnsmanager-2.1.0.tar.gz
+- ### **Configurations**
+    - #### **Skynet Webportal Configuration**
+    - #### **Handshake Daemon Configuration**
+    - #### **NGINX Webserver Configuration**
+    - #### **PowerDNS Configuration**
 
 # Manager Module
 - ### **Skynet Webportal**
