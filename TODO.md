@@ -32,7 +32,7 @@
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
             - [ ] Install
-    - [ ] [Configuration](#configurations)
+    - [ ] [Configurations](#configurations)
         - [ ] [Skynet Webportal Configuration](#skynet-webportal-configuration)
         - [ ] [Handshake Daemon Configuration](#handshake-daemon-configuration)
         - [ ] [NGINX Webserver Configuration](#nginx-webserver-configuration)
