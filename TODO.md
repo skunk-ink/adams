@@ -1,6 +1,6 @@
 
 # A.D.A.M.S. TODO
-- ### [ ] [Binary Builder Script](#binary-builder-script)
+- [ ] [Binary Builder Script](#binary-builder-script)
     - [ ] [Windows](#windows)
     - [x] [Linux](#linux)
     - [ ] [MacOS](#macos)
