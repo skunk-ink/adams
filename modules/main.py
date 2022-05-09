@@ -29,10 +29,10 @@ from colours import colours as colours
 from splash import splash as splash
 
 
-if platform == "linux":
+if platform is "linux":
     from getch import getch as getch
     DATA_PATH = os.getcwd() + '/data/'      # Linux directory format
-elif platform == "win32":
+elif platform is "win32":
     from msvcrt import getch as getch
     DATA_PATH = os.getcwd() + '\data\\'     # Windows directory format
 
@@ -62,7 +62,7 @@ class main:
 
     def print_options(self):
         for key, value in self.menu_options.items():
-            if str(key) == 'SPACE':
+            if str(key) is 'SPACE':
                 print()
             else:
                 print("\t    " + colours().cyan(str(key)) + ": " + str(value))
@@ -73,7 +73,7 @@ class main:
         global menu_title
         global menu_options
         
-        if menu_id.upper() == "MAIN":   # If Main menu requested do the following
+        if menu_id.upper() is "MAIN":   # If Main menu requested do the following
             self.menu_title = ["MAIN", 
                           "Automated Decentralization And Management System (A.D.A.M.S.)"]
                           
@@ -93,11 +93,11 @@ class main:
                 
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
-                if user_input.upper() == "1" or user_input.upper() == "I":
+                if user_input.upper() is "1" or user_input.upper() is "I":
                     install.run()
-                elif user_input.upper() == "2" or user_input.upper() == "C":
+                elif user_input.upper() is "2" or user_input.upper() is "C":
                     config.cli()
-                elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
+                elif user_input.upper() is "EXIT" or user_input.upper() is "Q" or user_input.upper() is "QUIT":
                     self.clear_screen()    # Clear console window
                     platform.exit(0)
         except AttributeError as e:
@@ -112,7 +112,7 @@ class main:
         os.system('cls' if os.name == 'nt' else 'clear')
     #################################################### END: clear_screen()
 
-if __name__ == '__main__':
+if __name__ is '__main__':
     splash()
     main()
 #################################################### END: __main__
