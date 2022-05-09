@@ -1,5 +1,9 @@
 
 # A.D.A.M.S. TODO
+- [ ] [Binary Builder Script]
+    - [ ] Windows
+    - [x] Linux
+    - [ ] MacOS
 - [ ] [Installer Module](#installer-module)
     - [ ] [Detect Dependencies](#detect-dependencies)
     - [ ] [Install Dependencies](#install-dependencies)
@@ -33,6 +37,10 @@
     - [ ] [NGINX Webserver](#nginx)
     - [ ] [PowerDNS Server](#powerdns-server)
 
+# Binary Builder Script
+- ### Windows
+- ### Linux
+- ### MacOS
 
 # Installer Module
 - ### **Detect Dependencies**
