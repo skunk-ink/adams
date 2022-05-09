@@ -1,7 +1,7 @@
 # **A.D.A.M.S**
 ## **Automated Decentralization And Managment System**
 ```diff
-- A.D.A.M.S. is still a work in progress. Running the installer module is not recommended.
+- A.D.A.M.S. is still a work in progress. Running the installer module is not yet recommended.
 ```
 
 ***
