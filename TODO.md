@@ -25,7 +25,7 @@
         - [x] [Handshake Daemon](#hns-daemon-install)
             - [x] Download
             - [x] Install
-        - [ ] [NGINX](#nginx-install)
+        - [ ] [NGINX Webserver](#nginx-install)
             - [x] Download
             - [ ] Install
         - [ ] [PowerDNS](#powerdns-install)
@@ -40,7 +40,7 @@
         - [ ] [Wallet Management](#wallet-1)
         - [ ] [HNS Records Management](#hns-records-management)
     - [ ] [NGINX Webserver](#nginx)
-    - [ ] [PowerDNS Server](#powerdns-server)
+    - [ ] [PowerDNS](#powerdns)
         - [ ] [DNS Records Management](#dns-records-management)
 
 # Binary Builder Script
@@ -92,7 +92,7 @@
     - #### **HNS Daemon Install**
         - GIT
             - https://github.com/handshake-org/hsd.git
-    - #### **NGINX install**
+    - #### **NGINX Webserver install**
         - APT
             - nginx
     - #### **PowerDNS install**
@@ -112,6 +112,6 @@
     - #### Wallet Management
     - #### HNS Records Management
 - ### **NGINX Webserver**
-- ### **PowerDNS Server**
+- ### **PowerDNS**
     - #### DNS Records Management
  

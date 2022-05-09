@@ -91,7 +91,7 @@ class cli:
             
         elif menu_id.upper() == "NGINX":    # NGINX Menu Options
             menu_title = ["NGINX",
-                         "NGINX Management"]
+                         "NGINX Webserver Management"]
                           
             menu_options = [colours().cyan("1") + ": NGINX Configuration",
                             "",
