@@ -1,10 +1,10 @@
 
 # A.D.A.M.S. TODO
-- [ ] [Binary Builder Script](#binary-builder-script)
+- [ ] [**Binary Builder Script**](#binary-builder-script)
     - [ ] [Windows](#windows)
     - [x] [Linux](#linux)
     - [ ] [MacOS](#macos)
-- [ ] [Installer Module](#installer-module)
+- [ ] [**Installer Module**](#installer-module)
     - [ ] [Detect Dependencies](#detect-dependencies)
     - [ ] [Install Dependencies](#install-dependencies)
         - [ ] [Windows](#windows-1)
@@ -31,7 +31,7 @@
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
             - [ ] Install
-- [ ] [Manager Module](#system-configuration-module)
+- [ ] [**Manager Module**](#system-configuration-module)
     - [ ] [Skynet Webportal](#skynet-webportal)
         - [ ] [Wallet Management](#wallet)
         - [ ] [Contract Management](#contracts)
