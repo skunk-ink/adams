@@ -7,8 +7,6 @@
     - [x] Linux
     - [ ] MacOS
     - [x] Python
-    - [ ] Windows dependencies install
-    - [ ] Windows dependencies install
 - [ ] Skynet Webportal + Ansible install
 - [x] HNS Full Node Install
 - [ ] NGINX + PowerDNS + PDNS Manager install

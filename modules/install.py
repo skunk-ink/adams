@@ -26,7 +26,7 @@ from time import sleep as sleep
 from getch import getch as getch
 from colours import colours as colours
 
-class run:
+class run():
     NEED_RESTART = False
     PATH = os.getcwd()
     DATA_PATH = PATH + '/data/'      # Data Directory Path
