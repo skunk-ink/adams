@@ -73,7 +73,7 @@ class run:
 
                     elif package.startswith("# LINUX"):
                         addWinPackage = False
-                        addLinuxPackage = False         # Toggle to install Linux Dependencies
+                        addLinuxPackage = True         # Toggle to install Linux Dependencies
                         addPythonPackage = False
                         addSkynetPackage = False
                         addHNSPackage = False
@@ -84,7 +84,7 @@ class run:
                     elif package.startswith("# PYTHON"):
                         addWinPackage = False
                         addLinuxPackage = False
-                        addPythonPackage = False        # Toggle to install Python Dependencies
+                        addPythonPackage = True        # Toggle to install Python Dependencies
                         addSkynetPackage = False
                         addHNSPackage = False
                         addNGINXPackage = False
@@ -95,7 +95,7 @@ class run:
                         addWinPackage = False
                         addLinuxPackage = False
                         addPythonPackage = False
-                        addSkynetPackage = False        # Toggle to install Skynet Webportal
+                        addSkynetPackage = True        # Toggle to install Skynet Webportal
                         addHNSPackage = False
                         addNGINXPackage = False
                         addPDNSPackage = False
@@ -106,7 +106,7 @@ class run:
                         addLinuxPackage = False
                         addPythonPackage = False
                         addSkynetPackage = False
-                        addHNSPackage = False           # Toggle to install Handshake Daemon
+                        addHNSPackage = True           # Toggle to install Handshake Daemon
                         addNGINXPackage = False
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling HNS Node..."))
@@ -128,7 +128,7 @@ class run:
                         addSkynetPackage = False
                         addHNSPackage = False
                         addNGINXPackage = False
-                        addPDNSPackage = False           # Toggle to install PowerDNS
+                        addPDNSPackage = True           # Toggle to install PowerDNS
                         print(colours.red(self, "\nInstalling PowerDNS..."))
 
                         self.addPDNSSources()
