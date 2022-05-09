@@ -1,27 +1,46 @@
 
 # TODO
-
-- [-] [Installer Module](#installer-module)
+- [ ] [Installer Module](#installer-module)
     - [ ] [Detect Dependencies](#detect-dependencies)
-    - [-] [Install Dependencies](#install-dependencies)
+    - [ ] [Install Dependencies](#install-dependencies)
         - [ ] [Windows](#windows)
+            - ##### [ ] Download
+            - ##### [ ] Install
         - [x] [Linux](#x-linux)
+            - ##### [x] Download
+            - ##### [x] Install
         - [ ] [MacOS](#macos)
+            - ##### [ ] Download
+            - ##### [ ] Install
         - [x] [Python](#x-python)
-        - [-] [Skynet Webportal](#skynet-webportal--ansible-install)
+            - ##### [x] Download
+            - ##### [x] Install
+        - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
+            - ##### [x] Download
+            - ##### [ ] Install
         - [x] [Handshake Daemon](#x-hns-full-node-install)
-        - [-] [NGINX](#nginx-install)
-        - [-] [PowerDNS](#powerdns-install)
+            - ##### [x] Download
+            - ##### [x] Install
+        - [ ] [NGINX](#nginx-install)
+            - ##### [x] Download
+            - ##### [ ] Install
+        - [ ] [PowerDNS](#powerdns-install)
+            - ##### [x] Download
+            - ##### [ ] Install
 - [ ] [System Configuration Module](#system-configuration-module)
-    - [ ] [Skynet Webportal](#sk)
+    - [ ] [Skynet Webportal](#skynet-webportal)
+    - [ ] [Handshake Daemon](#handshake-daemon)
+    - [ ] [NGINX Webserver](#nginx)
+    - [ ] [PowerDNS Server](#powerdns-server)
 
-## Installer Module
-- ### [ ] **Detect Dependencies**
 
-- ### [-] **Install Dependencies**
-    - #### [ ] **Windows**
+# Installer Module
+- ### **Detect Dependencies**
 
-    - #### [x] **Linux**
+- ### **Install Dependencies**
+    - #### **Windows**
+
+    - #### **Linux**
         - APT
             - npm
             - python3-pip
@@ -41,33 +60,32 @@
             - flex
             - zip
             - unzip
-    - #### [ ] **MacOS**
-    - #### [x] **Python**
+    - #### **MacOS**
+    - #### **Python**
         - PIP
             - getch
-    - #### [-] **Skynet Webportal + Ansible install**
+    - #### **Skynet Webportal + Ansible install**
         - GIT
             - https://github.com/SkynetLabs/skynet-webportal.git
             - https://github.com/SkynetLabs/ansible-playbooks.git
             - https://github.com/SkynetLabs/ansible-private-sample.git
-    - #### [x] **HNS Daemon Install**
+    - #### **HNS Daemon Install**
         - GIT
             - https://github.com/handshake-org/hsd.git
-    - #### [-] **NGINX install**
+    - #### **NGINX install**
         - APT
             - nginx
-    - #### [-] **PowerDNS install**
-        - [x] Download
-            - APT
-                - sqlite3
-                - pdns-server
-                - pdns-backend-sqlite3
-            - WGET
-                - pdnsmanager-2.1.0.tar.gz
+    - #### **PowerDNS install**
+        - APT
+            - sqlite3
+            - pdns-server
+            - pdns-backend-sqlite3
+        - WGET
+            - pdnsmanager-2.1.0.tar.gz
 
-## [ ] Manager Module
-- ### [ ] **Skynet Webportal**
-- ### [ ] **HNS Node**
-- ### [ ] **NGINX**
-- ### [ ] **PowerDNS**
+# Manager Module
+- ### **Skynet Webportal**
+- ### **Handshake Daemon**
+- ### **NGINX Webserver**
+- ### **PowerDNS Server**
  
