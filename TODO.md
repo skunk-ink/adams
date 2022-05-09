@@ -1,28 +1,28 @@
 
 # A.D.A.M.S. TODO
-- [ ] [Binary Builder Script]
-    - [ ] Windows
-    - [x] Linux
-    - [ ] MacOS
+- [ ] [Binary Builder Script](#binary-builder-script)
+    - [ ] [Windows](#windows)
+    - [x] [Linux](#linux)
+    - [ ] [MacOS](#macos)
 - [ ] [Installer Module](#installer-module)
     - [ ] [Detect Dependencies](#detect-dependencies)
     - [ ] [Install Dependencies](#install-dependencies)
-        - [ ] [Windows](#windows)
+        - [ ] [Windows](#windows-1)
             - [ ] Download
             - [ ] Install
-        - [x] [Linux](#x-linux)
+        - [x] [Linux](#linux-1)
             - [x] Download
             - [x] Install
-        - [ ] [MacOS](#macos)
+        - [ ] [MacOS](#macos-1)
             - [ ] Download
             - [ ] Install
-        - [x] [Python](#x-python)
+        - [x] [Python](#python)
             - [x] Download
             - [x] Install
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
             - [x] Download
             - [ ] Install
-        - [x] [Handshake Daemon](#x-hns-full-node-install)
+        - [x] [Handshake Daemon](#hns-daemon-install)
             - [x] Download
             - [x] Install
         - [ ] [NGINX](#nginx-install)
@@ -40,6 +40,12 @@
 # Binary Builder Script
 - ### Windows
 - ### Linux
+    - APT
+        - python3
+        - python3-pip
+    - PIP
+        - pyinstaller
+        - getch
 - ### MacOS
 
 # Installer Module
