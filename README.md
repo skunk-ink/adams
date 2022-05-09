@@ -40,9 +40,9 @@ A.D.A.M.S. is a easy to deploy single-user [Skynet Webportal](https://portal-doc
 
 With an intuitive user interface, A.D.A.M.S empowers users of all skill levels to take full control over their online data. Complete with a built-in [Handshake full node](https://github.com/handshake-org/hsd) and [PowerDNS server](https://github.com/PowerDNS/pdns), A.D.A.M.S. automates the deployment of a self reliant Skynet Portal. With the ability to act as its own Handshake DNS resolver, A.D.A.M.S the need for users to trust their data with any third-party.
 
-> Note: A.D.A.M.S is currently only compatible with Ubuntu systems. Windows and MacOS compatibility will be a future development.
-
 # **Install**
+
+> Note: A.D.A.M.S is currently only compatible with Ubuntu systems. Windows and MacOS compatibility will be a future development.
 
 ## Ubuntu 20.04 LTS
 ```
