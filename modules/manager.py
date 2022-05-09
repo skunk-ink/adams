@@ -23,6 +23,7 @@ import sys as platform
 from main import main as main
 from time import sleep as sleep
 from colours import colours as colours
+from display import clear_screen
 
 class cli:
     coinbase_connection = ""
@@ -30,7 +31,7 @@ class cli:
     menu_options = ""
 
     def __init__(self):
-        self.clear_screen
+        clear_screen()
         self.set_menu("MAIN")
         self.main_menu()
         sleep(1)
@@ -42,7 +43,7 @@ class cli:
     #################################################### END: get_input(prompt)
 
     def print_header(self):
-        self.clear_screen()  # Clear console window
+        clear_screen()  # Clear console window
         print(colours().title("\n\t" + menu_title[1] + "\n\n"))   # Print menu title
     #################################################### END: print_header()
 
@@ -145,7 +146,7 @@ class cli:
                     main()
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
-                    self.clear_screen()    # Clear console window
+                    clear_screen()    # Clear console window
                     platform.exit(0)
 
         except AttributeError as e:
@@ -187,7 +188,7 @@ class cli:
                     self.main_menu()
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
-                    self.clear_screen()    # Clear console window
+                    clear_screen()    # Clear console window
                     platform.exit(0)    
         except KeyboardInterrupt:
             self.main_menu()
@@ -220,7 +221,7 @@ class cli:
                     self.main_menu()
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
-                    self.clear_screen()    # Clear console window
+                    clear_screen()    # Clear console window
                     platform.exit(0)
 
         except KeyboardInterrupt:
@@ -249,7 +250,7 @@ class cli:
                     self.main_menu()
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
-                    self.clear_screen()    # Clear console window
+                    clear_screen()    # Clear console window
                     platform.exit(0) 
         except KeyboardInterrupt:
             self.main_menu()
@@ -282,7 +283,7 @@ class cli:
                     self.main_menu()
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
-                    self.clear_screen()    # Clear console window
+                    clear_screen()    # Clear console window
                     platform.exit(0)   
         except KeyboardInterrupt:
             self.main_menu()

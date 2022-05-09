@@ -25,8 +25,9 @@ from sys import platform
 from time import sleep as sleep
 from getch import getch as getch
 from colours import colours as colours
+from display import clear_screen
 
-class run:
+class install:
     NEED_RESTART = False
     PATH = os.getcwd()
     DATA_PATH = PATH + '/data/'      # Data Directory Path
@@ -38,6 +39,11 @@ class run:
     LOG_FILE = DATA_PATH + "install.log"
 
     def __init__(self):
+        print(colours().error("install() method not complete."))
+        sleep(1)
+        #self.run()
+
+    def run(self):
 
         DEPENDS = open("./DEPENDS", "r")
         setInstall = False
@@ -458,14 +464,12 @@ class run:
 
 class reinstall:
     def __init__(self):
-        clear_screen()
-        print(colours.error(self, "config.py not yet complete."))
+        print(colours.error(self, "reinstall method not yet complete."))
         sleep(1)
-        
         from main import main as main
         main()
+        
+    def run(self):
+        clear_screen()
+        sleep(1)
     #################################################### END: __init__(self)
-
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-#################################################### END: clear_screen()

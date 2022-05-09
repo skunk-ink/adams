@@ -22,6 +22,7 @@ import os
 import sys as sys
 
 from sys import platform
+from display import clear_screen
 from colours import colours as colours
 
 if platform == "linux":
@@ -31,14 +32,10 @@ elif platform == "win32":
 
 class splash:
     def __init__(self):
-        self.clear_screen()
+        clear_screen()
         self.print_splash()
-
-    ### START: clear_screen()
-
-    def clear_screen(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
-    #################################################### END: clear_screen()
+    
+    #################################################### END: __init__(self)
 
     def print_splash(self):
         #Pallets: ░ ▄ ▀ █ ─ `
@@ -74,6 +71,7 @@ class splash:
             sys.exit(0)
         
         getch()
+    #################################################### END: print_splash(self)
 
     def print_splash2(self):
         #Pallets: ░ ▄ █ ─ ` 
@@ -109,3 +107,4 @@ class splash:
             sys.exit(0)
         
         getch()
+    #################################################### END: print_splash2(self)

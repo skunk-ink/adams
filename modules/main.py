@@ -20,13 +20,14 @@
 import os
 import sys as platform
 
-import installer as installer
 import manager as manager
 import error_handler as error
 
+from installer import install
 from time import sleep as sleep
 from colours import colours as colours
 from splash import splash as splash
+from display import clear_screen
 
 
 if platform == "linux":
@@ -45,7 +46,7 @@ class main:
     api = ""
     
     def __init__(self):
-        self.clear_screen()
+        clear_screen()
         self.set_menu("MAIN")
         self.main_menu()
     #################################################### END: __init__()
@@ -56,7 +57,7 @@ class main:
     #################################################### END: get_input(prompt)
 
     def print_header(self):
-        self.clear_screen()  # Clear console window
+        clear_screen()  # Clear console window
         print(colours().title("\n\t" + self.menu_title[1] + "\n\n"))   # Print menu title
     #################################################### END: print_header()
 
@@ -94,11 +95,11 @@ class main:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
-                    installer.run()
+                    install()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
                     manager.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
-                    self.clear_screen()    # Clear console window
+                    clear_screen()    # Clear console window
                     platform.exit(0)
         except AttributeError as e:
             print(colours().error(str(e)))
