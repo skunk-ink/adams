@@ -27,7 +27,7 @@ if platform == "linux":
 elif platform == "win32":
     from msvcrt import getch as getch
 
-class splash(object):
+class splash:
     def __init__(self):
         self.clear_screen()
         self.print_splash()

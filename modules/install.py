@@ -26,7 +26,7 @@ from time import sleep as sleep
 from getch import getch as getch
 from colours import colours as colours
 
-class run():
+class run:
     NEED_RESTART = False
     PATH = os.getcwd()
     DATA_PATH = PATH + '/data/'      # Data Directory Path
@@ -40,292 +40,229 @@ class run():
     def __init__(self):
 
         DEPENDS = open("./DEPENDS", "r")
-        runInstall = False
-        winPackage = False
-        linuxPackage = False
-        macOSPackage = False
-        pythonPackage = False
-        skynetPackage = False
-        hsdPackage = False
-        pdnsPackage = False
+        setInstall = False
+        addWinPackage = False
+        addLinuxPackage = False
+        addPythonPackage = False
+        addSkynetPackage = False
+        addHNSPackage = False
+        addPDNSPackage = False
 
         self.clear_screen()
 
-        # Install packages for Linux
-        if platform is "linux":
-            #logging.basicConfig(filename=self.LOG_FILE, level=logging.DEBUG)
-            
-            runInstall = True
+        try:
+            # Install packages for Linux
+            if platform == "linux":
+                #logging.basicConfig(filename=self.LOG_FILE, level=logging.DEBUG)
+                
+                setInstall = True
 
-            # Install Dependencies
-            while(runInstall is True):
-                package = DEPENDS.readline().replace("\n", "")
+                # Install Dependencies
+                while(setInstall == True):
+                    package = DEPENDS.readline().replace("\n", "")
 
-                if package.startswith("# WINDOWS"):
-                    winPackage = False       # Toggle to install Windows Dependencies
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
+                    if package.startswith("# WINDOWS"):
+                        addWinPackage = False       # Toggle to install Windows Dependencies
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        addSkynetPackage = False
+                        addHNSPackage = False
+                        addPDNSPackage = False
 
-                elif package.startswith("# LINUX"):
-                    winPackage = False
-                    linuxPackage = False      # Toggle to install Linux Dependencies
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "Installing Linux Dependencies..."))
+                    elif package.startswith("# LINUX"):
+                        addWinPackage = False
+                        addLinuxPackage = False      # Toggle to install Linux Dependencies
+                        addPythonPackage = False
+                        addSkynetPackage = False
+                        addHNSPackage = False
+                        addPDNSPackage = False
+                        print(colours.red(self, "Installing Linux Dependencies..."))
 
-                elif package.startswith("# MACOS"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False      # Toggle to install Linux Dependencies
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "Installing MacOS Dependencies..."))
+                    elif package.startswith("# PYTHON"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False     # Toggle to install Python Dependencies
+                        addSkynetPackage = False
+                        addHNSPackage = False
+                        addPDNSPackage = False
+                        print(colours.red(self, "\nInstalling Python Dependencies..."))
+                        
+                    elif package.startswith("# SKYNET"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        addSkynetPackage = False     # Toggle to install Skynet-Webportal and Dependencies
+                        addHNSPackage = False
+                        addPDNSPackage = False
+                        print(colours.red(self, "\nInstalling Skynet-Webportal..."))
+                        
+                    elif package.startswith("# HNS"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        addSkynetPackage = False
+                        addHNSPackage = False        # Toggle to install HNS Node and Dependencies
+                        addPDNSPackage = False
+                        print(colours.red(self, "\nInstalling HNS Node..."))
+                        
+                    elif package.startswith("# PDNS"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        addSkynetPackage = False
+                        addHNSPackage = False
+                        addPDNSPackage = True       # Toggle to install PowerDNS and Dependencies
+                        print(colours.red(self, "\nInstalling PowerDNS..."))
 
-                elif package.startswith("# PYTHON"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = False     # Toggle to install Python Dependencies
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "\nInstalling Python Dependencies..."))
-                    
-                elif package.startswith("# SKYNET"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = False     # Toggle to install Skynet-Webportal and Dependencies
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "\nInstalling Skynet-Webportal..."))
-                    
-                elif package.startswith("# HSD"):
-                    winPackage = False
-                    linuxPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False        # Toggle to install HNS Node and Dependencies
-                    pdnsPackage = False
-                    print(colours.red(self, "\nInstalling Handshake Daemon..."))
-                    
-                elif package.startswith("# PDNS"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = True       # Toggle to install PowerDNS and Dependencies
-                    print(colours.red(self, "\nInstalling PowerDNS..."))
+                        self.addPDNSSources()
+                        self.checkResolver()
 
-                    self.addPDNSSources()
-                    self.checkResolver()
+                    elif package.startswith("# EOF"):
+                        setInstall = False
 
-                elif package.startswith("# EOF"):
-                    runInstall = False
+                    elif addWinPackage == True:
+                        break
 
-                elif winPackage is True:
-                    break
+                    elif addLinuxPackage == True:
 
-                elif linuxPackage is True:
+                        if package != "":
+                            print(colours.green(self, " [+] ") + "Installing " + str(package))
+                            subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
+                            print()
+                # Install Python Packages
+                    elif addPythonPackage == True:
 
-                    if package is not "":
-                        print(colours.green(self, " [+] ") + "Installing " + str(package))
-                        subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
-                        print()
-            # Install Python Packages
-                elif pythonPackage is True:
+                        if package != "":
+                            print(colours.green(self, " [+] ") + "Installing " + str(package))
+                            subprocess.run(["pip", "install", package], check=True)
+                            print()
 
-                    if package is not "":
-                        print(colours.green(self, " [+] ") + "Installing " + str(package))
-                        subprocess.run(["pip", "install", package], check=True)
-                        print()
+                # Install Skynet Webportal
+                    elif addSkynetPackage == True:
 
-            # Install Skynet Webportal
-                elif skynetPackage is True:
+                        if package != "":
+                            if package.endswith("skynet-webportal.git"):
+                                if os.path.isdir(self.SKYNET_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Installing Skynet Webportal")
+                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
+                                    subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Skynet Webportal Installation Detected!")
 
-                    if package is not "":
-                        if package.endswith("skynet-webportal.git"):
-                            if os.path.isdir(self.SKYNET_PATH) is False:
-                                print(colours.green(self, " [+] ") + "Installing Skynet Webportal")
-                                subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
-                                subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
-                                print()
-                            else:
-                                print(colours.yellow(self, " [!] ") + "Skynet Webportal Installation Detected!")
+                            elif package.endswith("ansible-playbooks.git"):
+                                if os.path.isdir(self.ANSIBLE_PLAYBOOKS_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Installing Ansible-Playbooks")
+                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Ansible-Playbooks Installation Detected!")
+                                    
+                            elif package.endswith("ansible-private-sample.git"):
+                                if os.path.isdir(self.ANSIBLE_PRIVATE_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Installing Ansible-Private")
+                                    subprocess.run(["git", "clone", package, "ansible-private"], cwd=self.PATH, check=True)
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Ansible-Private Installation Detected!")
+                # Install Handshake Daemon
+                    elif addHNSPackage == True:
+                        if package != "":
+                            if package.endswith("hsd.git"):
+                                if os.path.isdir(self.HSD_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
 
-                        elif package.endswith("ansible-playbooks.git"):
-                            if os.path.isdir(self.ANSIBLE_PLAYBOOKS_PATH) is False:
-                                print(colours.green(self, " [+] ") + "Installing Ansible-Playbooks")
-                                subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                print()
-                            else:
-                                print(colours.yellow(self, " [!] ") + "Ansible-Playbooks Installation Detected!")
-                                
-                        elif package.endswith("ansible-private-sample.git"):
-                            if os.path.isdir(self.ANSIBLE_PRIVATE_PATH) is False:
-                                print(colours.green(self, " [+] ") + "Installing Ansible-Private")
-                                subprocess.run(["git", "clone", package, "ansible-private"], cwd=self.PATH, check=True)
-                                print()
-                            else:
-                                print(colours.yellow(self, " [!] ") + "Ansible-Private Installation Detected!")
-            # Install Handshake Daemon
-                elif hsdPackage is True:
-                    if package is not "":
-                        if package.endswith("hsd.git"):
-                            if os.path.isdir(self.HSD_PATH) is False:
-                                print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
-                                subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
-                                print()
-                            else:
-                                print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
+                    elif addPDNSPackage == True:
+                        if package != "":
+                            print(colours.green(self, " [+] ") + "Installing " + str(package))
+                            subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
+                            print()
+                                    
+            # Install packages for Windows
+            elif platform == "win32":
+                #logging.basicConfig(filename=self.LOG_FILE, level=logging.DEBUG)
+                
+                setInstall = True
 
-                elif pdnsPackage is True:
-                    if package is not "":
-                        print(colours.green(self, " [+] ") + "Installing " + str(package))
-                        subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
-                        print()
-                                
-        # Install packages for Windows
-        elif platform is "win32":
-            #logging.basicConfig(filename=self.LOG_FILE, level=logging.DEBUG)
-            
-            runInstall = True
+                # Install Dependencies
+                while(setInstall == True):
+                    package = DEPENDS.readline().replace("\n", "")
 
-            # Install Dependencies
-            while(runInstall is True):
-                package = DEPENDS.readline().replace("\n", "")
+                    if package.startswith("# LINUX"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        print(colours.red(self, "\nInstalling Windows Dependencies..."))
 
-                if package.startswith("# WINDOWS"):
-                    winPackage = True       # Toggle to install Windows Dependencies
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
+                    elif package.startswith("# WINDOWS"):
+                        addWinPackage = True
+                        addLinuxPackage = False
+                        addPythonPackage = False
 
-                elif package.startswith("# LINUX"):
-                    winPackage = False
-                    linuxPackage = False      # Toggle to install Linux Dependencies
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "Installing Linux Dependencies..."))
+                    elif package.startswith("# PYTHON"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = True
+                        print(colours.red(self, "\nInstalling Python Dependencies..."))
+                        
+                    elif package.startswith("# ADAMS"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = True
+                        print(colours.red(self, "\nInstalling Python Dependencies..."))
+                        
+                    elif package.startswith("# EOF"):
+                        setInstall = False
 
-                elif package.startswith("# MACOS"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False      # Toggle to install Linux Dependencies
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "Installing MacOS Dependencies..."))
+                    elif addWinPackage == True:
+                        if package != "":
+                            print(colours.green(" [+] ") + "Installing Windows Dependency: ", str(package))
+                            # Install Windows Dependencies
+                            print()
 
-                elif package.startswith("# PYTHON"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = True     # Toggle to install Python Dependencies
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "\nInstalling Python Dependencies..."))
-                    
-                elif package.startswith("# SKYNET"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = True     # Toggle to install Skynet-Webportal and Dependencies
-                    hsdPackage = False
-                    pdnsPackage = False
-                    print(colours.red(self, "\nInstalling Skynet-Webportal..."))
-                    runInstall
-                elif package.startswith("# HSD"):
-                    winPackage = False
-                    linuxPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = True        # Toggle to install HNS Node and Dependencies
-                    pdnsPackage = False
-                    print(colours.red(self, "\nInstalling Handshake Daemon..."))
-                    
-                elif package.startswith("# PDNS"):
-                    winPackage = False
-                    linuxPackage = False
-                    macOSPackage = False
-                    pythonPackage = False
-                    skynetPackage = False
-                    hsdPackage = False
-                    pdnsPackage = True       # Toggle to install PowerDNS and Dependencies
-                    print(colours.red(self, "\nInstalling PowerDNS..."))
+                    elif addLinuxPackage == True:
+                        break
 
-                    self.addPDNSSources()
-                    self.checkResolver()
+                    elif addPythonPackage == True:
+                        break
 
-                elif package.startswith("# EOF"):
-                    runInstall = False
-
-                elif winPackage is True:
-                    if package is not "":
-                        print(colours.green(" [+] ") + "Installing Windows Dependency: ", str(package))
-                        # Install Windows Dependencies
-                        print()
-
-                elif linuxPackage is True:
-                    break
-
-                elif macOSPackage is True:
-                    break
-
-                elif linuxPackage is True:
-                    break
-        
-        print(colours.red("\n[!] ") + "Please restart device to apply final changes.")
-        print("\nPress any key to continue...")
-        getch()
+                    elif addLinuxPackage == True:
+                        break
+            print(colours.red(self, " [!] ") + "Please restart device to apply final changes.")
+            print("\nPress any key to continue...")
+            getch()
+        except AttributeError as e:
+            print(colours().error(str(e)))
+            sleep(2)
+            self.main_menu()
+        except KeyboardInterrupt:
+            from main import main as main
+            main()
 #################################################### END: __init__(self)
 
     def addPDNSSources(self):
         # Check for existing PowerDNS APT sources
-        hasSource = False
-
-        if os.path.exists("/etc/apt/sources.list.d/pdns.list"):
-           
+        if not os.path.exists("/etc/apt/sources.list.d/pdns.list"):
             with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
                 sources = sourceFile.readlines()
 
             for line in sources:
                 # If PowerDNS APT source does not exist, add it to /etc/apt/sources.list.d/pdns.list
-                if 'http://repo.powerdns.com/ubuntu' in line:
-                    hasSource = True
-
-        if hasSource is False:
-            addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
-            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-            addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
-            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-            subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-            subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-            subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-            subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
+                if 'http://repo.powerdns.com/ubuntu' not in line:
+                    addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
+                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                    addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
+                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                    subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
 #################################################### END: addPDNSSources(self)
 
     def checkResolver(self):
@@ -337,23 +274,23 @@ class run():
             lines = resolveFile.readlines()
 
         for line in lines:
-            if line is "DNS=1.1.1.1":
+            if line == "DNS=1.1.1.1":
                 dnsExists = True
 
-            if line is "DNSStubListener=no":
+            if line == "DNSStubListener=no":
                 stubListenterExists = True
 
         # Add configurations to resolved.conf
-        if dnsExists is False or stubListenterExists is False:
+        if dnsExists == False or stubListenterExists == False:
             addLine = "# A.D.A.M.S. PowerDNS Configurations"
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
             NEED_RESTART = True
 
-        if dnsExists is False:
+        if dnsExists == False:
             addLine = "echo 'DNS=1.1.1.1' >> /etc/systemd/resolved.conf"
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
 
-        if stubListenterExists is False:
+        if stubListenterExists == False:
             addLine = "echo 'DNSStubListener=no' >> /etc/systemd/resolved.conf"
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
 
@@ -362,5 +299,5 @@ class run():
 #################################################### END: checkResolver(self)
 
     def clear_screen(self):
-        os.system('cls' if os.name is 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')
 #################################################### END: clear_screen()
