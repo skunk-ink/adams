@@ -24,15 +24,15 @@
             - [x] Install
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
-            - [ ] Install
+            - [x] Install
             - [ ] Configure
         - [ ] [NGINX Webserver](#nginx-install)
             - [x] Download
-            - [ ] Install
+            - [x] Install
             - [ ] Configure
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
             - [x] Download
-            - [ ] Install
+            - [] Install
             - [ ] Configure
 - [ ] [**Manager Module**](#system-configuration-module)
     - [ ] [Skynet Webportal](#skynet-webportal)
