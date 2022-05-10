@@ -25,18 +25,15 @@
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
             - [ ] Install
+            - [ ] Configure
         - [ ] [NGINX Webserver](#nginx-install)
             - [x] Download
             - [ ] Install
+            - [ ] Configure
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
             - [x] Download
             - [ ] Install
             - [ ] Configure
-    - [ ] [Configurations](#configurations)
-        - [ ] [Skynet Webportal Configuration](#skynet-webportal-configuration)
-        - [ ] [Handshake Daemon Configuration](#handshake-daemon-configuration)
-        - [ ] [NGINX Webserver Configuration](#nginx-webserver-configuration)
-        - [ ] [PowerDNS Configuration](#powerdns-configuration)
 - [ ] [**Manager Module**](#system-configuration-module)
     - [ ] [Skynet Webportal](#skynet-webportal)
         - [ ] [Wallet Management](#wallet)
@@ -108,11 +105,6 @@
             - https://github.com/SkynetLabs/skynet-webportal.git
             - https://github.com/SkynetLabs/ansible-playbooks.git
             - https://github.com/SkynetLabs/ansible-private-sample.git
-- ### **Configurations**
-    - #### **Skynet Webportal Configuration**
-    - #### **Handshake Daemon Configuration**
-    - #### **NGINX Webserver Configuration**
-    - #### **PowerDNS Configuration**
 
 # Manager Module
 - ### **Skynet Webportal**
