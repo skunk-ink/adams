@@ -119,6 +119,8 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = True           # Toggle to install PowerDNS
                         print(colours.red(self, "\nInstalling PowerDNS..."))
+                        self.addPDNSSources()
+                        self.checkResolver()
                         sleep(1)
                         
                     elif package.startswith("# NGINX"):
@@ -200,9 +202,6 @@ class install:
                                 
                                 if os.path.exists("./pdnsmanager") == True:
                                     print(colours.green(self, " [+] ") + "Configuring PowerDNS Manager")
-                                    #subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                                    #subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
-                                    #subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
                              
                                 print()
                             else:
@@ -309,9 +308,6 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = True           # Toggle to install PowerDNS
                         print(colours.red(self, "\nInstalling PowerDNS..."))
-
-                        self.addPDNSSources()
-                        self.checkResolver()
                         
                     elif package.startswith("# NGINX"):
                         addWinPackage = False
@@ -431,21 +427,29 @@ class install:
 
     def addPDNSSources(self):
         # Check for existing PowerDNS APT sources
-        if not os.path.exists("/etc/apt/sources.list.d/pdns.list"):
+        if os.path.exists("/etc/apt/sources.list.d/pdns.list"):
+            sources = False
+
             with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
                 sources = sourceFile.readlines()
 
             for line in sources:
-                # If PowerDNS APT source does not exist, add it to /etc/apt/sources.list.d/pdns.list
-                if 'http://repo.powerdns.com/ubuntu' not in line:
-                    addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
-                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-                    addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
-                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-                    subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                    subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                    subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                    subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
+                if 'http://repo.powerdns.com/ubuntu' in line:
+                    hasSources = True
+
+        # If PowerDNS APT source does not exist, add it to /etc/apt/sources.list.d/pdns.list
+        if hasSources is False:
+            print(colours.green(self, " [+] ") + "Adding PowerDNS Sources")
+            addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
+            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+            addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
+            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+            
+            print(colours.green(self, " [+] ") + "Downloading And Verify APT-KEY")
+            subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
     #################################################### END: addPDNSSources(self)
 
     def checkResolver(self):
@@ -464,6 +468,7 @@ class install:
                 stubListenterExists = True
 
         # Add configurations to resolved.conf
+        print(colours.green(self, " [+] ") + "Configuring 'resolved.conf'")
         if dnsExists == False or stubListenterExists == False:
             addLine = "# A.D.A.M.S. PowerDNS Configurations"
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
@@ -478,6 +483,7 @@ class install:
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
 
         # Create Symlink
+        print(colours.green(self, " [+] ") + "Creating Symlink")
         subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
     #################################################### END: checkResolver(self)
 
