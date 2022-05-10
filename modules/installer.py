@@ -123,7 +123,7 @@ class install:
                         addPythonPackage = False
                         addSkynetPackage = False
                         addHNSPackage = False
-                        addNGINXPackage = True           # Toggle to install NGINX
+                        addNGINXPackage = False           # Toggle to install NGINX
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling NGINX..."))
                         
