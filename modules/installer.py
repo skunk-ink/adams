@@ -39,9 +39,9 @@ class install:
     LOG_FILE = DATA_PATH + "install.log"
 
     def __init__(self):
-        print(colours().error("install() method not complete."))
-        sleep(1)
-        #self.run()
+        #print(colours().error("install() method not complete."))
+        #sleep(1)
+        self.run()
 
     def run(self):
 
