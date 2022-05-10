@@ -32,7 +32,7 @@
             - [ ] Configure
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
             - [x] Download
-            - [] Install
+            - [ ] Install
             - [ ] Configure
 - [ ] [**Manager Module**](#system-configuration-module)
     - [ ] [Skynet Webportal](#skynet-webportal)
