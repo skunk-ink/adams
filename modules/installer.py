@@ -86,6 +86,7 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = False
                         print(colours.red(self, "Installing Linux Dependencies..."))
+                        sleep(1)
 
                     elif package.startswith("# PYTHON"):
                         addWinPackage = False
@@ -96,6 +97,7 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling Python Dependencies..."))
+                        sleep(1)
                         
                     elif package.startswith("# SKYNET"):
                         addWinPackage = False
@@ -106,6 +108,7 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling Skynet-Webportal..."))
+                        sleep(1)
                         
                     elif package.startswith("# HNS"):
                         addWinPackage = False
@@ -116,6 +119,7 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling HNS Node..."))
+                        sleep(1)
                         
                     elif package.startswith("# NGINX"):
                         addWinPackage = False
@@ -126,6 +130,7 @@ class install:
                         addNGINXPackage = False           # Toggle to install NGINX
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling NGINX..."))
+                        sleep(1)
                         
                     elif package.startswith("# PDNS"):
                         addWinPackage = False
@@ -136,6 +141,7 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = True           # Toggle to install PowerDNS
                         print(colours.red(self, "\nInstalling PowerDNS..."))
+                        sleep(1)
 
                         self.addPDNSSources()
                         self.checkResolver()
