@@ -9,10 +9,10 @@ sleep 1
 
 echo -e "${GREEN}[+]${NC} Installing Python Dependencies: pyinstaller, getch"
 pip install -qq -U pyinstaller
-pip install -qq  getch
+pip install -qq getch
 export PATH=~/.local/bin:$PATH
 sleep 1
 
 echo -e "${GREEN}[+]${NC} Building A.D.A.M.S. binary..."
-pyinstaller -qq --name adams --distpath ./ -F modules/main.py
+pyinstaller --name adams --distpath ./ -F modules/main.py
 sleep 1
