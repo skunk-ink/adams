@@ -119,8 +119,8 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = True           # Toggle to install PowerDNS
                         print(colours.red(self, "\nInstalling PowerDNS..."))
-                        self.addPDNSSources()
                         self.checkResolver()
+                        self.addPDNSSources()
                         sleep(1)
                         
                     elif package.startswith("# NGINX"):
@@ -474,7 +474,7 @@ class install:
                 stubListenterExists = True
 
         # Add configurations to resolved.conf
-        print(colours.green(self, " [+] ") + "Configuring 'resolved.conf'")
+        print(colours.green(self, " [+] ") + "Disabling Stub Resolver...")
         if dnsExists == False or stubListenterExists == False:
             addLine = "# A.D.A.M.S. PowerDNS Configurations"
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
