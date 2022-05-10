@@ -99,17 +99,6 @@ class install:
                         print(colours.red(self, "\nInstalling Python Dependencies..."))
                         sleep(1)
                         
-                    elif package.startswith("# SKYNET"):
-                        addWinPackage = False
-                        addLinuxPackage = False
-                        addPythonPackage = False
-                        addSkynetPackage = True        # Toggle to install Skynet Webportal
-                        addHNSPackage = False
-                        addNGINXPackage = False
-                        addPDNSPackage = False
-                        print(colours.red(self, "\nInstalling Skynet-Webportal..."))
-                        sleep(1)
-                        
                     elif package.startswith("# HNS"):
                         addWinPackage = False
                         addLinuxPackage = False
@@ -119,6 +108,17 @@ class install:
                         addNGINXPackage = False
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling HNS Node..."))
+                        sleep(1)
+                        
+                    elif package.startswith("# PDNS"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        addSkynetPackage = False
+                        addHNSPackage = False
+                        addNGINXPackage = False
+                        addPDNSPackage = True           # Toggle to install PowerDNS
+                        print(colours.red(self, "\nInstalling PowerDNS..."))
                         sleep(1)
                         
                     elif package.startswith("# NGINX"):
@@ -132,19 +132,16 @@ class install:
                         print(colours.red(self, "\nInstalling NGINX..."))
                         sleep(1)
                         
-                    elif package.startswith("# PDNS"):
+                    elif package.startswith("# SKYNET"):
                         addWinPackage = False
                         addLinuxPackage = False
                         addPythonPackage = False
-                        addSkynetPackage = False
+                        addSkynetPackage = True        # Toggle to install Skynet Webportal
                         addHNSPackage = False
                         addNGINXPackage = False
-                        addPDNSPackage = True           # Toggle to install PowerDNS
-                        print(colours.red(self, "\nInstalling PowerDNS..."))
+                        addPDNSPackage = False
+                        print(colours.red(self, "\nInstalling Skynet-Webportal..."))
                         sleep(1)
-
-                        self.addPDNSSources()
-                        self.checkResolver()
 
                     elif package.startswith("# EOF"):
                         setInstall = False
@@ -169,47 +166,49 @@ class install:
                             subprocess.run(["pip", "install", package], check=True)
                             print()
 
-                # Install Skynet Webportal
-                    elif addSkynetPackage == True:
-
-                        if package != "":
-                            if package.endswith("skynet-webportal.git"):
-                                if os.path.isdir(self.SKYNET_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Skynet Webportal")
-                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                    subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
-                                    subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
-                                    print()
-                                else:
-                                    print(colours.yellow(self, " [!] ") + "Skynet Webportal Installation Detected!")
-
-                            elif package.endswith("ansible-playbooks.git"):
-                                if os.path.isdir(self.ANSIBLE_PLAYBOOKS_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Ansible-Playbooks")
-                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                    print()
-                                else:
-                                    print(colours.yellow(self, " [!] ") + "Ansible-Playbooks Installation Detected!")
-                                    
-                            elif package.endswith("ansible-private-sample.git"):
-                                if os.path.isdir(self.ANSIBLE_PRIVATE_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Ansible-Private")
-                                    subprocess.run(["git", "clone", package, "ansible-private"], cwd=self.PATH, check=True)
-                                    print()
-                                else:
-                                    print(colours.yellow(self, " [!] ") + "Ansible-Private Installation Detected!")
-
                 # Install Handshake Daemon
                     elif addHNSPackage == True:
                         if package != "":
                             if package.endswith("hsd.git"):
                                 if os.path.isdir(self.HSD_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+                                    print(colours.green(self, " [+] ") + "Downloading Handshake Daemon")
                                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    
+                                    print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
                                     subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
                                     print()
                                 else:
                                     print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
+
+                # Install PowerDNS
+                    elif addPDNSPackage == True:
+                        self.addPDNSSources()
+                        self.checkResolver()
+
+                        if package != "":
+                            if package.endswith("tar.gz"):
+
+                                if os.path.exists("./pdnsmanager") == False and os.path.exists("./" + package) == False:
+                                    print(colours.green(self, " [+] ") + "Downloading PowerDNS Manager" + str(package))
+                                    subprocess.run(["wget", "https://dl.pdnsmanager.org/" + package], cwd=self.PATH, check=True)
+
+                                if os.path.exists("./pdnsmanager") == False and os.path.exists("./" + package) == True:
+                                    print(colours.green(self, " [+] ") + "Extracting PowerDNS Manager " + str(package))
+                                    subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
+                                    subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
+                                    subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
+                                
+                                if os.path.exists("./pdnsmanager") == True:
+                                    print(colours.green(self, " [+] ") + "Configuring PowerDNS Manager")
+                                    #subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
+                                    #subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
+                                    #subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
+                             
+                                print()
+                            else:
+                                print(colours.green(self, " [+] ") + "Installing " + str(package))
+                                subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
+                                print()
 
                 # Install NGINX
                     elif addNGINXPackage == True:
@@ -217,30 +216,40 @@ class install:
                             print(colours.green(self, " [+] ") + "Installing " + str(package))
                             #subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
                             print()
-
-                # Install PowerDNS
-                    elif addPDNSPackage == True:
+                            
+                # Install Skynet Webportal
+                    elif addSkynetPackage == True:
                         if package != "":
-                            if package.endswith("tar.gz"):
+                            if package.endswith("skynet-webportal.git"):
+                                if os.path.isdir(self.SKYNET_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Downloading Skynet Webportal")
+                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
-                                if os.path.exists("./pdnsmanager") == False and os.path.exists("./" + package) == False:
-                                    print(colours.green(self, " [+] ") + "Installing " + str(package))
-                                    subprocess.run(["wget", "https://dl.pdnsmanager.org/" + package], cwd=self.PATH, check=True)
+                                    print(colours.green(self, " [+] ") + "Installing Yarn")
+                                    subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
 
-                                elif os.path.exists("./pdnsmanager") == False and os.path.exists("./" + package) == True:
-                                    print(colours.green(self, " [+] ") + "Installing " + str(package))
-                                    subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                                    subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
-                                    subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
-                                
+                                    print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
+                                    subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+                                    print()
                                 else:
-                                    print(colours.yellow(self, " [!] ") + "PowerDNS Manager Detected!")
+                                    print(colours.yellow(self, " [!] ") + "Skynet Webportal Installation Detected!")
 
-                                print()
-                            else:
-                                print(colours.green(self, " [+] ") + "Installing " + str(package))
-                                subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
-                                print()
+                            elif package.endswith("ansible-playbooks.git"):
+                                if os.path.isdir(self.ANSIBLE_PLAYBOOKS_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Downloading Ansible-Playbooks")
+                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Ansible-Playbooks Installation Detected!")
+                                    
+                            elif package.endswith("ansible-private-sample.git"):
+                                if os.path.isdir(self.ANSIBLE_PRIVATE_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Downloading Ansible-Private")
+                                    subprocess.run(["git", "clone", package, "ansible-private"], cwd=self.PATH, check=True)
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Ansible-Private Installation Detected!")
+
                             
             # Install packages for Windows
             elif platform == "win32":
@@ -281,16 +290,6 @@ class install:
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling Python Dependencies..."))
                         
-                    elif package.startswith("# SKYNET"):
-                        addWinPackage = False
-                        addLinuxPackage = False
-                        addPythonPackage = False
-                        addSkynetPackage = True        # Toggle to install Skynet Webportal
-                        addHNSPackage = False
-                        addNGINXPackage = False
-                        addPDNSPackage = False
-                        print(colours.red(self, "\nInstalling Skynet-Webportal..."))
-                        
                     elif package.startswith("# HNS"):
                         addWinPackage = False
                         addLinuxPackage = False
@@ -298,16 +297,6 @@ class install:
                         addSkynetPackage = False
                         addHNSPackage = True           # Toggle to install Handshake Daemon
                         addNGINXPackage = False
-                        addPDNSPackage = False
-                        print(colours.red(self, "\nInstalling HNS Node..."))
-                        
-                    elif package.startswith("# NGINX"):
-                        addWinPackage = False
-                        addLinuxPackage = False
-                        addPythonPackage = False
-                        addSkynetPackage = False
-                        addHNSPackage = False
-                        addNGINXPackage = True           # Toggle to install NGINX
                         addPDNSPackage = False
                         print(colours.red(self, "\nInstalling HNS Node..."))
                         
@@ -323,6 +312,26 @@ class install:
 
                         self.addPDNSSources()
                         self.checkResolver()
+                        
+                    elif package.startswith("# NGINX"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        addSkynetPackage = False
+                        addHNSPackage = False
+                        addNGINXPackage = True           # Toggle to install NGINX
+                        addPDNSPackage = False
+                        print(colours.red(self, "\nInstalling HNS Node..."))
+                        
+                    elif package.startswith("# SKYNET"):
+                        addWinPackage = False
+                        addLinuxPackage = False
+                        addPythonPackage = False
+                        addSkynetPackage = True        # Toggle to install Skynet Webportal
+                        addHNSPackage = False
+                        addNGINXPackage = False
+                        addPDNSPackage = False
+                        print(colours.red(self, "\nInstalling Skynet-Webportal..."))
 
                     elif package.startswith("# EOF"):
                         setInstall = False
@@ -347,55 +356,20 @@ class install:
                             # Install Windows Python Dependencies
                             print()
 
-                # Install Skynet Webportal
-                    elif addSkynetPackage == True:
-
-                        if package != "":
-                            # Install Windows Skynet Webportal
-                            if package.endswith("skynet-webportal.git"):
-                                if os.path.isdir(self.SKYNET_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Skynet Webportal")
-                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                    subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
-                                    subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
-                                    print()
-                                else:
-                                    print(colours.yellow(self, " [!] ") + "Skynet Webportal Installation Detected!")
-
-                            elif package.endswith("ansible-playbooks.git"):
-                                if os.path.isdir(self.ANSIBLE_PLAYBOOKS_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Ansible-Playbooks")
-                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                    print()
-                                else:
-                                    print(colours.yellow(self, " [!] ") + "Ansible-Playbooks Installation Detected!")
-                                    
-                            elif package.endswith("ansible-private-sample.git"):
-                                if os.path.isdir(self.ANSIBLE_PRIVATE_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Ansible-Private")
-                                    subprocess.run(["git", "clone", package, "ansible-private"], cwd=self.PATH, check=True)
-                                    print()
-                                else:
-                                    print(colours.yellow(self, " [!] ") + "Ansible-Private Installation Detected!")
-
                 # Install Handshake Daemon
                     elif addHNSPackage == True:
                         if package != "":
                             # Install Windows Handshake Daemon
                             if package.endswith("hsd.git"):
                                 if os.path.isdir(self.HSD_PATH) == False:
-                                    print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+                                    print(colours.green(self, " [+] ") + "Downloading Handshake Daemon")
                                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    
+                                    print(colours.green(self, " [+] ") + "Downloading Handshake Daemon")
                                     subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
                                     print()
                                 else:
                                     print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
-
-                # Install NGINX
-                    elif addNGINXPackage == True:
-                        if package != "":
-                            # Install Windows NGINX
-                            print()
 
                 # Install PowerDNS
                     elif addPDNSPackage == True:
@@ -403,6 +377,45 @@ class install:
                             print(colours.green(self, " [+] ") + "Installing " + str(package))
                             # Install Windows PowerDNS
                             print()
+
+                # Install NGINX
+                    elif addNGINXPackage == True:
+                        if package != "":
+                            # Install Windows NGINX
+                            print()
+
+                # Install Skynet Webportal
+                    elif addSkynetPackage == True:
+
+                        if package != "":
+                            # Install Windows Skynet Webportal
+                            if package.endswith("skynet-webportal.git"):
+                                if os.path.isdir(self.SKYNET_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Downloading Skynet Webportal")
+                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    print(colours.green(self, " [+] ") + "Installing Yarn")
+                                    subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
+                                    print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
+                                    subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Skynet Webportal Installation Detected!")
+
+                            elif package.endswith("ansible-playbooks.git"):
+                                if os.path.isdir(self.ANSIBLE_PLAYBOOKS_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Downloading Ansible-Playbooks")
+                                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Ansible-Playbooks Installation Detected!")
+                                    
+                            elif package.endswith("ansible-private-sample.git"):
+                                if os.path.isdir(self.ANSIBLE_PRIVATE_PATH) == False:
+                                    print(colours.green(self, " [+] ") + "Downloading Ansible-Private")
+                                    subprocess.run(["git", "clone", package, "ansible-private"], cwd=self.PATH, check=True)
+                                    print()
+                                else:
+                                    print(colours.yellow(self, " [!] ") + "Ansible-Private Installation Detected!")
 
             print(colours.red(self, " [!] ") + "Please restart device to apply final changes.")
             print("\nPress any key to continue...")

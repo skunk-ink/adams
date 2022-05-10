@@ -19,19 +19,19 @@
         - [x] [Python](#python)
             - [x] Download
             - [x] Install
+        - [x] [Handshake Daemon](#hns-daemon-install)
+            - [x] Download
+            - [x] Install
+        - [ ] [PowerDNS](#powerdns-install)
+            - [x] Download
+            - [ ] Install
+        - [ ] [NGINX Webserver](#nginx-install)
+            - [x] Download
+            - [ ] Install
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
             - [x] Download
             - [ ] Install
             - [ ] Configure
-        - [x] [Handshake Daemon](#hns-daemon-install)
-            - [x] Download
-            - [x] Install
-        - [ ] [NGINX Webserver](#nginx-install)
-            - [x] Download
-            - [ ] Install
-        - [ ] [PowerDNS](#powerdns-install)
-            - [x] Download
-            - [ ] Install
     - [ ] [Configurations](#configurations)
         - [ ] [Skynet Webportal Configuration](#skynet-webportal-configuration)
         - [ ] [Handshake Daemon Configuration](#handshake-daemon-configuration)
@@ -90,17 +90,9 @@
     - #### **Python**
         - PIP
             - getch
-    - #### **Skynet Webportal + Ansible install**
-        - GIT
-            - https://github.com/SkynetLabs/skynet-webportal.git
-            - https://github.com/SkynetLabs/ansible-playbooks.git
-            - https://github.com/SkynetLabs/ansible-private-sample.git
     - #### **HNS Daemon Install**
         - GIT
             - https://github.com/handshake-org/hsd.git
-    - #### **NGINX Webserver install**
-        - APT
-            - nginx
     - #### **PowerDNS install**
         - APT
             - sqlite3
@@ -108,6 +100,14 @@
             - pdns-backend-sqlite3
         - WGET
             - pdnsmanager-2.1.0.tar.gz
+    - #### **NGINX Webserver install**
+        - APT
+            - nginx
+    - #### **Skynet Webportal + Ansible install**
+        - GIT
+            - https://github.com/SkynetLabs/skynet-webportal.git
+            - https://github.com/SkynetLabs/ansible-playbooks.git
+            - https://github.com/SkynetLabs/ansible-private-sample.git
 - ### **Configurations**
     - #### **Skynet Webportal Configuration**
     - #### **Handshake Daemon Configuration**
