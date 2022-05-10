@@ -8,30 +8,30 @@
     - [ ] [Detect Dependencies](#detect-dependencies)
     - [ ] [Install Dependencies](#install-dependencies)
         - [ ] [Windows](#windows-1)
-            * [ ] Download
-            * [ ] Install
+            - [ ] Download
+            - [ ] Install
         - [x] [Linux](#linux-1)
-            * [x] Download
-            * [x] Install
+            - [x] Download
+            - [x] Install
         - [ ] [MacOS](#macos-1)
-            * [ ] Download
-            * [ ] Install
+            - [ ] Download
+            - [ ] Install
         - [x] [Python](#python)
-            * [x] Download
-            * [x] Install
+            - [x] Download
+            - [x] Install
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
-            * [x] Download
-            * [ ] Install
-            * [ ] Configure
+            - [x] Download
+            - [ ] Install
+            - [ ] Configure
         - [x] [Handshake Daemon](#hns-daemon-install)
-            * [x] Download
-            * [x] Install
+            - [x] Download
+            - [x] Install
         - [ ] [NGINX Webserver](#nginx-install)
-            * [x] Download
-            * [ ] Install
+            - [x] Download
+            - [ ] Install
         - [ ] [PowerDNS](#powerdns-install)
-            * [x] Download
-            * [ ] Install
+            - [x] Download
+            - [ ] Install
     - [ ] [Configurations](#configurations)
         - [ ] [Skynet Webportal Configuration](#skynet-webportal-configuration)
         - [ ] [Handshake Daemon Configuration](#handshake-daemon-configuration)
