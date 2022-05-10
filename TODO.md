@@ -24,11 +24,15 @@
             - [x] Install
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
-            - [ ] Install
+            - [x] Install
+            - [ ] Configure
+        - [ ] [PowerDNS Manager](#powerdns-manager-install)
+            - [x] Download
+            - [x] Install
             - [ ] Configure
         - [ ] [NGINX Webserver](#nginx-install)
             - [x] Download
-            - [ ] Install
+            - [x] Install
             - [ ] Configure
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
             - [x] Download
@@ -95,6 +99,7 @@
             - sqlite3
             - pdns-server
             - pdns-backend-sqlite3
+    - #### **PowerDNS Manager Install**
         - WGET
             - pdnsmanager-2.1.0.tar.gz
     - #### **NGINX Webserver install**
