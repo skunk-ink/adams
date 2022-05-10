@@ -136,7 +136,7 @@ class install:
                         addWinPackage = False
                         addLinuxPackage = False
                         addPythonPackage = False
-                        addSkynetPackage = True        # Toggle to install Skynet Webportal
+                        addSkynetPackage = False        # Toggle to install Skynet Webportal
                         addHNSPackage = False
                         addNGINXPackage = False
                         addPDNSPackage = False
@@ -173,7 +173,7 @@ class install:
                                 if os.path.isdir(self.HSD_PATH) == False:
                                     print(colours.green(self, " [+] ") + "Downloading Handshake Daemon")
                                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                                    
+
                                     print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
                                     subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
                                     print()
