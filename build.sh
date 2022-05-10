@@ -5,15 +5,14 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
-echo -e "\n${YELLOW}A.D.A.M.S will require the following in order to run.${NC}\n"
-echo -e "\n  ${RED}APT Packages\n"
-echo -e "    ${GREEN}python3\n"
-echo -e "    ${GREEN}python-pip\n"
-echo -e "\n  ${RED}PIP Packages\n"
-echo -e "    ${GREEN}pyinstaller\n"
-echo -e "    ${GREEN}getch\n"
+echo -e "\n${YELLOW}The following dependencies are required to build and run A.D.A.M.S. binary${NC}\n"
+echo -e "  APT Packages"
+echo -e "    python3"
+echo -e "    python-pip"
+echo -e "  PIP Packages"
+echo -e "    pyinstaller"
+echo -e "    getch\n"
 
-echo "\n Password requred to begin build process.\n"
 sudo apt update
 
 echo -e "\n ${GREEN}[+]${NC} Installing APT Dependencies:" 
