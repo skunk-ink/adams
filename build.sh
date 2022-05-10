@@ -13,6 +13,7 @@ echo -e "  PIP Packages\n"
 echo -e "    - pyinstaller"
 echo -e "    - getch\n"
 
+echo -e "\n ${GREEN}[+]${NC} Updating APT Repositories..." 
 sudo apt update
 
 echo -e "\n ${GREEN}[+]${NC} Installing APT Dependencies:" 
