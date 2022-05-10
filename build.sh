@@ -5,13 +5,13 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
-echo -e "\n${YELLOW}The following dependencies are required to build and run A.D.A.M.S. binary${NC}\n"
-echo -e "  APT Packages"
-echo -e "    python3"
-echo -e "    python-pip"
-echo -e "  PIP Packages"
-echo -e "    pyinstaller"
-echo -e "    getch\n"
+echo -e "\n${YELLOW}The following dependencies will be required to build and run A.D.A.M.S.${NC}\n"
+echo -e "  APT Packages\n"
+echo -e "    - python3"
+echo -e "    - python-pip\n"
+echo -e "  PIP Packages\n"
+echo -e "    - pyinstaller"
+echo -e "    - getch\n"
 
 sudo apt update
 
