@@ -184,8 +184,6 @@ class install:
 
                 # Install PowerDNS
                     elif addPDNSPackage == True:
-                        self.addPDNSSources()
-                        self.checkResolver()
 
                         if package != "":
                             if package.endswith("tar.gz"):
@@ -446,6 +444,7 @@ class install:
             print(colours.green(self, " [+] ") + "Adding PowerDNS Sources...")
             addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
             subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+            print()
 
         if hasPackage is False:
             addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
@@ -456,6 +455,7 @@ class install:
         subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
         subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
         subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
+        print()
     #################################################### END: addPDNSSources(self)
 
     def checkResolver(self):
@@ -487,7 +487,7 @@ class install:
         if stubListenterExists == False:
             addLine = "echo 'DNSStubListener=no' >> /etc/systemd/resolved.conf"
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
+        print()
         # Create Symlink
         print(colours.green(self, " [+] ") + "Creating Symlink")
         subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
