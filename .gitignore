@@ -1,5 +1,6 @@
 __pycache__
 lib/__pycache__
+uml-diagrams
 ansible-playbooks
 ansible-private
 data/install.log
