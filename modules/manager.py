@@ -22,7 +22,7 @@ import sys
 
 from main import main as main
 from time import sleep as sleep
-from colours import colours as colours
+from colours import colours
 from display import clear_screen
 
 class cli:

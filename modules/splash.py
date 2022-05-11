@@ -17,13 +17,11 @@
                     ▀▀▀█████████▀▀▀                    
 """
 
-import time
-import os
 import sys as sys
 
 from sys import platform
 from display import clear_screen
-from colours import colours as colours
+from colours import colours
 
 if platform == "linux":
     from getch import getch as getch

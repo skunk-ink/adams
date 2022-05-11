@@ -18,12 +18,11 @@
 """
 
 import os
-import logging
 import subprocess
 
 from sys import platform
 from time import sleep as sleep
-from colours import colours as colours
+from colours import colours
 from display import clear_screen
 
 if platform == "linux":
@@ -64,7 +63,6 @@ class install:
         try:
             # Install packages for Linux
             if platform == "linux":
-                #logging.basicConfig(filename=self.LOG_FILE, level=logging.DEBUG)
                 
                 setInstall = True
 
@@ -242,7 +240,6 @@ class install:
                             
             # Install packages for Windows
             elif platform == "win32":
-                #logging.basicConfig(filename=self.LOG_FILE, level=logging.DEBUG)
                 
                 setInstall = True
 
