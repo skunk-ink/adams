@@ -17,16 +17,16 @@ else
 fi
 
 echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_main.py'."
-pyreverse -o png main ../modules/main.py
+pyreverse -o png -p main ../modules/main.py
 
 echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_installer.py'."
-pyreverse -o png installer ../modules/installer.py
+pyreverse -o png -p installer ../modules/installer.py
 
 echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_manager.py'."
-pyreverse -o png manager ../modules/manager.py
+pyreverse -o png -p manager ../modules/manager.py
 
 echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_splash.py'."
-pyreverse -o png splash ../modules/splash.py
+pyreverse -o png -p splash ../modules/splash.py
 
 echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_colours.py'."
-pyreverse -o png colours ../modules/colours.py
+pyreverse -o png -p colours ../modules/colours.py
