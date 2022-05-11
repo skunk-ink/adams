@@ -41,22 +41,21 @@ class install:
     ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private/'
     POWERDNS_PATH = PATH + '/pdns/'
     LOG_FILE = DATA_PATH + "install.log"
+    
+    setInstall = False
+    addWinPackage = False
+    addLinuxPackage = False
+    addPythonPackage = False
+    addSkynetPackage = False
+    addHNSPackage = False
+    addNGINXPackage = False
+    addPDNSPackage = False
 
     def __init__(self):
         self.adams()
     #################################################### END: __init__(self)
 
     def adams(self):
-
-        DEPENDS = open("./DEPENDS", "r")
-        setInstall = False
-        addWinPackage = False
-        addLinuxPackage = False
-        addPythonPackage = False
-        addSkynetPackage = False
-        addHNSPackage = False
-        addNGINXPackage = False
-        addPDNSPackage = False
 
         clear_screen()
 
@@ -68,7 +67,7 @@ class install:
 
                 # Install Dependencies
                 while(setInstall == True):
-                    package = DEPENDS.readline().replace("\n", "")
+                    package = install.DEPENDS.readline().replace("\n", "")
 
                     if package.startswith("# WINDOWS"):
                         addWinPackage = False           # Toggle to install Windows Dependencies
@@ -257,7 +256,7 @@ class install:
 
                 # Install Dependencies
                 while(setInstall == True):
-                    package = DEPENDS.readline().replace("\n", "")
+                    package = install.DEPENDS.readline().replace("\n", "")
 
                     if package.startswith("# WINDOWS"):
                         addWinPackage = True           # Toggle to install Windows Dependencies
@@ -498,6 +497,105 @@ class install:
         print(colours.error(self, "reinstall() method not yet complete."))
         sleep(1)
     #################################################### END: reinstall(self)
+
+    def getDependencies(self):
+        DEPENDS = open("./DEPENDS", "r")
+
+        global addWinPackage
+        global addLinuxPackage
+        global addPythonPackage
+        global addSkynetPackage
+        global addHNSPackage
+        global addNGINXPackage
+        global addPDNSPackage
+
+        if platform == "linux":
+                
+            setInstall = True
+
+            # Install Dependencies
+            while(setInstall == True):
+                package = DEPENDS.readline().replace("\n", "")
+
+                if package.startswith("# WINDOWS"):
+                    addWinPackage = False           # Toggle to install Windows Dependencies
+                    addLinuxPackage = False
+                    addPythonPackage = False
+                    addSkynetPackage = False
+                    addHNSPackage = False
+                    addNGINXPackage = False
+                    addPDNSPackage = False
+
+                elif package.startswith("# LINUX"):
+                    addWinPackage = False
+                    addLinuxPackage = True         # Toggle to install Linux Dependencies
+                    addPythonPackage = False
+                    addSkynetPackage = False
+                    addHNSPackage = False
+                    addNGINXPackage = False
+                    addPDNSPackage = False
+                    print(colours.red(self, "Installing Linux Dependencies..."))
+                    sleep(1)
+
+                elif package.startswith("# PYTHON"):
+                    addWinPackage = False
+                    addLinuxPackage = False
+                    addPythonPackage = True        # Toggle to install Python Dependencies
+                    addSkynetPackage = False
+                    addHNSPackage = False
+                    addNGINXPackage = False
+                    addPDNSPackage = False
+                    print(colours.red(self, "\nInstalling Python Dependencies..."))
+                    sleep(1)
+                    
+                elif package.startswith("# HNS"):
+                    addWinPackage = False
+                    addLinuxPackage = False
+                    addPythonPackage = False
+                    addSkynetPackage = False
+                    addHNSPackage = True           # Toggle to install Handshake Daemon
+                    addNGINXPackage = False
+                    addPDNSPackage = False
+                    print(colours.red(self, "\nInstalling HNS Node..."))
+                    sleep(1)
+                    
+                elif package.startswith("# PDNS"):
+                    addWinPackage = False
+                    addLinuxPackage = False
+                    addPythonPackage = False
+                    addSkynetPackage = False
+                    addHNSPackage = False
+                    addNGINXPackage = False
+                    addPDNSPackage = True           # Toggle to install PowerDNS
+                    print(colours.red(self, "\nInstalling PowerDNS..."))
+                    self.checkResolver()
+                    self.addPDNSSources()
+                    sleep(1)
+                    
+                elif package.startswith("# NGINX"):
+                    addWinPackage = False
+                    addLinuxPackage = False
+                    addPythonPackage = False
+                    addSkynetPackage = False
+                    addHNSPackage = False
+                    addNGINXPackage = False           # Toggle to install NGINX
+                    addPDNSPackage = False
+                    print(colours.red(self, "\nInstalling NGINX..."))
+                    sleep(1)
+                    
+                elif package.startswith("# SKYNET"):
+                    addWinPackage = False
+                    addLinuxPackage = False
+                    addPythonPackage = False
+                    addSkynetPackage = False        # Toggle to install Skynet Webportal
+                    addHNSPackage = False
+                    addNGINXPackage = False
+                    addPDNSPackage = False
+                    print(colours.red(self, "\nInstalling Skynet-Webportal..."))
+                    sleep(1)
+
+                elif package.startswith("# EOF"):
+                    setInstall = False
 
     def skynet_webportal(self):
         print(colours.error(self, "skynet_webportal() method not yet complete."))
