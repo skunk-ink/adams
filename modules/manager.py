@@ -26,7 +26,6 @@ from colours import colours as colours
 from display import clear_screen
 
 class cli:
-    coinbase_connection = ""
     menu_title = ""
     menu_options = ""
 

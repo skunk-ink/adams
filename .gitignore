@@ -11,3 +11,4 @@ pdnsmanager
 build
 adams
 adams.spec
+make-uml.sh

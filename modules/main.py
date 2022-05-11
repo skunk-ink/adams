@@ -21,9 +21,7 @@ import os
 import sys as platform
 
 import manager as manager
-import error_handler as error
-
-from installer import install
+import installer as installer
 from time import sleep as sleep
 from colours import colours as colours
 from splash import splash as splash
@@ -43,7 +41,6 @@ class main:
     menu_title = ""     # Initialize string: menu_title
     menu_options = {}   # Initialize array: menu_options
     menu_prompt = ""    # Initialize string: menu_prompt
-    api = ""
     
     def __init__(self):
         clear_screen()
@@ -95,7 +92,7 @@ class main:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
-                    install()
+                    installer.install()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
                     manager.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
