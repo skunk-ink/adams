@@ -18,6 +18,7 @@
 """
 
 import os
+import sys
 import subprocess
 
 from sys import platform
@@ -42,11 +43,10 @@ class install:
     LOG_FILE = DATA_PATH + "install.log"
 
     def __init__(self):
-        #print(colours().error("install() method not complete."))
-        #sleep(1)
-        self.run()
+        self.adams()
+    #################################################### END: __init__(self)
 
-    def run(self):
+    def adams(self):
 
         DEPENDS = open("./DEPENDS", "r")
         setInstall = False
@@ -421,8 +421,8 @@ class install:
             self.main_menu()
         except KeyboardInterrupt:
             from main import main as main
-            main()
-    #################################################### END: __init__(self)
+            cli()
+    #################################################### END: adams(self)
 
     def addPDNSSources(self):
         hasRepo = False
@@ -494,14 +494,121 @@ class install:
         subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
     #################################################### END: checkResolver(self)
 
-class reinstall:
-    def __init__(self):
-        print(colours.error(self, "reinstall method not yet complete."))
+    def reinstall(self):
+        print(colours.error(self, "reinstall() method not yet complete."))
         sleep(1)
-        from main import main as main
-        main()
-        
-    def run(self):
+    #################################################### END: reinstall(self)
+
+    def skynet_webportal(self):
+        print(colours.error(self, "skynet_webportal() method not yet complete."))
+        sleep(1)
+    #################################################### END: skynet_webportal(self)
+
+    def hsd(self):
+        print(colours.error(self, "hsd() method not yet complete."))
+        sleep(1)
+    #################################################### END: hsd(self)
+
+    def pdns(self):
+        print(colours.error(self, "pdns() method not yet complete."))
+        sleep(1)
+    #################################################### END: pdns(self)
+
+    def nginx(self):
+        print(colours.error(self, "nginx() method not yet complete."))
+        sleep(1)
+    #################################################### END: nginx(self)
+
+class cli:
+    menu_title = ""
+    menu_options = ""
+
+    def __init__(self):
         clear_screen()
+        self.set_menu("MAIN")
+        self.main_menu()
         sleep(1)
     #################################################### END: __init__(self)
+
+    def get_input(self, prompt):
+        user_input = input(colours().prompt(prompt))
+        return user_input         
+    #################################################### END: get_input(prompt)
+
+    def print_header(self):
+        clear_screen()  # Clear console window
+        print(colours().title("\n\t" + menu_title[1] + "\n\n"))   # Print menu title
+    #################################################### END: print_header()
+
+    def print_options(self):
+        for option in menu_options:     # Print menu options to screen
+            print("\t    " + option)
+        print()
+    #################################################### END: print_options()
+
+    def set_menu(self, menu_id):
+        global menu_title
+        global menu_options
+        
+        if menu_id.upper() == "MAIN":       # Main Menu Options
+            menu_title = ["ADAMS_INSTALLER",
+                          "A.D.A.M.S. Installer"]
+                          
+            menu_options = [colours().cyan("1") + ": Install A.D.A.M.S.",
+                            colours().cyan("2") + ": Install Skynet Webportal",
+                            colours().cyan("3") + ": Install Handshake Daemon",
+                            colours().cyan("4") + ": Install PowerDNS",
+                            colours().cyan("5") + ": Install NGINX Webserver",
+                            "",
+                            colours().cyan("B") + ": Back to A.D.A.M.S.",
+                            colours().cyan("Q") + ": Quit A.D.A.M.S."]
+    #################################################### END: set_menu(menu_id)
+
+    def main_menu(self):
+        self.set_menu("MAIN")    # Initialize A.D.A.M.S. Installer Menu
+        
+        try:
+            while True: # Display A.D.A.M.S. Installer Menu
+                self.print_header()
+                self.print_options()
+                
+                user_input = self.get_input("\n\tWhat would you like to do? : ")
+                
+                if user_input.upper() == "1":   # Install A.D.A.M.S.
+                    install.adams(self)
+
+                elif user_input.upper() == "2": # Install Skynet Webportal
+                    install.skynet_webportal(self)
+
+                elif user_input.upper() == "3": # Install Handshake Daemon
+                    install.hsd(self)
+
+                elif user_input.upper() == "4": # Install PowerDNS
+                    install.pdns(self)
+
+                elif user_input.upper() == "5": # Install NGINX Webserver
+                    install.nginx(self)
+                    
+                elif user_input.upper() == "B":
+                    from main import main as main
+                    main()
+
+                elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
+                    clear_screen()    # Clear console window
+                    sys.exit(0)
+
+        except AttributeError as e:
+            print(colours().error(str(e)))
+            sleep(2)
+            self.main_menu()
+        except KeyboardInterrupt:
+            from main import main as main
+            main()
+    #################################################### END: main_menu()
+
+if __name__ == '__main__':
+    os.system('cls')
+    print(colours.error("installer.py not yet complete."))
+    cli()
+    sleep(1)
+#################################################### END: __main__
