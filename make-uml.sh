@@ -24,9 +24,3 @@ pyreverse -o png -p installer ../modules/installer.py
 
 echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_manager.py'."
 pyreverse -o png -p manager ../modules/manager.py
-
-echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_splash.py'."
-pyreverse -o png -p splash ../modules/splash.py
-
-echo -e "\n ${GREEN}[+]${NC} Generating diagram '$DIR/classes_colours.py'."
-pyreverse -o png -p colours ../modules/colours.py
