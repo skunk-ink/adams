@@ -18,7 +18,7 @@
 """
 
 import os
-import sys as platform
+import sys
 
 from main import main as main
 from time import sleep as sleep
@@ -146,7 +146,7 @@ class cli:
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
-                    platform.exit(0)
+                    sys.exit(0)
 
         except AttributeError as e:
             print(colours().error(str(e)))
@@ -188,7 +188,7 @@ class cli:
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
-                    platform.exit(0)    
+                    sys.exit(0)    
         except KeyboardInterrupt:
             self.main_menu()
             pass
@@ -221,7 +221,7 @@ class cli:
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
-                    platform.exit(0)
+                    sys.exit(0)
 
         except KeyboardInterrupt:
             self.main_menu()
@@ -250,7 +250,7 @@ class cli:
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
-                    platform.exit(0) 
+                    sys.exit(0) 
         except KeyboardInterrupt:
             self.main_menu()
             pass
@@ -283,7 +283,7 @@ class cli:
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
-                    platform.exit(0)   
+                    sys.exit(0)   
         except KeyboardInterrupt:
             self.main_menu()
             pass

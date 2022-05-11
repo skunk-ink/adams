@@ -23,9 +23,13 @@ import subprocess
 
 from sys import platform
 from time import sleep as sleep
-from getch import getch as getch
 from colours import colours as colours
 from display import clear_screen
+
+if platform == "linux":
+    from getch import getch as getch
+elif platform == "win32":
+    from msvcrt import getch as getch
 
 class install:
     NEED_RESTART = False
