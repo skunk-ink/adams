@@ -104,7 +104,7 @@ class main:
             sleep(2)
             self.main_menu()
         except KeyboardInterrupt:
-            main.main_menu()
+            self.main_menu()
     #################################################### END: main_menu()
 
 if __name__ == '__main__':
