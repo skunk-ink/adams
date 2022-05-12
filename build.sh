@@ -14,8 +14,8 @@ echo -e " ${GREEN}-- PIP Packages --${NC}"
 echo -e "\tpyinstaller"
 echo -e "\tgetch\n"
 
-sudo apt update
 echo -e "\n ${GREEN}[+]${NC} Updating APT Repositories..." 
+sudo apt update
 
 echo -e "\n ${GREEN}[+]${NC} Installing APT Dependencies:" 
 sudo apt install -y python3 python3-pip
@@ -26,4 +26,4 @@ pip install getch
 export PATH=~/.local/bin:$PATH
 
 echo -e "\n ${GREEN}[+]${NC} Building A.D.A.M.S. binary..."
-pyinstaller --name adams --distpath ./ -F modules/main.py
+pyinstaller --clean --name adams --distpath ./ -F modules/main.py

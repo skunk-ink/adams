@@ -195,7 +195,7 @@ class install:
 
     def printDepends(self, depends):
         clear_screen()
-        print(colours.yellow(self, " [!]" + " The following dependencies will be installed:"))
+        print(colours.yellow(self, " [!]") + " The following dependencies will be installed:")
 
         columns = 0
         packages = ""
@@ -217,7 +217,7 @@ class install:
                 print(colours.green(self, "\n  -- Node Package Manager --"))
 
             elif packageType == "wget":
-                print(colours.green(self, "\n  -- Web Package --"))
+                print(colours.green(self, "\n  -- WGET --"))
 
             count = len(depends[packageType])
 
@@ -239,7 +239,9 @@ class install:
                     print("\t" + packages)
                     columns = 0
                     packages = ""
-                
+        
+        print()
+        print(colours.prompt(self, "Press any key to continue, or 'ctrl+c' to return to main menu."))
         getch()
     #################################################### END: printDepends(self, depends)
 
@@ -284,13 +286,18 @@ class install:
                     pass
                     #subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
 
-            # Install GZip Package
+            # Download/Install WGET Package
             elif packageType == "wget":
                 for package in depends[packageType]:
-                    pass
-                    subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                    subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
-                    subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
+                    #print(colours.green(self, " [+] ") + "Downloading " + str(package))
+                    #subprocess.run(["wget", package], cwd=self.PATH, check=True)
+
+                    if str(package).endswith("tar.gz"):
+                        pass
+                        #print("\t Unpacking...")
+                        #subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
+                        #print("\t Cleaning up...")
+                        #subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
@@ -322,9 +329,9 @@ class install:
 
     def powerdns(self):
 
-        #print(colours.green(self, " [+] ") + "Configuring PowerDNS...")
+        #print(colours.green(self, " [+] ") + "\nConfiguring PowerDNS...")
         print(colours.error(self, "pdns() method not yet complete."))
-        sleep(1)
+        sleep(2)
 
         """if package.endswith("tar.gz"):
 
