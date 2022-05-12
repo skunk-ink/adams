@@ -279,7 +279,7 @@ class install:
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     packageName = self.parseURL(package)
-                    if os.path.isdir(self.PATH + "/" + packageName[-4:]) == False:
+                    if os.path.isdir(self.PATH + "/" + packageName[-3:]) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                         subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
                     else:
@@ -304,13 +304,13 @@ class install:
                         subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
                     if str(package).endswith("tar.gz"):
-                        if os.path.isfile(self.PATH + "/" + packageName[-6:]) == False:
+                        if os.path.isfile(self.PATH + "/" + packageName[-5:]) == False:
                             print("\t Unpacking '" + str(package) + "'...")
                             subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
                             print("\t Cleaning up '" + str(package) + "'...")
                             subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
                         else:
-                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-6:] + "' install found")
+                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-5:] + "' install found")
         print(colours.prompt(self, "\n Install complete! Press any key to continue."))
         getch()
     #################################################### END: installDepends(self, depends)
