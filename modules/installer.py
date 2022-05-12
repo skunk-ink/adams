@@ -286,7 +286,7 @@ class install:
                             charPos = count
                         count += 1
 
-                    print("Found" + package[count] + "At position: " + charPos)
+                    print("Found" + package[charPos] + "At position: " + charPos)
                     repo = urlparse(package)
                     repo = os.path.basename(str(repo))
                     length = len(repo)
