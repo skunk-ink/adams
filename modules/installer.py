@@ -52,26 +52,36 @@ class install:
             self.powerdns()
             self.nginx()
             self.skynet_webportal()
+            print(colours.prompt(self, "\n A.D.A.M.S. install complete! Press any key to continue."))
+            getch()
 
         elif type == "skynet-webportal":
             print(colours.red(self, "\nInstalling Skynet Webportal"))
             self.installDepends(self.getDependencies(sys.platform, "skynet-webportal"))
             self.skynet_webportal()
+            print(colours.prompt(self, "\n Skynet Webportal install complete! Press any key to continue."))
+            getch()
 
         elif type == "handshake":
             print(colours.red(self, "\nInstalling Handshake Daemon"))
             self.installDepends(self.getDependencies(sys.platform, "handshake"))
             self.handshake()
+            print(colours.prompt(self, "\n Handshake Daemon install complete! Press any key to continue."))
+            getch()
 
         elif type == "powerdns":
             print(colours.red(self, "\nInstalling PowerDNS"))
             self.installDepends(self.getDependencies(sys.platform, "powerdns"))
             self.powerdns()
+            print(colours.prompt(self, "\n PowerDNS install complete! Press any key to continue."))
+            getch()
 
         elif type == "nginx":
             print(colours.red(self, "\nInstalling NGINX Webserver"))
             self.installDepends(self.getDependencies(sys.platform, "nginx"))
             self.nginx()
+            print(colours.prompt(self, "\n NGINX install complete! Press any key to continue."))
+            getch()
     #################################################### END: __init__(self, type)
 
     def getDependencies(self, sysPlatform, depends):
@@ -313,8 +323,7 @@ class install:
                             print("\t Cleaning up '" + str(package) + "'...")
                             subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
                         except:
-                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-6:] + "' install found")
-        print(colours.prompt(self, "\n Install complete! Press any key to continue."))
+                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-6:] + "' directory found")
         getch()
     #################################################### END: installDepends(self, depends)
 
@@ -331,18 +340,12 @@ class install:
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
-        print(colours.error(self, "hsd() method not yet complete."))
-        sleep(1)
-
-        """ if os.path.isdir(self.HSD_PATH) == False:
-            print(colours.green(self, " [+] ") + "Downloading Handshake Daemon")
-            subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-
-            print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+        print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+        try:
             subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
             print()
-        else:
-            print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!") """
+        except:
+            print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
     #################################################### END: hsd(self)
 
     def powerdns(self):
@@ -351,9 +354,14 @@ class install:
         print(colours.error(self, "pdns() method not yet complete."))
         sleep(2)
 
-        """if package.endswith("tar.gz"):
+        files = os.listdir(self.PATH)
+        checkFor = "pdnsmanager"
 
-            if os.path.exists("./pdnsmanager") == False:
+        for file in files:
+            if checkFor.lower() or checkFor.upper() or checkFor.capitalize in file:
+                pass
+
+        """if os.path.exists("./pdnsmanager") == False:
                 print(colours.green(self, " [+] ") + "Extracting PowerDNS Manager")
                 subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
                 subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)

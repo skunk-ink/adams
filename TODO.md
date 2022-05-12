@@ -20,7 +20,7 @@
             - [x] Download
             - [x] Install
         - [ ] [Handshake Daemon](#hns-daemon-install)
-            - [ ] Download
+            - [x] Download
             - [ ] Install
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
