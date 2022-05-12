@@ -279,10 +279,10 @@ class install:
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     packageName = self.parseURL(package)
-                    if os.path.isdir(self.PATH + "/" + packageName[-3:]) == False:
+                    try:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                         subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                    else:
+                    except:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
             # Install Node Package
@@ -299,18 +299,21 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     packageName = self.parseURL(package)
-                    print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
-                    if os.path.isfile(self.PATH + "/" + packageName) == False:
+                    try:
+                        print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
                         subprocess.run(["wget", package], cwd=self.PATH, check=True)
+                    except:
+                        print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' package found")
+
 
                     if str(package).endswith("tar.gz"):
-                        if os.path.isfile(self.PATH + "/" + packageName[-5:]) == False:
+                        try:
                             print("\t Unpacking '" + str(package) + "'...")
                             subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
                             print("\t Cleaning up '" + str(package) + "'...")
                             subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
-                        else:
-                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-5:] + "' install found")
+                        except:
+                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-6:] + "' install found")
         print(colours.prompt(self, "\n Install complete! Press any key to continue."))
         getch()
     #################################################### END: installDepends(self, depends)
