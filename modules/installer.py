@@ -214,10 +214,10 @@ class install:
                 print(colours.green(self, "\n  -- Github Repository --"))
 
             elif packageType == "npm":
-                print(colours.green(self, "\n  -- Node Package Manager --"))
+                print(colours.green(self, "\n  -- Node Package --"))
 
             elif packageType == "wget":
-                print(colours.green(self, "\n  -- WGET --"))
+                print(colours.green(self, "\n  -- WGET (HTTPS) --"))
 
             count = len(depends[packageType])
 
@@ -251,50 +251,56 @@ class install:
         for packageType in depends:
             # Install Windows Executable
             if packageType == "exe":
-                print(colours.green(self, "\n [+] ") + "Installing Windows Executables")
+                print(colours.red(self, "\n  -- Installing Windows Executables --\n"))
                 for package in depends[packageType]:
                     package = str(package).strip()
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "' ...")
                     pass
 
             # Install Linux APT Package
             elif packageType == "apt":
-                print(colours.green(self, "\n [+] ") + "Installing Linux APT Packages")
+                print(colours.red(self, "\n  -- Installing Linux APT Packages --\n"))
                 for package in depends[packageType]:
                     package = str(package).strip()
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "' ...")
                     subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
-                print(colours.green(self, "\n [+] ") + "Installing Python Packages")
+                print(colours.red(self, "\n  -- Installing Python Packages --\n"))
                 for package in depends[packageType]:
                     package = str(package).strip()
-                    subprocess.run(["pip", "install", packages.strip()], check=True)
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "' ...")
+                    subprocess.run(["pip", "install", package], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
+                print(colours.red(self, "\n  -- Cloning Github Repositories --\n"))
                 for package in depends[packageType]:
                     package = str(package).strip()
-                    print(colours.green(self, "\n [+] ") + "Cloning Github Repo: " + str(package))
+                    print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "' ...")
                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
             # Install Node Package
             elif packageType == "npm":
-                print(colours.green(self, "\n [+] ") + "Installing NPM Packages")
+                print(colours.red(self, "\n  -- Installing Node Packages --\n"))
                 for package in depends[packageType]:
                     package = str(package).strip()
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "' ...")
                     subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
             elif packageType == "wget":
+                print(colours.red(self, "\n  -- Installing WGET Packages --\n"))
                 for package in depends[packageType]:
                     package = str(package).strip()
-                    print(colours.green(self, "\n [+] ") + "Downloading " + str(package))
+                    print(colours.green(self, "\n [+] ") + "Downloading '" + str(package) + "' ...")
                     subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
                     if str(package).endswith("tar.gz"):
-                        print("\t Unpacking...")
+                        print("\t Unpacking '" + str(package) + "' ...")
                         subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                        print("\t Cleaning up...")
+                        print("\t Cleaning up '" + str(package) + "' ...")
                         subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
     #################################################### END: installDepends(self, depends)
 
