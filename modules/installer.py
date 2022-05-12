@@ -281,7 +281,9 @@ class install:
                     package = str(package).strip()
                     repo = os.path.basename(urlparse(package))
                     length = len(repo)
-                    repo = repo[0:(repo - 4)]
+                    repo = repo[0:(length - 4)]
+
+                    if 
                     print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
