@@ -281,12 +281,17 @@ class install:
                     package = str(package).strip()
 
                     count = 0
+                    nameLength = len(package)
+                    print("Package name length: " + str(nameLength))
+
                     for character in package:
                         if character == "/":
                             charPos = count
                         count += 1
 
-                    print("Found" + str(package[charPos]) + "At position: " + str(charPos))
+                    packageName = package[charPos:(nameLength - 4)]
+                    print("Found " + str(package[charPos]) + " at position: " + str(charPos))
+                    print("Package name: " + packageName)
                     repo = urlparse(package)
                     repo = os.path.basename(str(repo))
                     length = len(repo)
