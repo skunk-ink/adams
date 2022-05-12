@@ -280,7 +280,7 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     repo = urlparse(package)
-                    repo = os.path.basename(repo)
+                    repo = os.path.basename(str(repo))
                     length = len(repo)
                     repo = repo[0:(length - 4)]
 
@@ -311,7 +311,7 @@ class install:
 
                     if str(package).endswith("tar.gz"):
                         package = urlparse(package)
-                        package = os.path.basename(package)
+                        package = os.path.basename(str(package))
                         if os.path.isfile(self.PATH + "/" + package) == False:
                             print("\t Unpacking '" + str(package) + "'...")
                             subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
