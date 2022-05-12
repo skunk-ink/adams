@@ -93,7 +93,7 @@ class main:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
-                    installer.install()
+                    installer.cli()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
                     manager.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
