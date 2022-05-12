@@ -283,6 +283,8 @@ class install:
                     length = len(repo)
                     repo = repo[0:(length - 4)]
 
+                    print(repo)
+
                     if os.path.isdir(self.PATH + "/" + repo) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                         subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
