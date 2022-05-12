@@ -279,6 +279,14 @@ class install:
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     package = str(package).strip()
+
+                    count = 0
+                    for character in package:
+                        if character == "/":
+                            charPos = count
+                        count += 1
+
+                    print("Found" + package[count] + "At position: " + charPos)
                     repo = urlparse(package)
                     repo = os.path.basename(str(repo))
                     length = len(repo)
