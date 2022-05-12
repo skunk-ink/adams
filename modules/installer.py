@@ -442,7 +442,7 @@ class install:
 
     def parseURL(self, url):
         url = str(url).strip()
-
+        charPos = 0
         count = 0
         nameLength = len(url)
 
