@@ -222,8 +222,8 @@ class install:
             count = len(depends[packageType])
 
             for package in depends[packageType]:
-                if len(package.strip()) <= 20:
-                    while len(package) < 22:
+                if len(package.strip()) <= 26:
+                    while len(package) < 27:
                         package += " "
 
                 packages += package
@@ -251,21 +251,21 @@ class install:
         for packageType in depends:
             # Install Windows Executable
             if packageType == "exe":
-                print(colours.green(self, " [+] ") + "Installing Windows Executables")
+                print(colours.green(self, "\n [+] ") + "Installing Windows Executables")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     pass
 
             # Install Linux APT Package
             elif packageType == "apt":
-                print(colours.green(self, " [+] ") + "Installing Linux APT Packages")
+                print(colours.green(self, "\n [+] ") + "Installing Linux APT Packages")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
-                print(colours.green(self, " [+] ") + "Installing Python Packages")
+                print(colours.green(self, "\n [+] ") + "Installing Python Packages")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     subprocess.run(["pip", "install", packages.strip()], check=True)
@@ -274,12 +274,12 @@ class install:
             elif packageType == "git":
                 for package in depends[packageType]:
                     package = str(package).strip()
-                    print(colours.green(self, " [+] ") + "Cloning Github Repo: " + str(package))
+                    print(colours.green(self, "\n [+] ") + "Cloning Github Repo: " + str(package))
                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
             # Install Node Package
             elif packageType == "npm":
-                print(colours.green(self, " [+] ") + "Installing NPM Packages")
+                print(colours.green(self, "\n [+] ") + "Installing NPM Packages")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
@@ -288,7 +288,7 @@ class install:
             elif packageType == "wget":
                 for package in depends[packageType]:
                     package = str(package).strip()
-                    print(colours.green(self, " [+] ") + "Downloading " + str(package))
+                    print(colours.green(self, "\n [+] ") + "Downloading " + str(package))
                     subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
                     if str(package).endswith("tar.gz"):
