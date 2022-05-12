@@ -279,6 +279,9 @@ class install:
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     package = str(package).strip()
+                    repo = os.path.basename(urlparse(package))
+                    length = len(repo)
+                    repo = repo[0:(repo - 4)]
                     print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
