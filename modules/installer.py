@@ -193,44 +193,90 @@ class install:
         return dependencies
     #################################################### END: getDepends(sysPlatform)
 
+    def printDepends(self, depends):
+        clear_screen()
+        print(colours.yellow(self, " [!]" + " The following dependencies will be installed:"))
+
+        columns = 0
+        packages = ""
+
+        for packageType in depends:
+            if packageType == "exe":
+                print(colours.green(self, "\n -- Windows Executable --"))
+
+            elif packageType == "apt":
+                print(colours.green(self, "\n -- Linux APT Package --"))
+
+            elif packageType == "pip":
+                print(colours.green(self, "\n -- Python Package --"))
+
+            elif packageType == "git":
+                print(colours.green(self, "\n -- Github Repository --"))
+
+            elif packageType == "npm":
+                print(colours.green(self, "\n -- Node Package Manager --"))
+
+            elif packageType == "wget":
+                print(colours.green(self, "\n -- Web Package --"))
+
+            count = len(depends[packageType])
+
+            for package in depends[packageType]:
+                if len(package.strip()) <= 20:
+                    while len(package) < 22:
+                        package += " "
+
+                packages += package
+
+                columns += 1
+                count -= 1
+
+                if count == 0 or len(package) > 30:
+                    print("\t" + packages)
+                    packages = ""
+                    columns = 0
+                elif columns == 4:
+                    print("\t" + packages)
+                    columns = 0
+                    packages = ""
+                
+        getch()
+
     def installDepends(self, depends):
+        self.printDepends(depends)
+
         for packageType in depends:
             if packageType == "exe":
                 packages = ""
+
                 for package in depends[packageType]:
                     packages = packages + package + " "
-                    
-                #print("EXE: " + packages.strip())
 
             elif packageType == "apt":
                 packages = ""
+
                 for package in depends[packageType]:
                     packages = packages + package + " "
                 
                 #subprocess.run(["sudo", "apt", "install", "-y", packages], check=True)
-                    
-                #print("APT: " + packages.strip())
 
             elif packageType == "pip":
                 packages = ""
+
                 for package in depends[packageType]:
                     packages = packages + package + " "
                 
                 #subprocess.run(["pip", "install", packages], check=True)
-                    
-                #print("PIP: " + packages.strip())
 
             elif packageType == "git":
                 for package in depends[packageType]:
-                    #subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
                     pass
-                    #print("GIT: " + package.strip())
+                    #subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
             elif packageType == "wget":
                 for package in depends[packageType]:
-                    #subprocess.run(["wget", package], cwd=self.PATH, check=True)
                     pass
-                    #print("WGET: " + package.strip())
+                    #subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
     def skynet_webportal(self):
         print(colours.error(self, "skynet_webportal() method not yet complete."))
