@@ -263,7 +263,7 @@ class install:
                 for package in depends[packageType]:
                     packages = packages + package + " "
                 
-                #subprocess.run(["sudo", "apt", "install", "-y", packages], check=True)
+                subprocess.run(["sudo", "apt", "install", "-y", packages], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
@@ -272,32 +272,31 @@ class install:
                 for package in depends[packageType]:
                     packages = packages + package + " "
                 
-                #subprocess.run(["pip", "install", packages], check=True)
+                subprocess.run(["pip", "install", packages], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
                 for package in depends[packageType]:
                     pass
-                    #subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
             # Install Node Package
             elif packageType == "npm":
                 for package in depends[packageType]:
                     pass
-                    #subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
+                    subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
             elif packageType == "wget":
                 for package in depends[packageType]:
-                    #print(colours.green(self, " [+] ") + "Downloading " + str(package))
-                    #subprocess.run(["wget", package], cwd=self.PATH, check=True)
+                    print(colours.green(self, " [+] ") + "Downloading " + str(package))
+                    subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
                     if str(package).endswith("tar.gz"):
-                        pass
-                        #print("\t Unpacking...")
-                        #subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                        #print("\t Cleaning up...")
-                        #subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
+                        print("\t Unpacking...")
+                        subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
+                        print("\t Cleaning up...")
+                        subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
