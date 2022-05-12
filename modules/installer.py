@@ -202,22 +202,22 @@ class install:
 
         for packageType in depends:
             if packageType == "exe":
-                print(colours.green(self, "\n -- Windows Executable --"))
+                print(colours.green(self, "\n  -- Windows Executable --"))
 
             elif packageType == "apt":
-                print(colours.green(self, "\n -- Linux APT Package --"))
+                print(colours.green(self, "\n  -- Linux APT Package --"))
 
             elif packageType == "pip":
-                print(colours.green(self, "\n -- Python Package --"))
+                print(colours.green(self, "\n  -- Python Package --"))
 
             elif packageType == "git":
-                print(colours.green(self, "\n -- Github Repository --"))
+                print(colours.green(self, "\n  -- Github Repository --"))
 
             elif packageType == "npm":
-                print(colours.green(self, "\n -- Node Package Manager --"))
+                print(colours.green(self, "\n  -- Node Package Manager --"))
 
             elif packageType == "wget":
-                print(colours.green(self, "\n -- Web Package --"))
+                print(colours.green(self, "\n  -- Web Package --"))
 
             count = len(depends[packageType])
 
