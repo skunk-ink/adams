@@ -254,25 +254,24 @@ class install:
                 packages = ""
 
                 for package in depends[packageType]:
-                    packages = packages + package + " "
+                    package = str(package).strip()
+                    pass
 
             # Install Linux APT Package
             elif packageType == "apt":
                 packages = ""
 
                 for package in depends[packageType]:
-                    packages = packages + package + " "
-                
-                subprocess.run(["sudo", "apt", "install", "-y", packages.strip()], check=True)
+                    package = str(package).strip()
+                    subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
                 packages = ""
 
                 for package in depends[packageType]:
-                    packages = packages + package + " "
-                
-                subprocess.run(["pip", "install", packages.strip()], check=True)
+                    package = str(package).strip()
+                    subprocess.run(["pip", "install", packages.strip()], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
