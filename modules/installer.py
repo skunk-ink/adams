@@ -283,9 +283,11 @@ class install:
                     length = len(repo)
                     repo = repo[0:(length - 4)]
 
-                    if 
-                    print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
-                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                    if os.path.isdir(self.PATH + "/" + repo) == False:
+                        print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
+                        subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                    else:
+                        print(colours.yellow(self, "\n [+] ") + "Existing '" + repo + "' repository found")
 
             # Install Node Package
             elif packageType == "npm":
@@ -301,14 +303,18 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Downloading '" + str(package) + "'...")
-                    subprocess.run(["wget", package], cwd=self.PATH, check=True)
+                    if os.path.isfile(self.PATH + "/" + repo) == False:
+                        subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
                     if str(package).endswith("tar.gz"):
                         package = os.path.basename(urlparse(package))
-                        print("\t Unpacking '" + str(package) + "'...")
-                        subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                        print("\t Cleaning up '" + str(package) + "'...")
-                        subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
+                        if os.path.isfile(self.PATH + "/" + package) == False:
+                            print("\t Unpacking '" + str(package) + "'...")
+                            subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
+                            print("\t Cleaning up '" + str(package) + "'...")
+                            subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
+                        else:
+                            print(colours.yellow(self, "\n [+] ") + "Existing '" + repo + "' install found")
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
