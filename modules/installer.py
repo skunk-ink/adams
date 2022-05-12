@@ -288,7 +288,9 @@ class install:
             elif packageType == "wget":
                 for package in depends[packageType]:
                     pass
-                    #subprocess.run(["wget", package], cwd=self.PATH, check=True)
+                    subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
+                    subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
+                    subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
