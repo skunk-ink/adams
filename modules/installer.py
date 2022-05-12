@@ -279,7 +279,8 @@ class install:
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     package = str(package).strip()
-                    repo = os.path.basename(str(urlparse(package)))
+                    repo = urlparse(package)
+                    repo = os.path.basename(repo)
                     length = len(repo)
                     repo = repo[0:(length - 4)]
 
@@ -309,7 +310,8 @@ class install:
                         subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
                     if str(package).endswith("tar.gz"):
-                        package = os.path.basename(str(urlparse(package)))
+                        package = urlparse(package)
+                        package = os.path.basename(package)
                         if os.path.isfile(self.PATH + "/" + package) == False:
                             print("\t Unpacking '" + str(package) + "'...")
                             subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
