@@ -289,21 +289,15 @@ class install:
                             charPos = count
                         count += 1
 
-                    packageName = package[charPos:(nameLength - 4)]
+                    packageName = package[charPos + 1:nameLength - 4]
                     print("Found " + str(package[charPos]) + " at position: " + str(charPos))
                     print("Package name: " + packageName)
-                    repo = urlparse(package)
-                    repo = os.path.basename(str(repo))
-                    length = len(repo)
-                    repo = repo[0:(length - 4)]
 
-                    print(repo)
-
-                    if os.path.isdir(self.PATH + "/" + repo) == False:
+                    if os.path.isdir(self.PATH + "/" + packageName) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                         subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
                     else:
-                        print(colours.yellow(self, "\n [+] ") + "Existing '" + repo + "' repository found")
+                        print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
             # Install Node Package
             elif packageType == "npm":
