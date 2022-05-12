@@ -34,14 +34,13 @@ elif platform == "win32":
 
 class install:
     NEED_RESTART = False
-    PATH = os.getcwd()
-    DATA_PATH = PATH + '/data/'      # Data Directory Path
-    HSD_PATH = PATH + '/hsd/'
-    SKYNET_PATH = PATH + '/skynet-webportal/'
-    ANSIBLE_PLAYBOOKS_PATH = PATH + '/ansible-playbooks/'
-    ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private/'
-    POWERDNS_PATH = PATH + '/pdns/'
-    LOG_FILE = DATA_PATH + "install.log"
+    PATH = os.getcwd()                                      # A.D.A.M.S. Directory
+    DATA_PATH = PATH + '/data/'                             # Data Directory Path
+    HSD_PATH = PATH + '/hsd/'                               # Handshake Directory Path
+    SKYNET_PATH = PATH + '/skynet-webportal/'               # Skynet Webportal Directory Path
+    ANSIBLE_PLAYBOOKS_PATH = PATH + '/ansible-playbooks/'   # Ansible Playbooks Directory Path
+    ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private/'       # Ansible Private Directory Path
+    POWERDNS_PATH = PATH + '/pdns/'                         # PowerDNS Directory Path
 
     def __init__(self, type):
 
@@ -446,5 +445,4 @@ class cli:
 if __name__ == '__main__':
     os.system('cls')
     cli()
-    sleep(1)
 #################################################### END: __main__
