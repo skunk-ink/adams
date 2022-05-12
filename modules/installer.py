@@ -277,27 +277,13 @@ class install:
             # Clone Github Repository
             elif packageType == "git":
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
-                for package in depends[packageType]:
-                    package = str(package).strip()
-
-                    count = 0
-                    nameLength = len(package)
-                    print("Package name length: " + str(nameLength))
-
-                    for character in package:
-                        if character == "/":
-                            charPos = count
-                        count += 1
-
-                    packageName = package[charPos + 1:nameLength - 4]
-                    print("Found " + str(package[charPos]) + " at position: " + str(charPos))
-                    print("Package name: " + packageName)
-
-                    if os.path.isdir(self.PATH + "/" + packageName) == False:
-                        print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
-                        subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                    else:
-                        print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
+                
+                packageName = self.parseURL(package, ("." + packageType))
+                if os.path.isdir(self.PATH + "/" + packageName) == False:
+                    print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
+                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                else:
+                    print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
             # Install Node Package
             elif packageType == "npm":
@@ -312,14 +298,13 @@ class install:
                 print(colours.red(self, "\n\n  -- Installing WGET Packages --"))
                 for package in depends[packageType]:
                     package = str(package).strip()
-                    print(colours.green(self, "\n [+] ") + "Downloading '" + str(package) + "'...")
-                    if os.path.isfile(self.PATH + "/" + repo) == False:
+                    packageName = self.parseURL(package)
+                    print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
+                    if os.path.isfile(self.PATH + "/" + packageName) == False:
                         subprocess.run(["wget", package], cwd=self.PATH, check=True)
 
                     if str(package).endswith("tar.gz"):
-                        package = urlparse(package)
-                        package = os.path.basename(str(package))
-                        if os.path.isfile(self.PATH + "/" + package) == False:
+                        if os.path.isfile(self.PATH + "/" + packageName[-6:]) == False:
                             print("\t Unpacking '" + str(package) + "'...")
                             subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
                             print("\t Cleaning up '" + str(package) + "'...")
@@ -452,6 +437,19 @@ class install:
         print(colours.error(self, "nginx() method not yet complete."))
         sleep(1)
     #################################################### END: nginx(self)
+
+    def parseURL(self, url):
+        url = str(url).strip()
+
+        count = 0
+        nameLength = len(url)
+
+        for character in url:
+            if character == "/":
+                charPos = count
+            count += 1
+
+        return url[charPos - nameLength:]
     
 class cli:
     menu_title = ""
