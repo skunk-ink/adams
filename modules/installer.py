@@ -251,24 +251,21 @@ class install:
         for packageType in depends:
             # Install Windows Executable
             if packageType == "exe":
-                packages = ""
-
+                print(colours.green(self, " [+] ") + "Installing Windows Executables")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     pass
 
             # Install Linux APT Package
             elif packageType == "apt":
-                packages = ""
-
+                print(colours.green(self, " [+] ") + "Installing Linux APT Packages")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
-                packages = ""
-
+                print(colours.green(self, " [+] ") + "Installing Python Packages")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     subprocess.run(["pip", "install", packages.strip()], check=True)
@@ -277,10 +274,12 @@ class install:
             elif packageType == "git":
                 for package in depends[packageType]:
                     package = str(package).strip()
+                    print(colours.green(self, " [+] ") + "Cloning Github Repo: " + str(package))
                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
             # Install Node Package
             elif packageType == "npm":
+                print(colours.green(self, " [+] ") + "Installing NPM Packages")
                 for package in depends[packageType]:
                     package = str(package).strip()
                     subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
