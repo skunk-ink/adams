@@ -278,8 +278,8 @@ class install:
             elif packageType == "git":
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 
-                packageName = self.parseURL(package, ("." + packageType))
-                if os.path.isdir(self.PATH + "/" + packageName) == False:
+                packageName = self.parseURL(package)
+                if os.path.isdir(self.PATH + "/" + packageName[-4:]) == False:
                     print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                     subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
                 else:
@@ -310,7 +310,9 @@ class install:
                             print("\t Cleaning up '" + str(package) + "'...")
                             subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
                         else:
-                            print(colours.yellow(self, "\n [+] ") + "Existing '" + repo + "' install found")
+                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-6:] + "' install found")
+        print(colours.prompt(self, "\n Install complete! Press any key to continue."))
+        getch()
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
