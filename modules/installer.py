@@ -71,7 +71,7 @@ class install:
             print(colours.red(self, "\nInstalling NGINX Webserver"))
             self.installDepends(self.getDependencies(sys.platform, "nginx"))
             self.nginx()
-    #################################################### END: __init__(self)
+    #################################################### END: __init__(self, type)
 
     def getDependencies(self, sysPlatform, depends):
 
@@ -191,7 +191,7 @@ class install:
                 pass
 
         return dependencies
-    #################################################### END: getDepends(sysPlatform)
+    #################################################### END: getDependencies(self, sysPlatform, depends)
 
     def printDepends(self, depends):
         clear_screen()
@@ -241,17 +241,20 @@ class install:
                     packages = ""
                 
         getch()
+    #################################################### END: printDepends(self, depends)
 
     def installDepends(self, depends):
         self.printDepends(depends)
 
         for packageType in depends:
+            # Install Windows Executable
             if packageType == "exe":
                 packages = ""
 
                 for package in depends[packageType]:
                     packages = packages + package + " "
 
+            # Install Linux APT Package
             elif packageType == "apt":
                 packages = ""
 
@@ -260,6 +263,7 @@ class install:
                 
                 #subprocess.run(["sudo", "apt", "install", "-y", packages], check=True)
 
+            # Install Python Packages
             elif packageType == "pip":
                 packages = ""
 
@@ -268,15 +272,24 @@ class install:
                 
                 #subprocess.run(["pip", "install", packages], check=True)
 
+            # Clone Github Repository
             elif packageType == "git":
                 for package in depends[packageType]:
                     pass
                     #subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
 
+            # Install Node Package
+            elif packageType == "npm":
+                for package in depends[packageType]:
+                    pass
+                    #subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
+
+            # Install GZip Package
             elif packageType == "wget":
                 for package in depends[packageType]:
                     pass
                     #subprocess.run(["wget", package], cwd=self.PATH, check=True)
+    #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
         print(colours.error(self, "skynet_webportal() method not yet complete."))
@@ -306,6 +319,8 @@ class install:
     #################################################### END: hsd(self)
 
     def powerdns(self):
+
+        #print(colours.green(self, " [+] ") + "Configuring PowerDNS...")
         print(colours.error(self, "pdns() method not yet complete."))
         sleep(1)
 
