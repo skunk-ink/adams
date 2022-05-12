@@ -277,13 +277,13 @@ class install:
             # Clone Github Repository
             elif packageType == "git":
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
-                
-                packageName = self.parseURL(package)
-                if os.path.isdir(self.PATH + "/" + packageName[-4:]) == False:
-                    print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
-                    subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                else:
-                    print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
+                for package in depends[packageType]:
+                    packageName = self.parseURL(package)
+                    if os.path.isdir(self.PATH + "/" + packageName[-4:]) == False:
+                        print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
+                        subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                    else:
+                        print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
             # Install Node Package
             elif packageType == "npm":
