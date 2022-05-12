@@ -451,7 +451,7 @@ class install:
                 charPos = count
             count += 1
 
-        return url[charPos - nameLength:]
+        return url[(charPos + 1) - nameLength:]
     
 class cli:
     menu_title = ""
