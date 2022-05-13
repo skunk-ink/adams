@@ -60,13 +60,13 @@ For additional commands see the [User Manual](#user-manual)
 # **Features**
 
 ## Skynet Webportal
-A Skynet Portal is the doorway in which users access [Skynet](https://skynetlabs.com/about), and like any real doorway not under your control, it can be closed at any time. This is why it is imparitive that users have the tools necessary to quickly and easily deploy a Skynet Portal of their own. By operating their own portal, users are able to effectively eliminate the need to rely on any third-party to manage users data. Ensuring that they will never again need to worry about platforms or corporations holding their data hostage.
+A Skynet Portal is the doorway in which users access [Skynet](https://skynetlabs.com/about), and like any real doorway not under your control, it can be closed at any time. This is why it is imparitive that users have the tools necessary to quickly and easily deploy a Skynet Portal of their own. By operating their own portal, users are able to effectively eliminate the need to rely on any third-party to manage users data. Ensuring that users will never again need to worry about platforms or corporations holding their data hostage.
 
 ## Handshake Daemon
 
 The [Handshake protocol (HNS)](https://handshake.org/) is a decentralized naming and certificate authority. A fundamental part of the decentralized internet, Handshake provides users with the ability to fully own their domain name. Effectively breaking the monopolistic strangle hold ICANN has enjoyed for so long. No longer are website and application developers at the whims of a third-party central authority.
 
-By running a Handshake full node A.D.A.M.S is also able to break the need for a user to rely on third-party owned, and operated, DNS servers. Ensuring that the point of access to their personal Skynet Portal is always under their control.
+By running a Handshake full node A.D.A.M.S is also able to break the need for a user to rely on third-party owned, and operated, DNS servers. Guaranteeing that the users point of access to Skynet is always under their control.
 
 ## NGINX Webserver
 The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preformance open-source webserver which is used by A.D.A.M.S. to provide users with a easy to use and remotely accessible user interface. Ensuring that no matter where they are, a user can manage and maintain their personal Skynet Portal.
