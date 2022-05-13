@@ -478,7 +478,7 @@ class install:
         # Configure pdns.conf file
         print(colours.green(self, "\n [+] ") + "Configuring '" + self.POWERDNS_CONF_PATH + "'")
         if disableSubprocesses == False:
-            subprocess.run(["sudo", "mv", self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "\cp", self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
 
         """ ### Parse pdns.conf and remove existing 'launch=' line
 
