@@ -482,72 +482,12 @@ class install:
         if disableSubprocesses == False:
             subprocess.run(["sudo", "rm", "-fr", self.POWERDNS_CONF_PATH], check=True)
             subprocess.run(["sudo", "cp", self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
-
-        """ ### Parse pdns.conf and remove existing 'launch=' line
-
-        # Modify pdns.conf file permissions
-        print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
-        if disableSubprocesses == False:
-            command = "chmod 646 " + self.POWERDNS_CONF_PATH
-            subprocess.run(["sudo", "chmod", "646", self.POWERDNS_CONF_PATH], check=True)
-
-        with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
-            parseConf = pdnsConfFile.readlines()
-
-        lineCount = 0
-        lines = []
-        
-        for line in parseConf:
-            lineCount += 1
-
-            if lineCount == 1:
-                addLine = "echo '" + line + "' > /etc/powerdns/pdns.conf"
-                lines.append(addLine)
-            else:
-                addLine = "echo '" + line + "' >> /etc/powerdns/pdns.conf"
-                lines.append(addLine)
-
-        for line in lines:
-            if disableSubprocesses == False:
-                subprocess.run(["sudo", "sh", "-c", line], check=True)
-
-        # Configure pdns.conf
-        addLine = "echo '#################################' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '# PowerDNS Configurations' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo 'launch=gsqlite3' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-        
-        addLine = "echo 'gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-        
-        addLine = "echo 'gsqlite3-dnssec=yes' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True) """
         
         # Set pdns.conf file permissions
         if disableSubprocesses == False:
-            command = "chmod 640 " + self.POWERDNS_CONF_PATH
             subprocess.run(["sudo", "chmod", "640", self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "chown", "-R", "sudo:pdns", self.POWERDNS_CONF_PATH], check=True)
+
 
         # Initialize the sqlite database with schema
         if disableSubprocesses == False:
