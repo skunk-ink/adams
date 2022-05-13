@@ -465,7 +465,7 @@ class install:
         print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
             command = "chmod 646 " + self.POWERDNS_CONF_PATH
-            subprocess.run(["sudo", "sh", "chmod", "646" + self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "sh", "chmod", "646", self.POWERDNS_CONF_PATH], check=True)
             subprocess.run(["stat", "-c", "'%\a'", self.POWERDNS_CONF_PATH], check=True)
 
         with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
@@ -525,7 +525,7 @@ class install:
         print(colours.yellow(self, "\n [!] ") + "Restored '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
             command = "chmod 640 " + self.POWERDNS_CONF_PATH
-            subprocess.run(["sudo", "sh", "chmod", "640" + self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "sh", "chmod", "640", self.POWERDNS_CONF_PATH], check=True)
 
         # Initialize the sqlite database with schema
         if disableSubprocesses == False:
