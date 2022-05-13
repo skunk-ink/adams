@@ -29,7 +29,7 @@ from colours import colours
 from display import clear_screen
 
 disableInstaller = False
-disableSubprocesses = True
+disableSubprocesses = False
 
 if platform == "linux":
     from getch import getch as getch
@@ -453,7 +453,72 @@ class install:
         # Create Symlink
         print(colours.green(self, "\n [+] ") + "Creating Symlink")
         if disableSubprocesses == False:
-            subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) 
+            subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
+
+        # Parse pdns.conf and remove existing 'launch=' line
+        with open("/etc/powerdns/pdns.conf") as pdnsConfFile:
+            parseConf = pdnsConfFile.readlines()
+
+        lineCount = 1
+        
+        for line in parseConf:
+            if lineCount == 1:
+                addLine = "echo '" + line + "' > /etc/powerdns/pdns.conf"
+                if disableSubprocesses == False:
+                    subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+                lineCount += 1
+            else:
+                addLine = "echo '" + line + "' >> /etc/powerdns/pdns.conf"
+                if disableSubprocesses == False:
+                    subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+                lineCount += 1
+
+        # Configure pdns.conf
+        addLine = "echo '#################################' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+
+        addLine = "echo '# PowerDNS Configurations' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+
+        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+
+        addLine = "echo 'launch=gsqlite3' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+
+        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+        
+        addLine = "echo 'gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+
+        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+        
+        addLine = "echo 'gsqlite3-dnssec=yes' >> /etc/powerdns/pdns.conf"
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+
+        # Initialize the sqlite database with schema
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "sqlite3", "/var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql"], check=True)
+
+        # Change ownership of the directory to the `pdns` user and group
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "chown", "-R", "pdns:pdns", "/var/lib/powerdns"], check=True)
+
+        # Restart PowerDNS Service
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "systemctl", "status", "pdns"], check=True)
+
+
     #################################################### END: pdns(self)
 
     def nginx(self):
