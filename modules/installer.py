@@ -464,7 +464,8 @@ class install:
         # Modify pdns.conf file permissions
         print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
-            subprocess.run(["sudo", "chmod", "666", self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "chmod", "777", self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["stat", "-c", "'%\a'", self.POWERDNS_CONF_PATH], check=True)
 
         with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
             parseConf = pdnsConfFile.readlines()
