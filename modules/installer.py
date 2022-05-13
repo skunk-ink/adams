@@ -30,6 +30,7 @@ from display import clear_screen
 
 disableInstaller = False
 disableSubprocesses = False
+disableDependencyInstall = True
 
 if platform == "linux":
     from getch import getch as getch
@@ -51,7 +52,10 @@ class install:
 
         if type == "adams":
             print(colours.red(self, "\nInstalling A.D.A.M.S."))
-            self.installDepends(self.getDependencies(sys.platform, "all"))
+
+            if disableDependencyInstall == False:
+                self.installDepends(self.getDependencies(sys.platform, "all"))
+
             self.handshake()
             self.powerdns()
             self.nginx()
@@ -61,28 +65,40 @@ class install:
 
         elif type == "skynet-webportal":
             print(colours.red(self, "\nInstalling Skynet Webportal"))
-            self.installDepends(self.getDependencies(sys.platform, "skynet-webportal"))
+
+            if disableDependencyInstall == False:
+                self.installDepends(self.getDependencies(sys.platform, "skynet-webportal"))
+
             self.skynet_webportal()
             print(colours.prompt(self, "\n Skynet Webportal install complete! Press any key to continue."))
             getch()
 
         elif type == "handshake":
             print(colours.red(self, "\nInstalling Handshake Daemon"))
-            self.installDepends(self.getDependencies(sys.platform, "handshake"))
+
+            if disableDependencyInstall == False:
+                self.installDepends(self.getDependencies(sys.platform, "handshake"))
+
             self.handshake()
             print(colours.prompt(self, "\n Handshake Daemon install complete! Press any key to continue."))
             getch()
 
         elif type == "powerdns":
             print(colours.red(self, "\nInstalling PowerDNS"))
-            self.installDepends(self.getDependencies(sys.platform, "powerdns"))
+
+            if disableDependencyInstall == False:
+                self.installDepends(self.getDependencies(sys.platform, "powerdns"))
+
             self.powerdns()
             print(colours.prompt(self, "\n PowerDNS install complete! Press any key to continue."))
             getch()
 
         elif type == "nginx":
             print(colours.red(self, "\nInstalling NGINX Webserver"))
-            self.installDepends(self.getDependencies(sys.platform, "nginx"))
+
+            if disableDependencyInstall == False:
+                self.installDepends(self.getDependencies(sys.platform, "nginx"))
+                
             self.nginx()
             print(colours.prompt(self, "\n NGINX install complete! Press any key to continue."))
             getch()
