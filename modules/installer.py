@@ -29,7 +29,7 @@ from colours import colours
 from display import clear_screen
 
 disableInstaller = False
-disableSubprocess = False
+disableSubprocess = True
 disableLogging = True
 verbose = 0 # 1, 2, or 3
 cosole_logging = ""
@@ -329,35 +329,17 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-
-                    verboseFlag = [""]
-                    if verbose == 1:
-                        verboseFlag = ["-q"]
-                    elif verbose == 2:
-                        verboseFlag = ["-qq"]
-                    elif verbose == 3:
-                        verboseFlag = ["-qqq"]
-
                     if disableSubprocess == False:
-                        subprocess.run(["sudo", "apt", str(verboseFlag[0]), "install", "-y", package], check=True)
+                        subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
                 print(colours.red(self, "\n\n  -- Installing Python Packages --"))
                 for package in depends[packageType]:
                     package = str(package).strip()
-
-                    verboseFlag = ["--quiet"]
-                    if verbose == 1:
-                        verboseFlag = ["-v"]
-                    elif verbose == 2:
-                        verboseFlag = ["-vv"]
-                    elif verbose == 3:
-                        verboseFlag = ["-vvv"]
-
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
                     if disableSubprocess == False:
-                        subprocess.run(["pip", str(verboseFlag[0]), "install", package], check=True)
+                        subprocess.run(["pip", "install", package], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
@@ -366,13 +348,8 @@ class install:
                     packageName = self.parseURL(package)
                     if os.path.isfile(self.PATH + "/" + packageName[-4:]) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
-
-                        verboseFlag = [""]
-                        if verbose >= 3:
-                            verboseFlag = ["--quiet", "/dev/null"]
-
                         if disableSubprocess == False:
-                            subprocess.run(["git", "clone", str(verboseFlag[0]), package, str(verboseFlag[1])], cwd=self.PATH, check=True)
+                            subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
@@ -382,17 +359,8 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-
-                    verboseFlag = [""]
-                    if verbose == 1:
-                        verboseFlag = ["--quiet"]
-                    elif verbose == 2:
-                        verboseFlag = ["--silent"]
-                    elif verbose == 3:
-                        verboseFlag = ["$>/dev/null"]
-                        
                     if disableSubprocess == False:
-                        subprocess.run(["npm", "install", str(verboseFlag[0]), package], cwd=self.PATH, check=True)
+                        subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
             elif packageType == "wget":
@@ -401,14 +369,9 @@ class install:
                     package = str(package).strip()
                     packageName = self.parseURL(package)
                     if os.path.isfile(self.PATH + "/" + packageName) == False:
-
-                        verboseFlag = [""]
-                        if verbose >= 2:
-                            verboseFlag = ["-q", "--show-progress"]
-
                         print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
                         if disableSubprocess == False:
-                            subprocess.run(["wget", str(verboseFlag[0]), str(verboseFlag[1]), package], cwd=self.PATH, check=True)
+                            subprocess.run(["wget", package], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' package found")
 
@@ -416,13 +379,8 @@ class install:
                         
                         if os.path.isfile(self.PATH + "/" + packageName) == True and os.path.isdir(self.PATH + "/" + packageName[-6:]) == False:
                             print("\t Unpacking '" + str(packageName) + "'...")
-
-                            verboseFlag = [""]
-                            if verbose >= 2:
-                                verboseFlag = ["-v"]
-                                
                             if disableSubprocess == False:
-                                subprocess.run(["tar", str(verboseFlag[0]), "-xf", packageName], cwd=self.PATH, check=True)
+                                subprocess.run(["tar", "-xvf", packageName], cwd=self.PATH, check=True)
                             print("\t Cleaning up '" + str(packageName) + "'...")
                             if disableSubprocess == False:
                                 subprocess.run(["rm", "-fr", packageName], cwd=self.PATH, check=True)
@@ -434,27 +392,21 @@ class install:
         print(colours.error(self, "skynet_webportal() method not yet complete."))
         sleep(1)
 
-        """ print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
-        verboseFlag = [""]
-        if verbose >= 2:
-            verboseFlag = ["--no-verbose"]
+        """ print(colours.green(self, " [+] ") + "Installing Yarn")
         if disableSubprocess == False:
-            subprocess.run(["yarn", str(verboseFlag[0]), "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+            subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
+
+        print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
+        if disableSubprocess == False:
+            subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
         print() """
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
         print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
         try:
-            verboseFlag = [""]
-            if verbose == 1:
-                verboseFlag = ["--quiet"]
-            elif verbose == 2:
-                verboseFlag = ["--silent"]
-            elif verbose == 3:
-                verboseFlag = ["$>/dev/null"]
             if disableSubprocess == False:
-                subprocess.run(["npm", "install", str(verboseFlag[0]), "--production"], cwd=self.HSD_PATH)
+                subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
                 print()
         except:
             print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
