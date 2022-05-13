@@ -28,6 +28,17 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
+disableInstaller = False
+disableSubprocess = False
+disableLogging = True
+verbose = 0 # 1, 2, or 3
+cosole_logging = ""
+
+if verbose == 0: console_logging = ""
+if verbose == 1: console_logging = "q"
+if verbose == 1: console_logging = "qq"
+if verbose == 1: console_logging = "qqq"
+
 if platform == "linux":
     from getch import getch as getch
 elif platform == "win32":
@@ -259,6 +270,7 @@ class install:
     def installDepends(self, depends):
         self.printDepends(depends)
 
+        # If installing PowerDNS check for APT sources
         if "pdns-server" in depends["apt"]:
             hasRepo = False
             hasPackage = False
@@ -280,24 +292,27 @@ class install:
             if hasRepo is False:
                 print(colours.green(self, "\n [+] ") + "Adding PowerDNS sources...")
                 addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
-                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                if disableSubprocess == False:
+                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
                 print()
             else:
                 print(colours.yellow(self, "\n [+] ") + "Existing PowerDNS sources found...")
 
             if hasPackage is False:
                 addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
-                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                if disableSubprocess == False:
+                    subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
             else:
                 print(colours.yellow(self, "\n [+] ") + "Existing PowerDNS sources found...")
                 
             # Downloaded and add PowerDNS APT Key
             print(colours.green(self, "\n [+] ") + "Adding APT-KEY...")
-            subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-            subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-            subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-            subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
-            print()
+            if disableSubprocess == False:
+                subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
+                print()
 
         for packageType in depends:
             # Install Windows Executable
@@ -314,25 +329,51 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-                    subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
+
+                    verboseFlag = []
+                    if verbose == 1:
+                        verboseFlag = ["-q"]
+                    elif verbose == 2:
+                        verboseFlag = ["-qq"]
+                    elif verbose == 3:
+                        verboseFlag = ["-qqq"]
+
+                    if disableSubprocess == False:
+                        subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
                 print(colours.red(self, "\n\n  -- Installing Python Packages --"))
                 for package in depends[packageType]:
                     package = str(package).strip()
+
+                    verboseFlag = ["--quiet"]
+                    if verbose == 1:
+                        verboseFlag = ["-v"]
+                    elif verbose == 2:
+                        verboseFlag = ["-vv"]
+                    elif verbose == 3:
+                        verboseFlag = ["-vvv"]
+
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-                    subprocess.run(["pip", "install", package], check=True)
+                    if disableSubprocess == False:
+                        subprocess.run(["pip", verboseFlag, "install", package], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     packageName = self.parseURL(package)
-                    try:
+                    if os.path.isfile(self.PATH + "/" + packageName[-4:]) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
-                        subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-                    except:
+
+                        verboseFlag = []
+                        if verbose >= 3:
+                            verboseFlag = ["--quiet", "/dev/null"]
+
+                        if disableSubprocess == False:
+                            subprocess.run(["git", "clone", verboseFlag[0], package, verboseFlag[1]], cwd=self.PATH, check=True)
+                    else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
             # Install Node Package
@@ -341,7 +382,17 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-                    subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
+
+                    verboseFlag = []
+                    if verbose == 1:
+                        verboseFlag = ["--quiet"]
+                    elif verbose == 2:
+                        verboseFlag = ["--silent"]
+                    elif verbose == 3:
+                        verboseFlag = ["$>/dev/null"]
+                        
+                    if disableSubprocess == False:
+                        subprocess.run(["npm", "install", verboseFlag, package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
             elif packageType == "wget":
@@ -350,8 +401,14 @@ class install:
                     package = str(package).strip()
                     packageName = self.parseURL(package)
                     if os.path.isfile(self.PATH + "/" + packageName) == False:
+
+                        verboseFlag = []
+                        if verbose >= 2:
+                            verboseFlag = ["-q", "--show-progress"]
+
                         print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
-                        subprocess.run(["wget", package], cwd=self.PATH, check=True)
+                        if disableSubprocess == False:
+                            subprocess.run(["wget", verboseFlag[0], verboseFlag[1], package], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' package found")
 
@@ -359,9 +416,16 @@ class install:
                         
                         if os.path.isfile(self.PATH + "/" + packageName) == True and os.path.isdir(self.PATH + "/" + packageName[-6:]) == False:
                             print("\t Unpacking '" + str(packageName) + "'...")
-                            subprocess.run(["tar", "-xvf", packageName], cwd=self.PATH, check=True)
+
+                            verboseFlag = []
+                            if verbose >= 2:
+                                verboseFlag = ["-v"]
+                                
+                            if disableSubprocess == False:
+                                subprocess.run(["tar", verboseFlag[0], "-xf", packageName], cwd=self.PATH, check=True)
                             print("\t Cleaning up '" + str(packageName) + "'...")
-                            subprocess.run(["rm", "-fr", packageName], cwd=self.PATH, check=True)
+                            if disableSubprocess == False:
+                                subprocess.run(["rm", "-fr", packageName], cwd=self.PATH, check=True)
                         else:
                             print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[:-6] + "' directory found")
     #################################################### END: installDepends(self, depends)
@@ -370,19 +434,25 @@ class install:
         print(colours.error(self, "skynet_webportal() method not yet complete."))
         sleep(1)
 
-        """ print(colours.green(self, " [+] ") + "Installing Yarn")
-        subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
-
-        print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
-        subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+        """ print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
+        if disableSubprocess == False:
+            subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
         print() """
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
         print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
         try:
-            subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
-            print()
+            verboseFlag = []
+            if verbose == 1:
+                verboseFlag = ["--quiet"]
+            elif verbose == 2:
+                verboseFlag = ["--silent"]
+            elif verbose == 3:
+                verboseFlag = ["$>/dev/null"]
+            if disableSubprocess == False:
+                subprocess.run(["npm", "install", verboseFlag, "--production"], cwd=self.HSD_PATH)
+                print()
         except:
             print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
     #################################################### END: hsd(self)
@@ -396,7 +466,8 @@ class install:
 
         for file in files:
             if checkFor in file:
-                subprocess.run(["mv", file, "pdnsmanager/"], cwd=self.PATH, check=True)
+                if disableSubprocess == False:
+                    subprocess.run(["mv", file, "pdnsmanager/"], cwd=self.PATH, check=True)
 
         # Check and disable existing stub resolver
         dnsExists = False
@@ -416,21 +487,26 @@ class install:
         # Add configurations to resolved.conf
         print(colours.green(self, "\n [+] ") + "Disabling Stub Resolver...")
         if dnsExists == False or stubListenterExists == False:
-            addLine = "# PowerDNS Configurations"
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+            addLine = "echo '# PowerDNS Configurations' >> /etc/systemd/resolved.conf"
+            if disableSubprocess == False:
+                subprocess.run(["sudo", "sh", "-c", addLine], check=True)
             NEED_RESTART = True
 
         if dnsExists == False:
             addLine = "echo 'DNS=1.1.1.1' >> /etc/systemd/resolved.conf"
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+            if disableSubprocess == False:
+                subprocess.run(["sudo", "sh", "-c", addLine], check=True)
 
         if stubListenterExists == False:
             addLine = "echo 'DNSStubListener=no' >> /etc/systemd/resolved.conf"
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-        print()
+            if disableSubprocess == False:
+                subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+            print()
+
         # Create Symlink
         print(colours.green(self, "\n [+] ") + "Creating Symlink")
-        subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) 
+        if disableSubprocess == False:
+            subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) 
     #################################################### END: pdns(self)
 
     def nginx(self):
@@ -507,29 +583,39 @@ class cli:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1":   # Install A.D.A.M.S.
-                    print(colours.error(self, "adams() method not yet complete."))
-                    sleep(1)
-                    install("adams")
+                    if disableInstaller == False:
+                        install("adams")
+                    else:
+                        print(colours.error(self, "adams() method not yet complete."))
+                        sleep(1)
 
                 elif user_input.upper() == "2": # Install Skynet Webportal
-                    print(colours.error(self, "skynet_webportal() method not yet complete."))
-                    sleep(1)
-                    install("skynet-webportal")
+                    if disableInstaller == False:
+                        install("skynet-webportal")
+                    else:
+                        print(colours.error(self, "skynet_webportal() method not yet complete."))
+                        sleep(1)
 
                 elif user_input.upper() == "3": # Install Handshake Daemon
-                    print(colours.error(self, "handshake() method not yet complete."))
-                    sleep(1)
-                    install("handshake")
+                    if disableInstaller == False:
+                        install("handshake")
+                    else:
+                        print(colours.error(self, "handshake() method not yet complete."))
+                        sleep(1)
 
                 elif user_input.upper() == "4": # Install PowerDNS
-                    print(colours.error(self, "powerdns() method not yet complete."))
-                    sleep(1)
-                    install("powerdns")
+                    if disableInstaller == False:
+                        install("powerdns")
+                    else:
+                        print(colours.error(self, "powerdns() method not yet complete."))
+                        sleep(1)
 
                 elif user_input.upper() == "5": # Install NGINX Webserver
-                    print(colours.error(self, "nginx() method not yet complete."))
-                    sleep(1)
-                    install("nginx")
+                    if disableInstaller == False:
+                        install("nginx")
+                    else:
+                        print(colours.error(self, "nginx() method not yet complete."))
+                        sleep(1)
                     
                 elif user_input.upper() == "B":
                     from main import main as main
