@@ -28,7 +28,8 @@ from time import sleep
 from display import clear_screen
 from colours import colours
 from splash import splash
-
+    
+PATH = os.getcwd()      # A.D.A.M.S. Directory
 
 if platform == "linux":
     from getch import getch as getch
@@ -38,7 +39,7 @@ elif platform == "win32":
     DATA_PATH = os.getcwd() + '\data\\'     # Windows directory format
 
 if os.geteuid() != 0:
-    subprocess.call(['sudo', 'python3', *sys.argv])
+    subprocess.call(['sudo', './adams'], cwd=PATH)
     sys.exit()
 
 
@@ -98,10 +99,10 @@ class main:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
-                    subprocess.run(["sudo", "python3", "modules/installer.py"], check=True)
+                    #subprocess.run(["sudo", "python3", "modules/installer.py"], check=True)
                     installer.cli()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
-                    subprocess.run(["sudo", "python3", "modules/manager.py", self.POWERDNS_CONF_PATH], check=True)
+                    #subprocess.run(["sudo", "python3", "modules/manager.py", self.POWERDNS_CONF_PATH], check=True)
                     manager.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
