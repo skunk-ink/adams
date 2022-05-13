@@ -23,6 +23,7 @@ import subprocess
 import json
 
 from sys import platform
+from urllib.parse import urlparse
 from time import sleep as sleep
 from colours import colours
 from display import clear_screen
@@ -51,26 +52,36 @@ class install:
             self.powerdns()
             self.nginx()
             self.skynet_webportal()
+            print(colours.prompt(self, "\n A.D.A.M.S. install complete! Press any key to continue."))
+            getch()
 
         elif type == "skynet-webportal":
             print(colours.red(self, "\nInstalling Skynet Webportal"))
             self.installDepends(self.getDependencies(sys.platform, "skynet-webportal"))
             self.skynet_webportal()
+            print(colours.prompt(self, "\n Skynet Webportal install complete! Press any key to continue."))
+            getch()
 
         elif type == "handshake":
             print(colours.red(self, "\nInstalling Handshake Daemon"))
             self.installDepends(self.getDependencies(sys.platform, "handshake"))
             self.handshake()
+            print(colours.prompt(self, "\n Handshake Daemon install complete! Press any key to continue."))
+            getch()
 
         elif type == "powerdns":
             print(colours.red(self, "\nInstalling PowerDNS"))
             self.installDepends(self.getDependencies(sys.platform, "powerdns"))
             self.powerdns()
+            print(colours.prompt(self, "\n PowerDNS install complete! Press any key to continue."))
+            getch()
 
         elif type == "nginx":
             print(colours.red(self, "\nInstalling NGINX Webserver"))
             self.installDepends(self.getDependencies(sys.platform, "nginx"))
             self.nginx()
+            print(colours.prompt(self, "\n NGINX install complete! Press any key to continue."))
+            getch()
     #################################################### END: __init__(self, type)
 
     def getDependencies(self, sysPlatform, depends):
@@ -214,16 +225,16 @@ class install:
                 print(colours.green(self, "\n  -- Github Repository --"))
 
             elif packageType == "npm":
-                print(colours.green(self, "\n  -- Node Package Manager --"))
+                print(colours.green(self, "\n  -- Node Package --"))
 
             elif packageType == "wget":
-                print(colours.green(self, "\n  -- WGET --"))
+                print(colours.green(self, "\n  -- WGET (HTTPS) --"))
 
             count = len(depends[packageType])
 
             for package in depends[packageType]:
-                if len(package.strip()) <= 20:
-                    while len(package) < 22:
+                if len(package.strip()) <= 26:
+                    while len(package) < 27:
                         package += " "
 
                 packages += package
@@ -248,56 +259,111 @@ class install:
     def installDepends(self, depends):
         self.printDepends(depends)
 
+        if "pdns-server" in depends["apt"]:
+            hasRepo = False
+            hasPackage = False
+
+            # Check for existing PowerDNS APT sources
+            if os.path.exists("/etc/apt/sources.list.d/pdns.list"):
+
+                with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
+                    sources = sourceFile.readlines()
+
+                for line in sources:
+                    if 'http://repo.powerdns.com/ubuntu' in line:
+                        hasRepo = True
+
+                    if 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' in line:
+                        hasPackage = True
+
+            # If PowerDNS APT sources do not exists, create them
+            if hasRepo is False:
+                print(colours.green(self, "\n [+] ") + "Adding PowerDNS sources...")
+                addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
+                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                print()
+            else:
+                print(colours.yellow(self, "\n [+] ") + "Existing PowerDNS sources found...")
+
+            if hasPackage is False:
+                addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
+                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+            else:
+                print(colours.yellow(self, "\n [+] ") + "Existing PowerDNS sources found...")
+                
+            # Downloaded and add PowerDNS APT Key
+            print(colours.green(self, "\n [+] ") + "Adding APT-KEY...")
+            subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
+            print()
+
         for packageType in depends:
             # Install Windows Executable
             if packageType == "exe":
-                packages = ""
-
+                print(colours.red(self, "\n\n  -- Installing Windows Executables --"))
                 for package in depends[packageType]:
-                    packages = packages + package + " "
+                    package = str(package).strip()
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
+                    pass
 
             # Install Linux APT Package
             elif packageType == "apt":
-                packages = ""
-
+                print(colours.red(self, "\n\n  -- Installing Linux APT Packages --"))
                 for package in depends[packageType]:
-                    packages = packages + package + " "
-                
-                #subprocess.run(["sudo", "apt", "install", "-y", packages], check=True)
+                    package = str(package).strip()
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
+                    subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
-                packages = ""
-
+                print(colours.red(self, "\n\n  -- Installing Python Packages --"))
                 for package in depends[packageType]:
-                    packages = packages + package + " "
-                
-                #subprocess.run(["pip", "install", packages], check=True)
+                    package = str(package).strip()
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
+                    subprocess.run(["pip", "install", package], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
+                print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
-                    pass
-                    #subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                    packageName = self.parseURL(package)
+                    try:
+                        print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
+                        subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
+                    except:
+                        print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
             # Install Node Package
             elif packageType == "npm":
+                print(colours.red(self, "\n\n  -- Installing Node Packages --"))
                 for package in depends[packageType]:
-                    pass
-                    #subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
+                    package = str(package).strip()
+                    print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
+                    subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
             elif packageType == "wget":
+                print(colours.red(self, "\n\n  -- Installing WGET Packages --"))
                 for package in depends[packageType]:
-                    #print(colours.green(self, " [+] ") + "Downloading " + str(package))
-                    #subprocess.run(["wget", package], cwd=self.PATH, check=True)
+                    package = str(package).strip()
+                    packageName = self.parseURL(package)
+                    if os.path.isfile(self.PATH + "/" + packageName) == False:
+                        print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
+                        subprocess.run(["wget", package], cwd=self.PATH, check=True)
+                    else:
+                        print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' package found")
 
                     if str(package).endswith("tar.gz"):
-                        pass
-                        #print("\t Unpacking...")
-                        #subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                        #print("\t Cleaning up...")
-                        #subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
+                        
+                        if os.path.isfile(self.PATH + "/" + packageName) == True and os.path.isdir(self.PATH + "/" + packageName[-6:]) == False:
+                            print("\t Unpacking '" + str(packageName) + "'...")
+                            subprocess.run(["tar", "-xvf", packageName], cwd=self.PATH, check=True)
+                            print("\t Cleaning up '" + str(packageName) + "'...")
+                            subprocess.run(["rm", "-fr", packageName], cwd=self.PATH, check=True)
+                        else:
+                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[:-6] + "' directory found")
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
@@ -313,77 +379,24 @@ class install:
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
-        print(colours.error(self, "hsd() method not yet complete."))
-        sleep(1)
-
-        """ if os.path.isdir(self.HSD_PATH) == False:
-            print(colours.green(self, " [+] ") + "Downloading Handshake Daemon")
-            subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
-
-            print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+        print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+        try:
             subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
             print()
-        else:
-            print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!") """
+        except:
+            print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
     #################################################### END: hsd(self)
 
     def powerdns(self):
+        files = os.listdir(self.PATH)
+        checkFor = "pdnsmanager"
 
-        #print(colours.green(self, " [+] ") + "\nConfiguring PowerDNS...")
-        print(colours.error(self, "pdns() method not yet complete."))
-        sleep(2)
+        print(colours.green(self, "\n [+] ") + "Configuring PowerDNS")
+        print(colours.green(self, "\n [+] ") + "Installing PowerDNS Manager")
 
-        """if package.endswith("tar.gz"):
-
-            if os.path.exists("./pdnsmanager") == False:
-                print(colours.green(self, " [+] ") + "Extracting PowerDNS Manager")
-                subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
-                subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
-            
-            if os.path.exists("./pdnsmanager") == True:
-                print(colours.green(self, " [+] ") + "Configuring PowerDNS Manager")
-            
-            print()
-        else:
-            print(colours.green(self, " [+] ") + "Installing " + str(package))
-            subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
-            print()
-
-        hasRepo = False
-        hasPackage = False
-
-        # Check for existing PowerDNS APT sources
-        if os.path.exists("/etc/apt/sources.list.d/pdns.list"):
-
-            with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
-                sources = sourceFile.readlines()
-
-            for line in sources:
-                if 'http://repo.powerdns.com/ubuntu' in line:
-                    hasRepo = True
-
-                if 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' in line:
-                    hasPackage = True
-
-        # If PowerDNS APT sources do not exists, create them
-        if hasRepo is False:
-            print(colours.green(self, " [+] ") + "Adding PowerDNS Sources...")
-            addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
-            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-            print()
-
-        if hasPackage is False:
-            addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
-            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-            
-        # Downloaded and add PowerDNS APT Key
-        print(colours.green(self, " [+] ") + "Adding APT-KEY...")
-        subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-        subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-        subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-        subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
-        print()
+        for file in files:
+            if checkFor in file:
+                subprocess.run(["mv", file, "pdnsmanager/"], cwd=self.PATH, check=True)
 
         # Check and disable existing stub resolver
         dnsExists = False
@@ -401,9 +414,9 @@ class install:
                 stubListenterExists = True
 
         # Add configurations to resolved.conf
-        print(colours.green(self, " [+] ") + "Disabling Stub Resolver...")
+        print(colours.green(self, "\n [+] ") + "Disabling Stub Resolver...")
         if dnsExists == False or stubListenterExists == False:
-            addLine = "# A.D.A.M.S. PowerDNS Configurations"
+            addLine = "# PowerDNS Configurations"
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
             NEED_RESTART = True
 
@@ -416,14 +429,27 @@ class install:
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
         print()
         # Create Symlink
-        print(colours.green(self, " [+] ") + "Creating Symlink")
-        subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) """
+        print(colours.green(self, "\n [+] ") + "Creating Symlink")
+        subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) 
     #################################################### END: pdns(self)
 
     def nginx(self):
         print(colours.error(self, "nginx() method not yet complete."))
         sleep(1)
     #################################################### END: nginx(self)
+
+    def parseURL(self, url):
+        url = str(url).strip()
+        charPos = 0
+        count = 0
+        nameLength = len(url)
+
+        for character in url:
+            if character == "/":
+                charPos = count
+            count += 1
+
+        return url[(charPos + 1) - nameLength:]
     
 class cli:
     menu_title = ""
@@ -481,19 +507,29 @@ class cli:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1":   # Install A.D.A.M.S.
-                    install("adams")
+                    print(colours.error(self, "adams() method not yet complete."))
+                    sleep(1)
+                    #install("adams")
 
                 elif user_input.upper() == "2": # Install Skynet Webportal
-                    install("skynet-webportal")
+                    print(colours.error(self, "skynet_webportal() method not yet complete."))
+                    sleep(1)
+                    #install("skynet-webportal")
 
                 elif user_input.upper() == "3": # Install Handshake Daemon
-                    install("handshake")
+                    print(colours.error(self, "handshake() method not yet complete."))
+                    sleep(1)
+                    #install("handshake")
 
                 elif user_input.upper() == "4": # Install PowerDNS
-                    install("powerdns")
+                    print(colours.error(self, "powerdns() method not yet complete."))
+                    sleep(1)
+                    #install("powerdns")
 
                 elif user_input.upper() == "5": # Install NGINX Webserver
-                    install("nginx")
+                    print(colours.error(self, "nginx() method not yet complete."))
+                    sleep(1)
+                    #install("nginx")
                     
                 elif user_input.upper() == "B":
                     from main import main as main

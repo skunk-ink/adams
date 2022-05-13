@@ -5,7 +5,7 @@
     - [x] [Linux](#linux)
     - [ ] [MacOS](#macos)
 - [ ] [**Installer Module**](#installer-module)
-    - [ ] [Detect Dependencies](#detect-dependencies)
+    - [x] [Detect Dependencies](#detect-dependencies)
     - [ ] [Install Dependencies](#install-dependencies)
         - [ ] [Windows](#windows-1)
             - [ ] Download
@@ -35,7 +35,7 @@
             - [x] Install
             - [ ] Configure
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
-            - [x] Download
+            - [ ] Download
             - [ ] Install
             - [ ] Configure
 - [ ] [**Manager Module**](#system-configuration-module)
