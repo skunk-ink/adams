@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo pip install pylint
+sudo apt update && sudo apt install -y graphviz
+
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
