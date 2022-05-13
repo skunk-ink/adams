@@ -28,8 +28,8 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableInstaller = True            # Disable all install methods
-disableSubprocesses = True         # Ghost run install methods, does not affect the system
+disableInstaller = False            # Disable all install methods
+disableSubprocesses = False         # Ghost run install methods, does not affect the system
 disableDependencyInstall = False    # Disable dependency check on all install methods
 
 if platform == "linux":
@@ -496,6 +496,10 @@ class install:
         # Change ownership of the directory to the `pdns` user and group
         if disableSubprocesses == False:
             subprocess.run(["sudo", "chown", "-R", "pdns:pdns", "/var/lib/powerdns"], check=True)
+
+        # Restart PowerDNS
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "systemctl", "restart", "pdns"], check=True)
 
         self.NEED_RESTART = True
 
