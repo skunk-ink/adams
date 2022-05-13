@@ -27,3 +27,8 @@ export PATH=~/.local/bin:$PATH
 
 echo -e "\n ${GREEN}[+]${NC} Building A.D.A.M.S. binary..."
 pyinstaller --clean --name adams --distpath ./ -F modules/main.py
+
+if [ "$1" == "--run" ] || [ "$1" == "-r" ];
+then
+    ./adams
+fi

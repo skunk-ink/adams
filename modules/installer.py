@@ -28,9 +28,9 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableInstaller = False
-disableSubprocesses = False
-disableDependencyInstall = False
+disableInstaller = True             # Disable all install methods
+disableSubprocesses = True          # Ghost run install methods, does not affect the system
+disableDependencyInstall = False    # Disable dependency check on all install methods
 
 if platform == "linux":
     from getch import getch as getch
