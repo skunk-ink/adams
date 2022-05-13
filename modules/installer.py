@@ -507,19 +507,29 @@ class cli:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1":   # Install A.D.A.M.S.
-                    install("adams")
+                    print(colours.error(self, "adams() method not yet complete."))
+                    sleep(1)
+                    #install("adams")
 
                 elif user_input.upper() == "2": # Install Skynet Webportal
-                    install("skynet-webportal")
+                    print(colours.error(self, "skynet_webportal() method not yet complete."))
+                    sleep(1)
+                    #install("skynet-webportal")
 
                 elif user_input.upper() == "3": # Install Handshake Daemon
-                    install("handshake")
+                    print(colours.error(self, "handshake() method not yet complete."))
+                    sleep(1)
+                    #install("handshake")
 
                 elif user_input.upper() == "4": # Install PowerDNS
-                    install("powerdns")
+                    print(colours.error(self, "powerdns() method not yet complete."))
+                    sleep(1)
+                    #install("powerdns")
 
                 elif user_input.upper() == "5": # Install NGINX Webserver
-                    install("nginx")
+                    print(colours.error(self, "nginx() method not yet complete."))
+                    sleep(1)
+                    #install("nginx")
                     
                 elif user_input.upper() == "B":
                     from main import main as main

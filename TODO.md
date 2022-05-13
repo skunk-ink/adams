@@ -19,9 +19,9 @@
         - [x] [Python](#python)
             - [x] Download
             - [x] Install
-        - [ ] [Handshake Daemon](#hns-daemon-install)
+        - [x] [Handshake Daemon](#hns-daemon-install)
             - [x] Download
-            - [ ] Install
+            - [x] Install
         - [ ] [PowerDNS](#powerdns-install)
             - [x] Download
             - [x] Install
