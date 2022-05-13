@@ -17,14 +17,50 @@
                     ▀▀▀█████████▀▀▀                    
 """
 
+import subprocess
 import os
 import sys
 
-from main import main as main
 from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
+disableSubprocesses = False         # Ghost run, does not affect the system
+
+class pdnsManager:
+    def createZone(self):
+
+        namespace = cli.get_input(self, "\n\tDomain Name : ")
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "create-zone", namespace , "ns1." + namespace], check=True)
+        
+        updateHNS = cli.get_input(self, "\n\tUpdate handshake records (Y/N)? [default = N] : ")
+        if updateHNS.lower() == "y":
+            record = {"records": [{"type": "NS", "ns": "ns1." + namespace + "."}]}
+            if disableSubprocesses == False:
+                subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
+        
+    #################################################### END: createZone(self)
+
+    def secureZone(self):
+        
+        zone = cli.get_input(self, "\n\tEnter zone name to secure : ")
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "secure-zone", zone], check=True)
+    #################################################### END: secureZone(self)
+
+    def createRecord(self):
+                
+        namespace = cli.get_input(self, "\n\tDomain Name : ")
+        record_name = cli.get_input(self, "\n\tRecord Name : ")
+        record_type = str(cli.get_input(self, "\n\tRecord Type : ")).upper()
+        record_value = cli.get_input(self, "\n\tRecord Value : ")
+
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "add-record", namespace + ".", record_name, record_type, record_value], check=True)
+    #################################################### END: createRecord(self)
+
+        
 class cli:
     menu_title = ""
     menu_options = ""
@@ -102,8 +138,9 @@ class cli:
             menu_title = ["PDNS",
                          "PowerDNS Management"]
                           
-            menu_options = [colours().cyan("1") + ": PDNS Configuration",
-                            colours().cyan("2") + ": Manage Records",
+            menu_options = [colours().cyan("1") + ": New zone",
+                            colours().cyan("2") + ": Secure zone",
+                            colours().cyan("3") + ": Create record",
                             "",
                             colours().cyan("B") + ": Back to Management",
                             colours().cyan("Q") + ": Quit A.D.A.M.S."]
@@ -268,15 +305,14 @@ class cli:
                 
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
-                if user_input.upper() == "1":   # PowerDNS Configuration
-                    #self.pdnsConfiguration()
-                    print(colours().error("pdnsConfiguration() method not found."))
-                    sleep(1)
+                if user_input.upper() == "1":   # Create new zone
+                    pdnsManager.createZone(self)
 
-                elif user_input.upper() == "2": # PowerDNS Records
-                    #self.pdnsRecords()
-                    print(colours().error("pdnsRecords() method not found."))
-                    sleep(1)
+                elif user_input.upper() == "2": # Secure existing zone
+                    pdnsManager.secureZone(self)
+
+                elif user_input.upper() == "3": # Create new record
+                    pdnsManager.createRecord(self)
 
                 elif user_input.upper() == "B":
                     self.main_menu()
@@ -291,7 +327,5 @@ class cli:
 
 if __name__ == '__main__':
     os.system('cls')
-    print(colours.error("config.py not yet complete."))
     cli()
-    sleep(1)
 #################################################### END: __main__

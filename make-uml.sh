@@ -8,15 +8,16 @@ NC='\033[0m'
 
 echo -e "\n${YELLOW}The following dependencies will be required to build and run A.D.A.M.S.${NC}\n"
 echo -e " ${GREEN}-- APT Packages --${NC}"
+echo -e "\tpip"
 echo -e "\tgraphviz\n"
 echo -e " ${GREEN}-- PIP Packages --${NC}"
-echo -e "\tpylint\n"
-
+echo -e "\tpylint"
+echo -e "\tpyreverse\n"
 echo -e "\n ${GREEN}[+]${NC} Updating APT Repositories..." 
 sudo apt update
 
 echo -e "\n ${GREEN}[+]${NC} Installing APT Dependencies:" 
-sudo apt install -y graphviz
+sudo apt install -y pip graphviz
 
 echo -e "\n ${GREEN}[+]${NC} Installing Python Dependencies:"
 sudo pip install pylint
