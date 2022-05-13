@@ -456,7 +456,7 @@ class install:
             subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
 
         # Parse pdns.conf and remove existing 'launch=' line
-        with open("/etc/powerdns/pdns.conf") as pdnsConfFile:
+        with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
             parseConf = pdnsConfFile.readlines()
 
         lineCount = 1
