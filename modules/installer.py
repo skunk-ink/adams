@@ -29,15 +29,7 @@ from colours import colours
 from display import clear_screen
 
 disableInstaller = False
-disableSubprocess = True
-disableLogging = True
-verbose = 0 # 1, 2, or 3
-cosole_logging = ""
-
-if verbose == 0: console_logging = ""
-if verbose == 1: console_logging = "q"
-if verbose == 1: console_logging = "qq"
-if verbose == 1: console_logging = "qqq"
+disableSubprocesses = True
 
 if platform == "linux":
     from getch import getch as getch
@@ -292,7 +284,7 @@ class install:
             if hasRepo is False:
                 print(colours.green(self, "\n [+] ") + "Adding PowerDNS sources...")
                 addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
-                if disableSubprocess == False:
+                if disableSubprocesses == False:
                     subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
                 print()
             else:
@@ -300,14 +292,14 @@ class install:
 
             if hasPackage is False:
                 addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
-                if disableSubprocess == False:
+                if disableSubprocesses == False:
                     subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
             else:
                 print(colours.yellow(self, "\n [+] ") + "Existing PowerDNS sources found...")
                 
             # Downloaded and add PowerDNS APT Key
             print(colours.green(self, "\n [+] ") + "Adding APT-KEY...")
-            if disableSubprocess == False:
+            if disableSubprocesses == False:
                 subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
                 subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
                 subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
@@ -329,7 +321,7 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-                    if disableSubprocess == False:
+                    if disableSubprocesses == False:
                         subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
 
             # Install Python Packages
@@ -338,7 +330,7 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-                    if disableSubprocess == False:
+                    if disableSubprocesses == False:
                         subprocess.run(["pip", "install", package], check=True)
 
             # Clone Github Repository
@@ -348,7 +340,7 @@ class install:
                     packageName = self.parseURL(package)
                     if os.path.isfile(self.PATH + "/" + packageName[-4:]) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
-                        if disableSubprocess == False:
+                        if disableSubprocesses == False:
                             subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
@@ -359,7 +351,7 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
-                    if disableSubprocess == False:
+                    if disableSubprocesses == False:
                         subprocess.run(["npm", "install", package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
@@ -370,7 +362,7 @@ class install:
                     packageName = self.parseURL(package)
                     if os.path.isfile(self.PATH + "/" + packageName) == False:
                         print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
-                        if disableSubprocess == False:
+                        if disableSubprocesses == False:
                             subprocess.run(["wget", package], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' package found")
@@ -379,10 +371,10 @@ class install:
                         
                         if os.path.isfile(self.PATH + "/" + packageName) == True and os.path.isdir(self.PATH + "/" + packageName[-6:]) == False:
                             print("\t Unpacking '" + str(packageName) + "'...")
-                            if disableSubprocess == False:
+                            if disableSubprocesses == False:
                                 subprocess.run(["tar", "-xvf", packageName], cwd=self.PATH, check=True)
                             print("\t Cleaning up '" + str(packageName) + "'...")
-                            if disableSubprocess == False:
+                            if disableSubprocesses == False:
                                 subprocess.run(["rm", "-fr", packageName], cwd=self.PATH, check=True)
                         else:
                             print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[:-6] + "' directory found")
@@ -393,11 +385,11 @@ class install:
         sleep(1)
 
         """ print(colours.green(self, " [+] ") + "Installing Yarn")
-        if disableSubprocess == False:
+        if disableSubprocesses == False:
             subprocess.run(["npm", "install", "yarn"], cwd=(self.SKYNET_PATH + "/packages/website"))
 
         print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
-        if disableSubprocess == False:
+        if disableSubprocesses == False:
             subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
         print() """
     #################################################### END: skynet_webportal(self)
@@ -405,7 +397,7 @@ class install:
     def handshake(self):
         print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
         try:
-            if disableSubprocess == False:
+            if disableSubprocesses == False:
                 subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
                 print()
         except:
@@ -421,7 +413,7 @@ class install:
 
         for file in files:
             if checkFor in file:
-                if disableSubprocess == False:
+                if disableSubprocesses == False:
                     subprocess.run(["mv", file, "pdnsmanager/"], cwd=self.PATH, check=True)
 
         # Check and disable existing stub resolver
@@ -443,24 +435,24 @@ class install:
         print(colours.green(self, "\n [+] ") + "Disabling Stub Resolver...")
         if dnsExists == False or stubListenterExists == False:
             addLine = "echo '# PowerDNS Configurations' >> /etc/systemd/resolved.conf"
-            if disableSubprocess == False:
+            if disableSubprocesses == False:
                 subprocess.run(["sudo", "sh", "-c", addLine], check=True)
             NEED_RESTART = True
 
         if dnsExists == False:
             addLine = "echo 'DNS=1.1.1.1' >> /etc/systemd/resolved.conf"
-            if disableSubprocess == False:
+            if disableSubprocesses == False:
                 subprocess.run(["sudo", "sh", "-c", addLine], check=True)
 
         if stubListenterExists == False:
             addLine = "echo 'DNSStubListener=no' >> /etc/systemd/resolved.conf"
-            if disableSubprocess == False:
+            if disableSubprocesses == False:
                 subprocess.run(["sudo", "sh", "-c", addLine], check=True)
             print()
 
         # Create Symlink
         print(colours.green(self, "\n [+] ") + "Creating Symlink")
-        if disableSubprocess == False:
+        if disableSubprocesses == False:
             subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) 
     #################################################### END: pdns(self)
 
