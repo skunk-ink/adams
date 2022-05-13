@@ -419,7 +419,7 @@ class install:
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
-        print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+        print(colours.green(self, "\n [+] ") + "Installing Handshake Daemon")
 
         if disableSubprocesses == False:
             subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)

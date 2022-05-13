@@ -31,7 +31,6 @@
                     "libboost-all-dev",
                     "libtool",
                     "make",
-                    "pdns-backend-sqlite3",
                     "pkg-config",
                     "default-libmysqlclient-dev",
                     "libssl-dev",
