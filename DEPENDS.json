@@ -21,7 +21,8 @@
                     "https://github.com/SkynetLabs/ansible-private-sample.git"]
         }],
     "handshake": [{
-            "apt": ["git"],
+            "apt": ["git",
+                    "npm"],
 
             "git": ["https://github.com/handshake-org/hsd.git"]
         }],

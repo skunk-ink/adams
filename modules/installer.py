@@ -28,8 +28,8 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableInstaller = True             # Disable all install methods
-disableSubprocesses = True          # Ghost run install methods, does not affect the system
+disableInstaller = False            # Disable all install methods
+disableSubprocesses = False         # Ghost run install methods, does not affect the system
 disableDependencyInstall = False    # Disable dependency check on all install methods
 
 if platform == "linux":
@@ -50,6 +50,8 @@ class install:
     POWERDNS_CONF_FILE = PATH + "/configurations/pdns.conf" # Premade PowerDNS Configuration File
 
     def __init__(self, type):
+
+        self.NEED_RESTART = False
 
         if type == "adams":
             print(colours.red(self, "\nInstalling A.D.A.M.S."))
@@ -101,6 +103,8 @@ class install:
                 self.installDepends(self.getDependencies(sys.platform, "nginx"))
 
             self.nginx()
+            if self.NEED_RESTART == True:
+                print(colours.yellow(self, "\n [!]") + " RESTART NEEDED!!!")
             print(colours.prompt(self, "\n NGINX install complete! Press any key to continue."))
             getch()
     #################################################### END: __init__(self, type)
@@ -358,7 +362,7 @@ class install:
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     packageName = self.parseURL(package)
-                    if os.path.isfile(self.PATH + "/" + packageName[-4:]) == False:
+                    if os.path.exists(self.PATH + "/" + packageName[:-4]) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                         if disableSubprocesses == False:
                             subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
@@ -553,9 +557,7 @@ class install:
         if disableSubprocesses == False:
             subprocess.run(["sudo", "chown", "-R", "pdns:pdns", "/var/lib/powerdns"], check=True)
 
-        # Restart PowerDNS Service
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "systemctl", "status", "pdns"], check=True)
+        self.NEED_RESTART = True
 
 
     #################################################### END: pdns(self)
