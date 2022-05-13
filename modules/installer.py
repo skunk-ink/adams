@@ -53,60 +53,67 @@ class install:
 
         self.NEED_RESTART = False
 
-        if type == "adams":
-            print(colours.red(self, "\nInstalling A.D.A.M.S."))
+        try:
+            if type == "adams":
+                print(colours.red(self, "\nInstalling A.D.A.M.S."))
 
-            if disableDependencyInstall == False:
-                self.installDepends(self.getDependencies(sys.platform, "all"))
+                if disableDependencyInstall == False:
+                    self.installDepends(self.getDependencies(sys.platform, "all"))
 
-            self.handshake()
-            self.powerdns()
-            self.nginx()
-            self.skynet_webportal()
-            print(colours.prompt(self, "\n A.D.A.M.S. install complete! Press any key to continue."))
-            getch()
+                self.handshake()
+                self.powerdns()
+                self.nginx()
+                self.skynet_webportal()
+                print(colours.prompt(self, "\n A.D.A.M.S. install complete! Press any key to continue."))
+                getch()
 
-        elif type == "skynet-webportal":
-            print(colours.red(self, "\nInstalling Skynet Webportal"))
+            elif type == "skynet-webportal":
+                print(colours.red(self, "\nInstalling Skynet Webportal"))
 
-            if disableDependencyInstall == False:
-                self.installDepends(self.getDependencies(sys.platform, "skynet-webportal"))
+                if disableDependencyInstall == False:
+                    self.installDepends(self.getDependencies(sys.platform, "skynet-webportal"))
 
-            self.skynet_webportal()
-            print(colours.prompt(self, "\n Skynet Webportal install complete! Press any key to continue."))
-            getch()
+                self.skynet_webportal()
+                print(colours.prompt(self, "\n Skynet Webportal install complete! Press any key to continue."))
+                getch()
 
-        elif type == "handshake":
-            print(colours.red(self, "\nInstalling Handshake Daemon"))
+            elif type == "handshake":
+                print(colours.red(self, "\nInstalling Handshake Daemon"))
 
-            if disableDependencyInstall == False:
-                self.installDepends(self.getDependencies(sys.platform, "handshake"))
+                if disableDependencyInstall == False:
+                    self.installDepends(self.getDependencies(sys.platform, "handshake"))
 
-            self.handshake()
-            print(colours.prompt(self, "\n Handshake Daemon install complete! Press any key to continue."))
-            getch()
+                self.handshake()
+                print(colours.prompt(self, "\n Handshake Daemon install complete! Press any key to continue."))
+                getch()
 
-        elif type == "powerdns":
-            print(colours.red(self, "\nInstalling PowerDNS"))
+            elif type == "powerdns":
+                print(colours.red(self, "\nInstalling PowerDNS"))
 
-            if disableDependencyInstall == False:
-                self.installDepends(self.getDependencies(sys.platform, "powerdns"))
+                if disableDependencyInstall == False:
+                    self.installDepends(self.getDependencies(sys.platform, "powerdns"))
 
-            self.powerdns()
-            print(colours.prompt(self, "\n PowerDNS install complete! Press any key to continue."))
-            getch()
+                self.powerdns()
+                print(colours.prompt(self, "\n PowerDNS install complete! Press any key to continue."))
+                getch()
 
-        elif type == "nginx":
-            print(colours.red(self, "\nInstalling NGINX Webserver"))
+            elif type == "nginx":
+                print(colours.red(self, "\nInstalling NGINX Webserver"))
 
-            if disableDependencyInstall == False:
-                self.installDepends(self.getDependencies(sys.platform, "nginx"))
+                if disableDependencyInstall == False:
+                    self.installDepends(self.getDependencies(sys.platform, "nginx"))
 
-            self.nginx()
+                self.nginx()
+                print(colours.prompt(self, "\n NGINX install complete! Press any key to continue."))
+                getch()
+
             if self.NEED_RESTART == True:
-                print(colours.yellow(self, "\n [!]") + " RESTART NEEDED!!!")
-            print(colours.prompt(self, "\n NGINX install complete! Press any key to continue."))
-            getch()
+                print(colours.yellow(self, "\n [!]") + " RESTART NEEDED: Press any key to reboot now or 'ctrl+c' return to menu")
+                getch()
+                subprocess.run(["sudo", "reboot", "now"], check=True)
+        except KeyboardInterrupt:
+            from main import main
+            main()
     #################################################### END: __init__(self, type)
 
     def getDependencies(self, sysPlatform, depends):
@@ -486,7 +493,7 @@ class install:
         # Set pdns.conf file permissions
         if disableSubprocesses == False:
             subprocess.run(["sudo", "chmod", "640", self.POWERDNS_CONF_PATH], check=True)
-            subprocess.run(["sudo", "chown", "-R", "sudo:pdns", self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "chown", "-R", "root:pdns", self.POWERDNS_CONF_PATH], check=True)
 
 
         # Initialize the sqlite database with schema
@@ -496,10 +503,6 @@ class install:
         # Change ownership of the directory to the `pdns` user and group
         if disableSubprocesses == False:
             subprocess.run(["sudo", "chown", "-R", "pdns:pdns", "/var/lib/powerdns"], check=True)
-
-        # Restart PowerDNS
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "systemctl", "restart", "pdns"], check=True)
 
         self.NEED_RESTART = True
 
