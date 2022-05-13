@@ -28,8 +28,8 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableInstaller = True             # Disable all install methods
-disableSubprocesses = True          # Ghost run install methods, does not affect the system
+disableInstaller = True            # Disable all install methods
+disableSubprocesses = True         # Ghost run install methods, does not affect the system
 disableDependencyInstall = False    # Disable dependency check on all install methods
 
 if platform == "linux":
@@ -50,6 +50,8 @@ class install:
     POWERDNS_CONF_FILE = PATH + "/configurations/pdns.conf" # Premade PowerDNS Configuration File
 
     def __init__(self, type):
+
+        self.NEED_RESTART = False
 
         if type == "adams":
             print(colours.red(self, "\nInstalling A.D.A.M.S."))
@@ -101,6 +103,8 @@ class install:
                 self.installDepends(self.getDependencies(sys.platform, "nginx"))
 
             self.nginx()
+            if self.NEED_RESTART == True:
+                print(colours.yellow(self, "\n [!]") + " RESTART NEEDED!!!")
             print(colours.prompt(self, "\n NGINX install complete! Press any key to continue."))
             getch()
     #################################################### END: __init__(self, type)
@@ -358,7 +362,7 @@ class install:
                 print(colours.red(self, "\n\n  -- Cloning Github Repositories --"))
                 for package in depends[packageType]:
                     packageName = self.parseURL(package)
-                    if os.path.isfile(self.PATH + "/" + packageName[-4:]) == False:
+                    if os.path.exists(self.PATH + "/" + packageName[:-4]) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
                         if disableSubprocesses == False:
                             subprocess.run(["git", "clone", package], cwd=self.PATH, check=True)
@@ -415,7 +419,7 @@ class install:
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
-        print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
+        print(colours.green(self, "\n [+] ") + "Installing Handshake Daemon")
 
         if disableSubprocesses == False:
             subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
@@ -478,72 +482,12 @@ class install:
         if disableSubprocesses == False:
             subprocess.run(["sudo", "rm", "-fr", self.POWERDNS_CONF_PATH], check=True)
             subprocess.run(["sudo", "cp", self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
-
-        """ ### Parse pdns.conf and remove existing 'launch=' line
-
-        # Modify pdns.conf file permissions
-        print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
-        if disableSubprocesses == False:
-            command = "chmod 646 " + self.POWERDNS_CONF_PATH
-            subprocess.run(["sudo", "chmod", "646", self.POWERDNS_CONF_PATH], check=True)
-
-        with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
-            parseConf = pdnsConfFile.readlines()
-
-        lineCount = 0
-        lines = []
-        
-        for line in parseConf:
-            lineCount += 1
-
-            if lineCount == 1:
-                addLine = "echo '" + line + "' > /etc/powerdns/pdns.conf"
-                lines.append(addLine)
-            else:
-                addLine = "echo '" + line + "' >> /etc/powerdns/pdns.conf"
-                lines.append(addLine)
-
-        for line in lines:
-            if disableSubprocesses == False:
-                subprocess.run(["sudo", "sh", "-c", line], check=True)
-
-        # Configure pdns.conf
-        addLine = "echo '#################################' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '# PowerDNS Configurations' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo 'launch=gsqlite3' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-        
-        addLine = "echo 'gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        addLine = "echo '#' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-        
-        addLine = "echo 'gsqlite3-dnssec=yes' >> /etc/powerdns/pdns.conf"
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True) """
         
         # Set pdns.conf file permissions
         if disableSubprocesses == False:
-            command = "chmod 640 " + self.POWERDNS_CONF_PATH
             subprocess.run(["sudo", "chmod", "640", self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "chown", "-R", "sudo:pdns", self.POWERDNS_CONF_PATH], check=True)
+
 
         # Initialize the sqlite database with schema
         if disableSubprocesses == False:
@@ -553,9 +497,7 @@ class install:
         if disableSubprocesses == False:
             subprocess.run(["sudo", "chown", "-R", "pdns:pdns", "/var/lib/powerdns"], check=True)
 
-        # Restart PowerDNS Service
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "systemctl", "status", "pdns"], check=True)
+        self.NEED_RESTART = True
 
 
     #################################################### END: pdns(self)
