@@ -339,7 +339,7 @@ class install:
                         verboseFlag = ["-qqq"]
 
                     if disableSubprocess == False:
-                        subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
+                        subprocess.run(["sudo", "apt", verboseFlag, "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
@@ -435,8 +435,11 @@ class install:
         sleep(1)
 
         """ print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
+        verboseFlag = []
+        if verbose >= 2:
+            verboseFlag = ["--no-verbose"]
         if disableSubprocess == False:
-            subprocess.run(["yarn", "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+            subprocess.run(["yarn", verboseFlag, "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
         print() """
     #################################################### END: skynet_webportal(self)
 
