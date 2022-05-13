@@ -60,7 +60,7 @@ For additional commands see the [User Manual](#user-manual)
 # **Features**
 
 ## Skynet Webportal
-A Skynet Portal is the doorway in which a you can access [Skynet](https://skynetlabs.com/about), and like any real doorway you do not own, it can be closed. This is why it is imparitive that users have the tools necessary to quickly and easily deploy a Skynet Portal of their own.
+A Skynet Portal is the doorway in which users access [Skynet](https://skynetlabs.com/about), and like any real doorway not under your control, it can be closed at any time. This is why it is imparitive that users have the tools necessary to quickly and easily deploy a Skynet Portal of their own. By operating their own portal, users are able to effectively eliminate the need to rely on any third-party to manage users data. Ensuring that they will never again need to worry about platforms or corporations holding their data hostage.
 
 ## Handshake Daemon
 
