@@ -309,22 +309,22 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     packageName = self.parseURL(package)
-                    try:
+                    if os.path.isfile(self.PATH + "/" + packageName) == False:
                         print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
                         subprocess.run(["wget", package], cwd=self.PATH, check=True)
-                    except:
+                    else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' package found")
 
-
                     if str(package).endswith("tar.gz"):
-                        try:
-                            print("\t Unpacking '" + str(package) + "'...")
-                            subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                            print("\t Cleaning up '" + str(package) + "'...")
-                            subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
-                        except:
-                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[-6:] + "' directory found")
-        getch()
+                        
+                        if os.path.isfile(self.PATH + "/" + packageName) == True and os.path.isdir(self.PATH + "/" + packageName[-6:]) == False:
+                            print("\t Unpacking '" + str(packageName) + "'...")
+                            subprocess.run(["tar", "-xvf", packageName], cwd=self.PATH, check=True)
+                            print("\t Cleaning up '" + str(packageName) + "'...")
+                            subprocess.run(["rm", "-fr", packageName], cwd=self.PATH, check=True)
+                        else:
+                            print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName[:-6] + "' directory found")
+                            getch()
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
@@ -349,101 +349,87 @@ class install:
     #################################################### END: hsd(self)
 
     def powerdns(self):
-
-        #print(colours.green(self, " [+] ") + "\nConfiguring PowerDNS...")
-        print(colours.error(self, "pdns() method not yet complete."))
-        sleep(2)
-
         files = os.listdir(self.PATH)
         checkFor = "pdnsmanager"
 
+        print(colours.green(self, "\n [+] ") + "\nConfiguring PowerDNS...")
+        print(colours.green(self, "\n [+] ") + "Installing PowerDNS Manager")
+
         for file in files:
-            if checkFor.lower() or checkFor.upper() or checkFor.capitalize in file:
-                pass
+            if checkFor in file:
+                subprocess.run(["mv", file, "pdnsmanager/"], cwd=self.PATH, check=True)
 
-        """if os.path.exists("./pdnsmanager") == False:
-                print(colours.green(self, " [+] ") + "Extracting PowerDNS Manager")
-                subprocess.run(["tar", "-xvf", package], cwd=self.PATH, check=True)
-                subprocess.run(["mv", package[0:17], "pdnsmanager/"], cwd=self.PATH, check=True)
-                subprocess.run(["rm", "-fr", package], cwd=self.PATH, check=True)
-            
-            if os.path.exists("./pdnsmanager") == True:
-                print(colours.green(self, " [+] ") + "Configuring PowerDNS Manager")
-            
+        print(colours.green(self, "\n [+] ") + "Configuring PowerDNS Manager")
+
+        if os.path.exists("./pdnsmanager") == True:
+            hasRepo = False
+            hasPackage = False
+
+            # Check for existing PowerDNS APT sources
+            if os.path.exists("/etc/apt/sources.list.d/pdns.list"):
+
+                with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
+                    sources = sourceFile.readlines()
+
+                for line in sources:
+                    if 'http://repo.powerdns.com/ubuntu' in line:
+                        hasRepo = True
+
+                    if 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' in line:
+                        hasPackage = True
+
+            # If PowerDNS APT sources do not exists, create them
+            if hasRepo is False:
+                print(colours.green(self, "\n [+] ") + "Adding PowerDNS Sources...")
+                addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
+                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                print()
+
+            if hasPackage is False:
+                addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
+                subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
+                
+            # Downloaded and add PowerDNS APT Key
+            print(colours.green(self, "\n [+] ") + "Adding APT-KEY...")
+            subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+            subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
             print()
-        else:
-            print(colours.green(self, " [+] ") + "Installing " + str(package))
-            subprocess.run(["sudo", "apt", "install", "-y", package], check=True)
+
+            # Check and disable existing stub resolver
+            dnsExists = False
+            stubListenterExists = False
+
+            # Check resolved.conf for configuration
+            with open('/etc/systemd/resolved.conf') as resolveFile:
+                lines = resolveFile.readlines()
+
+            for line in lines:
+                if line == "DNS=1.1.1.1":
+                    dnsExists = True
+
+                if line == "DNSStubListener=no":
+                    stubListenterExists = True
+
+            # Add configurations to resolved.conf
+            print(colours.green(self, "\n [+] ") + "Disabling Stub Resolver...")
+            if dnsExists == False or stubListenterExists == False:
+                addLine = "# PowerDNS Configurations"
+                subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+                NEED_RESTART = True
+
+            if dnsExists == False:
+                addLine = "echo 'DNS=1.1.1.1' >> /etc/systemd/resolved.conf"
+                subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+
+            if stubListenterExists == False:
+                addLine = "echo 'DNSStubListener=no' >> /etc/systemd/resolved.conf"
+                subprocess.run(["sudo", "sh", "-c", addLine], check=True)
             print()
-
-        hasRepo = False
-        hasPackage = False
-
-        # Check for existing PowerDNS APT sources
-        if os.path.exists("/etc/apt/sources.list.d/pdns.list"):
-
-            with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
-                sources = sourceFile.readlines()
-
-            for line in sources:
-                if 'http://repo.powerdns.com/ubuntu' in line:
-                    hasRepo = True
-
-                if 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' in line:
-                    hasPackage = True
-
-        # If PowerDNS APT sources do not exists, create them
-        if hasRepo is False:
-            print(colours.green(self, " [+] ") + "Adding PowerDNS Sources...")
-            addSource = "echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main' > /etc/apt/sources.list.d/pdns.list"
-            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-            print()
-
-        if hasPackage is False:
-            addSource = "echo 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' > /etc/apt/preferences.d/pdns"
-            subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
-            
-        # Downloaded and add PowerDNS APT Key
-        print(colours.green(self, " [+] ") + "Adding APT-KEY...")
-        subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-        subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-        subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-        subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
-        print()
-
-        # Check and disable existing stub resolver
-        dnsExists = False
-        stubListenterExists = False
-
-        # Check resolved.conf for configuration
-        with open('/etc/systemd/resolved.conf') as resolveFile:
-            lines = resolveFile.readlines()
-
-        for line in lines:
-            if line == "DNS=1.1.1.1":
-                dnsExists = True
-
-            if line == "DNSStubListener=no":
-                stubListenterExists = True
-
-        # Add configurations to resolved.conf
-        print(colours.green(self, " [+] ") + "Disabling Stub Resolver...")
-        if dnsExists == False or stubListenterExists == False:
-            addLine = "# A.D.A.M.S. PowerDNS Configurations"
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-            NEED_RESTART = True
-
-        if dnsExists == False:
-            addLine = "echo 'DNS=1.1.1.1' >> /etc/systemd/resolved.conf"
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-
-        if stubListenterExists == False:
-            addLine = "echo 'DNSStubListener=no' >> /etc/systemd/resolved.conf"
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
-        print()
-        # Create Symlink
-        print(colours.green(self, " [+] ") + "Creating Symlink")
-        subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) """
+            # Create Symlink
+            print(colours.green(self, "\n [+] ") + "Creating Symlink")
+            subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True) 
     #################################################### END: pdns(self)
 
     def nginx(self):
