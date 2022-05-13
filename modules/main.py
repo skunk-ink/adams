@@ -19,7 +19,6 @@
 
 import os
 import sys
-import subprocess
 
 from sys import platform
 import manager
@@ -37,11 +36,6 @@ if platform == "linux":
 elif platform == "win32":
     from msvcrt import getch as getch
     DATA_PATH = os.getcwd() + '\data\\'     # Windows directory format
-
-""" if os.geteuid() != 0:
-    subprocess.call(['sudo', './adams'], cwd=PATH)
-    sys.exit() """
-
 
 class main:
 
@@ -99,10 +93,8 @@ class main:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
-                    #subprocess.run(["sudo", "python3", "modules/installer.py"], check=True)
                     installer.cli()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
-                    #subprocess.run(["sudo", "python3", "modules/manager.py", self.POWERDNS_CONF_PATH], check=True)
                     manager.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window

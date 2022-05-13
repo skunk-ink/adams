@@ -464,7 +464,7 @@ class install:
         # Modify pdns.conf file permissions
         print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
-            command = "chmod 777" + self.POWERDNS_CONF_PATH
+            command = "chmod 646 " + self.POWERDNS_CONF_PATH
             subprocess.run(["sudo", "sh", command], check=True)
             subprocess.run(["stat", "-c", "'%\a'", self.POWERDNS_CONF_PATH], check=True)
 
@@ -524,7 +524,7 @@ class install:
         # Restore pdns.conf file permissions
         print(colours.yellow(self, "\n [!] ") + "Restored '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
-            command = "chmod 640" + self.POWERDNS_CONF_PATH
+            command = "chmod 640 " + self.POWERDNS_CONF_PATH
             subprocess.run(["sudo", "sh", command], check=True)
 
         # Initialize the sqlite database with schema
