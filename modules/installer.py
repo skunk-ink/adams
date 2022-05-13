@@ -549,7 +549,7 @@ class install:
 
         # Initialize the sqlite database with schema
         if disableSubprocesses == False:
-            subprocess.run(["sudo", "sqlite3 /var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql"], check=True)
+            os.system("sudo sqlite3 /var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql")
 
         # Change ownership of the directory to the `pdns` user and group
         if disableSubprocesses == False:
