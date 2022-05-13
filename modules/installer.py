@@ -459,6 +459,7 @@ class install:
         # Parse pdns.conf and remove existing 'launch=' line
 
         # Modify pdns.conf file permissions
+        print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
             subprocess.run(["sudo", "chown", "646", self.POWERDNS_CONF_PATH], check=True)
 
@@ -513,6 +514,7 @@ class install:
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
         
         # Restore pdns.conf file permissions
+        print(colours.yellow(self, "\n [!] ") + "Restored '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
             subprocess.run(["sudo", "chown", "640", self.POWERDNS_CONF_PATH], check=True)
 
