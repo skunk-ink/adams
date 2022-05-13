@@ -416,12 +416,10 @@ class install:
 
     def handshake(self):
         print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
-        try:
-            if disableSubprocesses == False:
-                subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
-                print()
-        except:
-            print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
+
+        if disableSubprocesses == False:
+            subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
+            print()
     #################################################### END: hsd(self)
 
     def powerdns(self):
