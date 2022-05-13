@@ -22,10 +22,10 @@
         - [x] [Handshake Daemon](#hns-daemon-install)
             - [x] Download
             - [x] Install
-        - [ ] [PowerDNS](#powerdns-install)
+        - [x] [PowerDNS](#powerdns-install)
             - [x] Download
             - [x] Install
-            - [ ] Configure
+            - [x] Configure
         - [ ] [PowerDNS Manager](#powerdns-manager-install)
             - [x] Download
             - [x] Install
