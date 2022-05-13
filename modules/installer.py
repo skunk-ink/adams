@@ -297,15 +297,17 @@ class install:
                     subprocess.run(["sudo", "sh", "-c", addSource], cwd=self.PATH, check=True)
             else:
                 print(colours.yellow(self, "\n [+] ") + "Existing PowerDNS sources found...")
-                
-            # Downloaded and add PowerDNS APT Key
-            print(colours.green(self, "\n [+] ") + "Adding APT-KEY...")
-            if disableSubprocesses == False:
-                subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
-                subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
-                print()
+
+
+            if hasRepo is False or hasPackage is False:    
+                # Downloaded and add PowerDNS APT Key
+                print(colours.green(self, "\n [+] ") + "Adding APT-KEY...")
+                if disableSubprocesses == False:
+                    subprocess.run(["wget", "https://repo.powerdns.com/FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["sudo", "apt-key", "add", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["rm", "-fr", "FD380FBB-pub.asc"], cwd=self.PATH, check=True)
+                    subprocess.run(["sudo", "apt", "update"], cwd=self.PATH, check=True)
+                    print()
 
         for packageType in depends:
             # Install Windows Executable
@@ -456,12 +458,13 @@ class install:
         if disableSubprocesses == False:
             subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
 
-        # Parse pdns.conf and remove existing 'launch=' line
+
+        ### Parse pdns.conf and remove existing 'launch=' line
 
         # Modify pdns.conf file permissions
         print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
-            subprocess.run(["sudo", "chown", "646", self.POWERDNS_CONF_PATH], check=True)
+            subprocess.run(["sudo", "chown", "666", self.POWERDNS_CONF_PATH], check=True)
 
         with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
             parseConf = pdnsConfFile.readlines()
