@@ -72,4 +72,7 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 [PowerDNS](https://www.powerdns.com/) is a light-weight open-source DNS server. Used in conjunction with the Handshake full node, PowerDNS provides users to resolve their own Handshake domain names.
 
 # **User Manual**
-***Coming Soon***
+| Command |flag|Description|
+|--|--|--|
+|./build.sh|--run, -r|Build and run A.D.A.M.S
+||--run-install, -i|Build and run A.D.A.M.S installer module
