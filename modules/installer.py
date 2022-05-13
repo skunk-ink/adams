@@ -45,6 +45,7 @@ class install:
     ANSIBLE_PLAYBOOKS_PATH = PATH + '/ansible-playbooks/'   # Ansible Playbooks Directory Path
     ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private/'       # Ansible Private Directory Path
     POWERDNS_PATH = PATH + '/pdns/'                         # PowerDNS Directory Path
+    POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'
 
     def __init__(self, type):
 
@@ -456,6 +457,11 @@ class install:
             subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
 
         # Parse pdns.conf and remove existing 'launch=' line
+
+        # Modify pdns.conf file permissions
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "chown", "646", self.POWERDNS_CONF_PATH], check=True)
+
         with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
             parseConf = pdnsConfFile.readlines()
 
@@ -505,6 +511,10 @@ class install:
         addLine = "echo 'gsqlite3-dnssec=yes' >> /etc/powerdns/pdns.conf"
         if disableSubprocesses == False:
             subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+        
+        # Restore pdns.conf file permissions
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "chown", "640", self.POWERDNS_CONF_PATH], check=True)
 
         # Initialize the sqlite database with schema
         if disableSubprocesses == False:
