@@ -339,7 +339,7 @@ class install:
                         verboseFlag = ["-qqq"]
 
                     if disableSubprocess == False:
-                        subprocess.run(["sudo", "apt", verboseFlag, "install", "-y", package], check=True)
+                        subprocess.run(["sudo", "apt", verboseFlag[0], "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
@@ -357,7 +357,7 @@ class install:
 
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
                     if disableSubprocess == False:
-                        subprocess.run(["pip", verboseFlag, "install", package], check=True)
+                        subprocess.run(["pip", verboseFlag[0], "install", package], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
@@ -392,7 +392,7 @@ class install:
                         verboseFlag = ["$>/dev/null"]
                         
                     if disableSubprocess == False:
-                        subprocess.run(["npm", "install", verboseFlag, package], cwd=self.PATH, check=True)
+                        subprocess.run(["npm", "install", verboseFlag[0], package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
             elif packageType == "wget":
@@ -439,7 +439,7 @@ class install:
         if verbose >= 2:
             verboseFlag = ["--no-verbose"]
         if disableSubprocess == False:
-            subprocess.run(["yarn", verboseFlag, "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+            subprocess.run(["yarn", verboseFlag[0], "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
         print() """
     #################################################### END: skynet_webportal(self)
 
@@ -454,7 +454,7 @@ class install:
             elif verbose == 3:
                 verboseFlag = ["$>/dev/null"]
             if disableSubprocess == False:
-                subprocess.run(["npm", "install", verboseFlag, "--production"], cwd=self.HSD_PATH)
+                subprocess.run(["npm", "install", verboseFlag[0], "--production"], cwd=self.HSD_PATH)
                 print()
         except:
             print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
