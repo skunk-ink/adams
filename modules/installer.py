@@ -339,7 +339,7 @@ class install:
                         verboseFlag = ["-qqq"]
 
                     if disableSubprocess == False:
-                        subprocess.run(["sudo", "apt", verboseFlag[0], "install", "-y", package], check=True)
+                        subprocess.run(["sudo", "apt", str(verboseFlag[0]), "install", "-y", package], check=True)
 
             # Install Python Packages
             elif packageType == "pip":
@@ -357,7 +357,7 @@ class install:
 
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
                     if disableSubprocess == False:
-                        subprocess.run(["pip", verboseFlag[0], "install", package], check=True)
+                        subprocess.run(["pip", str(verboseFlag[0]), "install", package], check=True)
 
             # Clone Github Repository
             elif packageType == "git":
@@ -372,7 +372,7 @@ class install:
                             verboseFlag = ["--quiet", "/dev/null"]
 
                         if disableSubprocess == False:
-                            subprocess.run(["git", "clone", verboseFlag[0], package, verboseFlag[1]], cwd=self.PATH, check=True)
+                            subprocess.run(["git", "clone", str(verboseFlag[0]), package, str(verboseFlag[1])], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' repository found")
 
@@ -392,7 +392,7 @@ class install:
                         verboseFlag = ["$>/dev/null"]
                         
                     if disableSubprocess == False:
-                        subprocess.run(["npm", "install", verboseFlag[0], package], cwd=self.PATH, check=True)
+                        subprocess.run(["npm", "install", str(verboseFlag[0]), package], cwd=self.PATH, check=True)
 
             # Download/Install WGET Package
             elif packageType == "wget":
@@ -408,7 +408,7 @@ class install:
 
                         print(colours.green(self, "\n [+] ") + "Downloading '" + str(packageName) + "'...")
                         if disableSubprocess == False:
-                            subprocess.run(["wget", verboseFlag[0], verboseFlag[1], package], cwd=self.PATH, check=True)
+                            subprocess.run(["wget", str(verboseFlag[0]), str(verboseFlag[1]), package], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, "\n [+] ") + "Existing '" + packageName + "' package found")
 
@@ -422,7 +422,7 @@ class install:
                                 verboseFlag = ["-v"]
                                 
                             if disableSubprocess == False:
-                                subprocess.run(["tar", verboseFlag[0], "-xf", packageName], cwd=self.PATH, check=True)
+                                subprocess.run(["tar", str(verboseFlag[0]), "-xf", packageName], cwd=self.PATH, check=True)
                             print("\t Cleaning up '" + str(packageName) + "'...")
                             if disableSubprocess == False:
                                 subprocess.run(["rm", "-fr", packageName], cwd=self.PATH, check=True)
@@ -439,7 +439,7 @@ class install:
         if verbose >= 2:
             verboseFlag = ["--no-verbose"]
         if disableSubprocess == False:
-            subprocess.run(["yarn", verboseFlag[0], "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
+            subprocess.run(["yarn", str(verboseFlag[0]), "build"], cwd=(self.SKYNET_PATH + "/packages/website"))
         print() """
     #################################################### END: skynet_webportal(self)
 
@@ -454,7 +454,7 @@ class install:
             elif verbose == 3:
                 verboseFlag = ["$>/dev/null"]
             if disableSubprocess == False:
-                subprocess.run(["npm", "install", verboseFlag[0], "--production"], cwd=self.HSD_PATH)
+                subprocess.run(["npm", "install", str(verboseFlag[0]), "--production"], cwd=self.HSD_PATH)
                 print()
         except:
             print(colours.yellow(self, " [!] ") + "Handshake Daemon Installation Detected!")
