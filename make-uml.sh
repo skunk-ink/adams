@@ -1,11 +1,25 @@
 #!/bin/bash
 
-sudo pip install pylint
-sudo apt update && sudo apt install -y graphviz
-
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
+BLUE='\033[94m'
 NC='\033[0m'
+
+echo -e "\n${YELLOW}The following dependencies will be required to build and run A.D.A.M.S.${NC}\n"
+echo -e " ${GREEN}-- APT Packages --${NC}"
+echo -e "\tgraphviz\n"
+echo -e " ${GREEN}-- PIP Packages --${NC}"
+echo -e "\tpylint\n"
+
+echo -e "\n ${GREEN}[+]${NC} Updating APT Repositories..." 
+sudo apt update
+
+echo -e "\n ${GREEN}[+]${NC} Installing APT Dependencies:" 
+sudo apt install -y graphviz
+
+echo -e "\n ${GREEN}[+]${NC} Installing Python Dependencies:"
+sudo pip install pylint
 
 DIR="./uml-diagrams"
 

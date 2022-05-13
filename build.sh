@@ -30,6 +30,6 @@ pyinstaller --clean --name adams --distpath ./ -F modules/main.py
 
 if [ "$1" == "--run" ] || [ "$1" == "-r" ]; then
     ./adams
-elif [ "$1" == "--run-install" ] || [ "$1" == "-i" ]; then
+elif [ "$1" == "--installer" ] || [ "$1" == "-i" ]; then
     python3 modules/installer.py
 fi
