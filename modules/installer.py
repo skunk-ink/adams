@@ -330,7 +330,7 @@ class install:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
 
-                    verboseFlag = []
+                    verboseFlag = [""]
                     if verbose == 1:
                         verboseFlag = ["-q"]
                     elif verbose == 2:
@@ -367,7 +367,7 @@ class install:
                     if os.path.isfile(self.PATH + "/" + packageName[-4:]) == False:
                         print(colours.green(self, "\n [+] ") + "Cloning '" + str(package) + "'...")
 
-                        verboseFlag = []
+                        verboseFlag = [""]
                         if verbose >= 3:
                             verboseFlag = ["--quiet", "/dev/null"]
 
@@ -383,7 +383,7 @@ class install:
                     package = str(package).strip()
                     print(colours.green(self, "\n [+] ") + "Installing '" + package + "'...")
 
-                    verboseFlag = []
+                    verboseFlag = [""]
                     if verbose == 1:
                         verboseFlag = ["--quiet"]
                     elif verbose == 2:
@@ -402,7 +402,7 @@ class install:
                     packageName = self.parseURL(package)
                     if os.path.isfile(self.PATH + "/" + packageName) == False:
 
-                        verboseFlag = []
+                        verboseFlag = [""]
                         if verbose >= 2:
                             verboseFlag = ["-q", "--show-progress"]
 
@@ -417,7 +417,7 @@ class install:
                         if os.path.isfile(self.PATH + "/" + packageName) == True and os.path.isdir(self.PATH + "/" + packageName[-6:]) == False:
                             print("\t Unpacking '" + str(packageName) + "'...")
 
-                            verboseFlag = []
+                            verboseFlag = [""]
                             if verbose >= 2:
                                 verboseFlag = ["-v"]
                                 
@@ -435,7 +435,7 @@ class install:
         sleep(1)
 
         """ print(colours.green(self, " [+] ") + "Building Skynet Portal Page")
-        verboseFlag = []
+        verboseFlag = [""]
         if verbose >= 2:
             verboseFlag = ["--no-verbose"]
         if disableSubprocess == False:
@@ -446,7 +446,7 @@ class install:
     def handshake(self):
         print(colours.green(self, " [+] ") + "Installing Handshake Daemon")
         try:
-            verboseFlag = []
+            verboseFlag = [""]
             if verbose == 1:
                 verboseFlag = ["--quiet"]
             elif verbose == 2:
