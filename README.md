@@ -74,5 +74,6 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 # **User Manual**
 | Command |flag|Description|
 |--|--|--|
-|./build.sh|--run, -r|Build and run A.D.A.M.S
-||--run-install, -i|Build and run A.D.A.M.S installer module
+|./build.sh|||
+||--run, -r|Build and run A.D.A.M.S|
+||--run-install, -i|Build and run A.D.A.M.S installer module|
