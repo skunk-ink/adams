@@ -30,7 +30,7 @@ from display import clear_screen
 
 disableInstaller = False
 disableSubprocesses = False
-disableDependencyInstall = True
+disableDependencyInstall = False
 
 if platform == "linux":
     from getch import getch as getch
@@ -40,13 +40,14 @@ elif platform == "win32":
 class install:
     NEED_RESTART = False
     PATH = os.getcwd()                                      # A.D.A.M.S. Directory
-    DATA_PATH = PATH + '/data/'                             # Data Directory Path
-    HSD_PATH = PATH + '/hsd/'                               # Handshake Directory Path
-    SKYNET_PATH = PATH + '/skynet-webportal/'               # Skynet Webportal Directory Path
-    ANSIBLE_PLAYBOOKS_PATH = PATH + '/ansible-playbooks/'   # Ansible Playbooks Directory Path
-    ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private/'       # Ansible Private Directory Path
-    POWERDNS_PATH = PATH + '/pdns/'                         # PowerDNS Directory Path
-    POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'
+    DATA_PATH = PATH + "/data/"                             # Data Directory Path
+    HSD_PATH = PATH + "/hsd/"                               # Handshake Directory Path
+    SKYNET_PATH = PATH + "/skynet-webportal/"               # Skynet Webportal Directory Path
+    ANSIBLE_PLAYBOOKS_PATH = PATH + "/ansible-playbooks/"   # Ansible Playbooks Directory Path
+    ANSIBLE_PRIVATE_PATH = PATH + "/ansible-private/"       # Ansible Private Directory Path
+    POWERDNS_PATH = PATH + "/pdns/"                         # PowerDNS Directory Path
+    POWERDNS_CONF_PATH = "/etc/powerdns/pdns.conf"          # PowerDNS Configuration Path
+    POWERDNS_CONF_FILE = PATH + "/configurations/pdns.conf" # Premade PowerDNS Configuration File
 
     def __init__(self, type):
 
@@ -474,15 +475,18 @@ class install:
         if disableSubprocesses == False:
             subprocess.run(["sudo", "ln", "-sf", "/run/systemd/resolve/resolv.conf", "/etc/resolv.conf"], check=True)
 
+        # Configure pdns.conf file
+        print(colours.green(self, "\n [+] ") + "Configuring '" + self.POWERDNS_CONF_PATH + "'")
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "mv", self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
 
-        ### Parse pdns.conf and remove existing 'launch=' line
+        """ ### Parse pdns.conf and remove existing 'launch=' line
 
         # Modify pdns.conf file permissions
         print(colours.yellow(self, "\n [!] ") + "Modifying '" + self.POWERDNS_CONF_PATH + "' file permissions")
         if disableSubprocesses == False:
             command = "chmod 646 " + self.POWERDNS_CONF_PATH
             subprocess.run(["sudo", "chmod", "646", self.POWERDNS_CONF_PATH], check=True)
-            subprocess.run(["stat", "-c", "'%\a'", self.POWERDNS_CONF_PATH], check=True)
 
         with open("/etc/powerdns/pdns.conf", "r+") as pdnsConfFile:
             parseConf = pdnsConfFile.readlines()
@@ -535,17 +539,17 @@ class install:
         
         addLine = "echo 'gsqlite3-dnssec=yes' >> /etc/powerdns/pdns.conf"
         if disableSubprocesses == False:
-            subprocess.run(["sudo", "sh", "-c", addLine], check=True)
+            subprocess.run(["sudo", "sh", "-c", addLine], check=True) """
         
-        # Restore pdns.conf file permissions
-        print(colours.yellow(self, "\n [!] ") + "Restored '" + self.POWERDNS_CONF_PATH + "' file permissions")
+        # Set pdns.conf file permissions
         if disableSubprocesses == False:
             command = "chmod 640 " + self.POWERDNS_CONF_PATH
             subprocess.run(["sudo", "chmod", "640", self.POWERDNS_CONF_PATH], check=True)
 
         # Initialize the sqlite database with schema
         if disableSubprocesses == False:
-            subprocess.run(["sudo", "sqlite3", "/var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql"], check=True)
+            command = "/var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql"
+            subprocess.run(["sudo", "sqlite3", command], check=True)
 
         # Change ownership of the directory to the `pdns` user and group
         if disableSubprocesses == False:
