@@ -38,9 +38,9 @@ elif platform == "win32":
     from msvcrt import getch as getch
     DATA_PATH = os.getcwd() + '\data\\'     # Windows directory format
 
-if os.geteuid() != 0:
+""" if os.geteuid() != 0:
     subprocess.call(['sudo', './adams'], cwd=PATH)
-    sys.exit()
+    sys.exit() """
 
 
 class main:
