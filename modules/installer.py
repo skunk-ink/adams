@@ -509,27 +509,27 @@ class cli:
                 if user_input.upper() == "1":   # Install A.D.A.M.S.
                     print(colours.error(self, "adams() method not yet complete."))
                     sleep(1)
-                    #install("adams")
+                    install("adams")
 
                 elif user_input.upper() == "2": # Install Skynet Webportal
                     print(colours.error(self, "skynet_webportal() method not yet complete."))
                     sleep(1)
-                    #install("skynet-webportal")
+                    install("skynet-webportal")
 
                 elif user_input.upper() == "3": # Install Handshake Daemon
                     print(colours.error(self, "handshake() method not yet complete."))
                     sleep(1)
-                    #install("handshake")
+                    install("handshake")
 
                 elif user_input.upper() == "4": # Install PowerDNS
                     print(colours.error(self, "powerdns() method not yet complete."))
                     sleep(1)
-                    #install("powerdns")
+                    install("powerdns")
 
                 elif user_input.upper() == "5": # Install NGINX Webserver
                     print(colours.error(self, "nginx() method not yet complete."))
                     sleep(1)
-                    #install("nginx")
+                    install("nginx")
                     
                 elif user_input.upper() == "B":
                     from main import main as main
