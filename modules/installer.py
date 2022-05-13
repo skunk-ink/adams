@@ -30,7 +30,7 @@ from display import clear_screen
 
 disableInstaller = False
 disableSubprocesses = False
-disableDependencyInstall = True
+disableDependencyInstall = False
 
 if platform == "linux":
     from getch import getch as getch
