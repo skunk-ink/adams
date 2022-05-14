@@ -26,7 +26,8 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableSubprocesses = False         # Ghost run, does not affect the system
+disableSubprocesses = True         # Ghost run, does not affect the system
+disableLogging = True
 
 if platform == "linux":
     from getch import getch as getch
@@ -43,11 +44,13 @@ class hsdManager:
         try:
             if disableSubprocesses == False:
                 subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
+            else:
+                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n\t [+] ") + "Record created, press any key to continue")
+            print(colours.green(self, "\n [+] ") + "Record created, press any key to continue")
             getch()
         except:
-            print(colours.yellow(self, "\n\t [!] ") + "Handshake DNS Record Found, press any key to continue")
+            print(colours.yellow(self, "\n [!] ") + "Handshake DNS Record Found, press any key to continue")
             getch()
 
 class pdnsManager:
@@ -59,15 +62,18 @@ class pdnsManager:
         try:
             if disableSubprocesses == False:
                 subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "create-zone", namespace , "ns1." + namespace], check=True)
+            else:
+                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n\t [+] ") + "Zone created, press any key to continue")
+            print(colours.green(self, "\n [+] ") + "Zone created, press any key to continue")
             getch()
         except:
-            print(colours.yellow(self, "\n\t [! ") + "DNS Record Found, press any key to continue")
+            print(colours.yellow(self, "\n [! ") + "DNS Record Found, press any key to continue")
             getch()
 
         updateHNS = cli.get_input(self, "\n\tUpdate handshake records (Y/N)? [default = N] : ")
         if updateHNS.lower() == "y":
+            if disableLogging == False: print("pdnsManager: var namespace = " + namespace)
             hsdManager.createRecord(self, namespace)
 
         
@@ -81,11 +87,13 @@ class pdnsManager:
         try:
             if disableSubprocesses == False:
                 subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "secure-zone", namespace], check=True)
+            else:
+                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n\t [+] ") + "Zone secured, press any key to continue")
+            print(colours.green(self, "\n [+] ") + "Zone secured, press any key to continue")
             getch()
         except:
-            print(colours.yellow(self, "\n\t [!] ") + "Zone already secured, press any key to continue")
+            print(colours.yellow(self, "\n [!] ") + "Zone already secured, press any key to continue")
             getch()
                 
 
@@ -108,11 +116,13 @@ class pdnsManager:
         try:
             if disableSubprocesses == False:
                 subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "add-record", namespace + ".", record_name, record_type, record_value], check=True)
+            else:
+                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n\t [+] ") + "Record created, press any key to continue")
+            print(colours.green(self, "\n [+] ") + "Record created, press any key to continue")
             getch()
         except:
-            print(colours.yellow(self, "\n\t [+] ") + "Record exists, press any key to continue")
+            print(colours.yellow(self, "\n [+] ") + "Record exists, press any key to continue")
             getch()
     #################################################### END: createRecord(self)
 
@@ -235,6 +245,7 @@ class cli:
                     sleep(1)
                     
                 elif user_input.upper() == "B":
+                    from main import main
                     main()
 
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
