@@ -21,43 +21,99 @@ import subprocess
 import os
 import sys
 
+from sys import platform
 from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
 disableSubprocesses = False         # Ghost run, does not affect the system
 
-class pdnsManager:
-    def createZone(self):
+if platform == "linux":
+    from getch import getch as getch
+elif platform == "win32":
+    from msvcrt import getch as getch
 
-        namespace = cli.get_input(self, "\n\tDomain Name : ")
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "create-zone", namespace , "ns1." + namespace], check=True)
-        
-        updateHNS = cli.get_input(self, "\n\tUpdate handshake records (Y/N)? [default = N] : ")
-        if updateHNS.lower() == "y":
-            record = {"records": [{"type": "NS", "ns": "ns1." + namespace + "."}]}
+class hsdManager:
+    def createRecord(self, namespace):
+        if namespace == "":
+            namespace = cli.get_input(self, "\n\tDomain Name : ")
+
+        record = {"records": [{"type": "NS", "ns": "ns1." + namespace + "."}]}
+
+        try:
             if disableSubprocesses == False:
                 subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
+
+            print(colours.green(self, "\n\t [+] ") + "Record created, press any key to continue")
+            getch()
+        except:
+            print(colours.yellow(self, "\n\t [!] ") + "Handshake DNS Record Found, press any key to continue")
+            getch()
+
+class pdnsManager:
+    def createZone(self, namespace):
+
+        if namespace == "":
+            namespace = cli.get_input(self, "\n\tDomain Name : ")
+
+        try:
+            if disableSubprocesses == False:
+                subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "create-zone", namespace , "ns1." + namespace], check=True)
+
+            print(colours.green(self, "\n\t [+] ") + "Zone created, press any key to continue")
+            getch()
+        except:
+            print(colours.yellow(self, "\n\t [! ") + "DNS Record Found, press any key to continue")
+            getch()
+
+        updateHNS = cli.get_input(self, "\n\tUpdate handshake records (Y/N)? [default = N] : ")
+        if updateHNS.lower() == "y":
+            hsdManager.createRecord(self, namespace)
+
         
     #################################################### END: createZone(self)
 
-    def secureZone(self):
+    def secureZone(self, namespace):
         
-        zone = cli.get_input(self, "\n\tEnter zone name to secure : ")
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "secure-zone", zone], check=True)
+        if namespace == "":
+            namespace = cli.get_input(self, "\n\tEnter zone name to secure : ")
+
+        try:
+            if disableSubprocesses == False:
+                subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "secure-zone", namespace], check=True)
+
+            print(colours.green(self, "\n\t [+] ") + "Zone secured, press any key to continue")
+            getch()
+        except:
+            print(colours.yellow(self, "\n\t [!] ") + "Zone already secured, press any key to continue")
+            getch()
+                
+
     #################################################### END: secureZone(self)
 
-    def createRecord(self):
-                
-        namespace = cli.get_input(self, "\n\tDomain Name : ")
-        record_name = cli.get_input(self, "\n\tRecord Name : ")
-        record_type = str(cli.get_input(self, "\n\tRecord Type : ")).upper()
-        record_value = cli.get_input(self, "\n\tRecord Value : ")
+    def createRecord(self, namespace, record_name, record_type, record_value):
 
-        if disableSubprocesses == False:
-            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "add-record", namespace + ".", record_name, record_type, record_value], check=True)
+        if namespace == "":
+            namespace = cli.get_input(self, "\n\tDomain Name : ")
+
+        if record_name == "":
+            record_name = cli.get_input(self, "\n\tRecord Name : ")
+
+        if record_type == "":
+            record_type = str(cli.get_input(self, "\n\tRecord Type : ")).upper()
+
+        if record_value == "":
+            record_value = cli.get_input(self, "\n\tRecord Value : ")
+
+        try:
+            if disableSubprocesses == False:
+                subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "add-record", namespace + ".", record_name, record_type, record_value], check=True)
+
+            print(colours.green(self, "\n\t [+] ") + "Record created, press any key to continue")
+            getch()
+        except:
+            print(colours.yellow(self, "\n\t [+] ") + "Record exists, press any key to continue")
+            getch()
     #################################################### END: createRecord(self)
 
         
@@ -190,6 +246,7 @@ class cli:
             sleep(2)
             self.main_menu()
         except KeyboardInterrupt:
+            from main import main
             main()
     #################################################### END: main_menu()
 
@@ -306,13 +363,13 @@ class cli:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1":   # Create new zone
-                    pdnsManager.createZone(self)
+                    pdnsManager.createZone(self, "")
 
                 elif user_input.upper() == "2": # Secure existing zone
-                    pdnsManager.secureZone(self)
+                    pdnsManager.secureZone(self, "")
 
                 elif user_input.upper() == "3": # Create new record
-                    pdnsManager.createRecord(self)
+                    pdnsManager.createRecord(self, "", "", "", "")
 
                 elif user_input.upper() == "B":
                     self.main_menu()
