@@ -45,7 +45,7 @@ With an intuitive user interface, A.D.A.M.S empowers users of all skill levels t
 ```diff
 - A.D.A.M.S. is still a work in progress.
 
-- All subprocesses have been disabled. Re-enable them with 'config/adams.conf'
+- All subprocesses have been disabled. See 'config/adams.conf' to re-enable.
 ```
 
 > **Note:** A.D.A.M.S is currently only compatible with Ubuntu systems. Windows and MacOS compatibility will be a [future development](./TODO.md).
