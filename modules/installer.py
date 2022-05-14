@@ -104,7 +104,7 @@ class install:
     ANSIBLE_PRIVATE_PATH = PATH + "/ansible-private/"       # Ansible Private Directory Path
     POWERDNS_PATH = PATH + "/pdns/"                         # PowerDNS Directory Path
     POWERDNS_CONF_PATH = "/etc/powerdns/pdns.conf"          # PowerDNS Configuration Path
-    POWERDNS_CONF_FILE = PATH + "/configurations/pdns.conf" # Premade PowerDNS Configuration File
+    POWERDNS_CONF_FILE = PATH + "/config/pdns.conf" # Premade PowerDNS Configuration File
 
     def __init__(self, type):
 
