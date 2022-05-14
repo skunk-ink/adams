@@ -26,8 +26,43 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableSubprocesses = True         # Ghost run, does not affect the system
-disableLogging = True
+disableSubprocesses = False         # Ghost run, does not affect the system
+disableLogging = False              # Disable console logs
+
+# Load configurations file
+with open("./config/adams.conf") as configFile:
+    lines = configFile.readlines()
+
+for line in lines:
+    if line.startswith("#") or line == "":
+        pass
+    else:
+        config = line.split(":")
+        i = 0
+
+        for value in config:
+            config[i] = value.strip().lower()
+            i += 1
+
+        if config[0] == "disablelogging":
+            if config[1].lower() == "false":
+                disableLogging = False
+            else:
+                disableLogging = True
+
+            if disableLogging == False:
+                print("Disable Logging: " + str(disableLogging))
+                sleep(1)
+
+        elif config[0] == "disablesubprocesses":
+            if config[1].lower() == "false":
+                disableSubprocesses = False
+            else:
+                disableSubprocesses = True
+                
+            if disableLogging == False:
+                print("Disable Subprocesses: " + str(disableSubprocesses))
+                sleep(1)
 
 if platform == "linux":
     from getch import getch as getch
@@ -132,6 +167,36 @@ class cli:
     menu_options = ""
 
     def __init__(self):
+        PATH = os.getcwd()                                      # A.D.A.M.S. Directory
+        ADAMS_CONFIG = PATH + "/config/adams.conf"
+
+        # Load configurations file
+        with open(ADAMS_CONFIG) as configFile:
+            lines = configFile.readlines()
+
+        for line in lines:
+            if line.startswith("#") or line == "":
+                pass
+            else:
+                config = line.split(":")
+                i = 0
+
+                for value in config:
+                    config[i] = value.strip().lower()
+                    i += 1
+
+                if config[0] == "disablelogging":
+                    disableLogging = config[1]
+                    if disableLogging == False:
+                        print("Disable Logging: " + disableLogging)
+                        sleep(1)
+
+                elif config[0] == "disablesubprocesses":
+                    disableSubprocesses = config[1]
+                    if disableLogging == False:
+                        print("Disable Subprocesses: " + disableSubprocesses)
+                        sleep(1)
+
         clear_screen()
         self.set_menu("MAIN")
         self.main_menu()

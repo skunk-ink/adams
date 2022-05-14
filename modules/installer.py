@@ -17,6 +17,7 @@
                     ▀▀▀█████████▀▀▀                    
 """
 
+from faulthandler import disable
 import os
 import sys
 import subprocess
@@ -29,9 +30,64 @@ from colours import colours
 from display import clear_screen
 
 disableInstaller = False            # Disable all install methods
-disableSubprocesses = True         # Ghost run, does not affect the system
+disableSubprocesses = False         # Ghost run, does not affect the system
 disableDependencyInstall = False    # Disable dependency check on all install methods
 disableLogging = False              # Disable console logs
+
+# Load configurations file
+with open("./config/adams.conf") as configFile:
+    lines = configFile.readlines()
+
+for line in lines:
+    if line.startswith("#") or line == "":
+        pass
+    else:
+        config = line.split(":")
+        i = 0
+
+        for value in config:
+            config[i] = value.strip().lower()
+            i += 1
+
+        if config[0] == "disablelogging":
+            if config[1].lower() == "false":
+                disableLogging = False
+            else:
+                disableLogging = True
+
+            if disableLogging == False:
+                print("Disable Logging: " + str(disableLogging))
+                sleep(1)
+
+        elif config[0] == "disablesubprocesses":
+            if config[1].lower() == "false":
+                disableSubprocesses = False
+            else:
+                disableSubprocesses = True
+                
+            if disableLogging == False:
+                print("Disable Subprocesses: " + str(disableSubprocesses))
+                sleep(1)
+
+        elif config[0] == "disableinstallmethods":
+            if config[1].lower() == "false":
+                disableInstaller = False
+            else:
+                disableInstaller = True
+                
+            if disableLogging == False:
+                print("Disable Install Methods: " + str(disableInstaller))
+                sleep(1)
+
+        elif config[0] == "disabledependencyinstall":
+            if config[1].lower() == "false":
+                disableDependencyInstall = False
+            else:
+                disableDependencyInstall = True
+                
+            if disableLogging == False:
+                print("Disable Dependencies: " + str(disableDependencyInstall))
+                sleep(1)
 
 if platform == "linux":
     from getch import getch as getch
