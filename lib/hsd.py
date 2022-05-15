@@ -118,10 +118,3 @@ class hsd:
         response = self.post(endpoint, post_message)
         return response
     ### END METHOD ################################### postReset(self, height)
-
-    def postStop(self):
-        endpoint = "/"
-        post_message = "{ 'method': 'stop' }"
-        response = self.post(endpoint, post_message)
-        return response
-    ### END METHOD ################################### postStop(self)
