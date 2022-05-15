@@ -32,7 +32,6 @@ if [ "$1" == "--run" ] || [ "$1" == "-r" ]; then
     ./adams
 elif [ "$1" == "--installer" ] || [ "$1" == "-i" ]; then
     python3 modules/installer.py
-fi
 elif [ "$1" == "--manager" ] || [ "$1" == "-m" ]; then
     python3 modules/manager.py
 fi
