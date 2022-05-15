@@ -19,23 +19,24 @@
         - [x] [Python](#python)
             - [x] Download
             - [x] Install
-        - [x] [Handshake Daemon](#hns-daemon-install)
+        - [ ] [Handshake Daemon](#hns-daemon-install)
             - [x] Download
             - [x] Install
+            - [ ] Configure
         - [x] [PowerDNS](#powerdns-install)
             - [x] Download
             - [x] Install
             - [x] Configure
-        - [ ] [PowerDNS Manager](#powerdns-manager-install)
+        - [X] [PowerDNS Manager](#powerdns-manager-install)
             - [x] Download
             - [x] Install
-            - [ ] Configure
+            - [X] Configure
         - [ ] [NGINX Webserver](#nginx-install)
             - [x] Download
             - [x] Install
             - [ ] Configure
         - [ ] [Skynet Webportal](#skynet-webportal--ansible-install)
-            - [ ] Download
+            - [X] Download
             - [ ] Install
             - [ ] Configure
 - [ ] [**Manager Module**](#system-configuration-module)
