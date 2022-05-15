@@ -96,15 +96,18 @@ elif platform == "win32":
 
 class install:
     NEED_RESTART = False
-    PATH = os.getcwd()                                      # A.D.A.M.S. Directory
-    DATA_PATH = PATH + "/data/"                             # Data Directory Path
-    HSD_PATH = PATH + "/hsd/"                               # Handshake Directory Path
-    SKYNET_PATH = PATH + "/skynet-webportal/"               # Skynet Webportal Directory Path
-    ANSIBLE_PLAYBOOKS_PATH = PATH + "/ansible-playbooks/"   # Ansible Playbooks Directory Path
-    ANSIBLE_PRIVATE_PATH = PATH + "/ansible-private/"       # Ansible Private Directory Path
-    POWERDNS_PATH = PATH + "/pdns/"                         # PowerDNS Directory Path
-    POWERDNS_CONF_PATH = "/etc/powerdns/pdns.conf"          # PowerDNS Configuration Path
-    POWERDNS_CONF_FILE = PATH + "/config/pdns.conf" # Premade PowerDNS Configuration File
+    PATH = os.getcwd()                                      # A.D.A.M.S. directory
+    HSD_INSTALL_PATH = "/usr/local/sbin/"                   # HSD installation directory
+    HSD_PATH = PATH + "/hsd/"                               # Handshake directory
+    HSD_BIN_PATH = PATH + "/hsd/bin/hsd/"                   # Handshake binaries build directory
+    HSD_SERVICE_SCRIPT = PATH + "/config/hsd.conf"          # Premade Handshake daemon service script
+    HSD_SERVICE_FILE = "/etc/systemd/system/hsd.service"    # Location of system services
+    SKYNET_PATH = PATH + "/skynet-webportal/"               # Skynet Webportal directory
+    ANSIBLE_PLAYBOOKS_PATH = PATH + "/ansible-playbooks/"   # Ansible Playbooks directory
+    ANSIBLE_PRIVATE_PATH = PATH + "/ansible-private/"       # Ansible Private directory
+    POWERDNS_PATH = PATH + "/pdns/"                         # PowerDNS directory
+    POWERDNS_CONF_PATH = "/etc/powerdns/pdns.conf"          # PowerDNS configuration file
+    POWERDNS_CONF_FILE = PATH + "/config/pdns.conf"         # Premade PowerDNS configuration file
 
     def __init__(self, type):
 
@@ -518,7 +521,23 @@ class install:
         print(colours.green(self, "\n [+] ") + "Installing Handshake Daemon")
 
         if disableSubprocesses == False:
-            subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH)
+            # Build HSD binaries
+            subprocess.run(["npm", "install", "--production"], cwd=self.HSD_PATH, check=True)
+
+            # Copy HSD binaries to '/usr/local/bin'
+            subprocess.run(["sudo", "cp", "*", self.HSD_INSTALL_PATH], cwd=self.HSD_BIN_PATH, check=True)
+
+            # Create HSD system service
+            subprocess.run(["sudo", "cp", self.HSD_SERVICE_SCRIPT, self.HSD_SERVICE_FILE], check=True)
+
+            # Set 'hsd.service' owner
+            subprocess.run(["sudo", "chown", "root:root", self.HSD_SERVICE_FILE], check=True)
+
+            # Set 'hsd.service' permissions
+            subprocess.run(["sudo", "chmod", "777", self.HSD_SERVICE_FILE])
+
+            # Enable 'hsd.service'
+            subprocess.run(["sudo", "systemctl", "enable", "hsd"])
         else:
             print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
         print()
