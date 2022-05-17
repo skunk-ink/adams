@@ -100,8 +100,8 @@ class install:
     HSD_INSTALL_PATH = "/usr/local/sbin/"                   # HSD installation directory
     HSD_PATH = PATH + "/hsd/"                               # Handshake directory
     HSD_BIN_PATH = PATH + "/hsd/bin/hsd/"                   # Handshake binaries build directory
-    HSD_SERVICE_SCRIPT = PATH + "/config/hsd.conf"          # Premade Handshake daemon service script
-    HSD_SERVICE_FILE = "/etc/systemd/system/hsd.service"    # Location of system services
+    HSD_SERVICE_SCRIPT = PATH + "/config/hsd.service"       # Premade Handshake daemon service script
+    HSD_SYS_SERVICES_PATH = "/etc/systemd/system/"    # Location of system services
     SKYNET_PATH = PATH + "/skynet-webportal/"               # Skynet Webportal directory
     ANSIBLE_PLAYBOOKS_PATH = PATH + "/ansible-playbooks/"   # Ansible Playbooks directory
     ANSIBLE_PRIVATE_PATH = PATH + "/ansible-private/"       # Ansible Private directory
@@ -528,13 +528,13 @@ class install:
             subprocess.run(["sudo", "cp", "*", self.HSD_INSTALL_PATH], cwd=self.HSD_BIN_PATH, check=True)
 
             # Create HSD system service
-            subprocess.run(["sudo", "cp", self.HSD_SERVICE_SCRIPT, self.HSD_SERVICE_FILE], check=True)
+            subprocess.run(["sudo", "cp", self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
 
             # Set 'hsd.service' owner
-            subprocess.run(["sudo", "chown", "root:root", self.HSD_SERVICE_FILE], check=True)
+            subprocess.run(["sudo", "chown", "root:root", self.HSD_SYS_SERVICES_PATH], check=True)
 
             # Set 'hsd.service' permissions
-            subprocess.run(["sudo", "chmod", "777", self.HSD_SERVICE_FILE])
+            subprocess.run(["sudo", "chmod", "777", self.HSD_SYS_SERVICES_PATH])
 
             # Enable 'hsd.service'
             subprocess.run(["sudo", "systemctl", "enable", "hsd"])
