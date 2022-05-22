@@ -108,6 +108,11 @@ class main:
     #################################################### END: main_menu()
 
 if __name__ == '__main__':
-    splash()
-    main()
+    if sys.argv[1].lower() == 'install' or sys.argv[1].lower() == '--install' or sys.argv[1] == '-i':
+        installer()
+    elif sys.argv[1].lower() == 'manager' or sys.argv[1].lower() == '--manager' or sys.argv[1] == '-m':
+        manager()
+    else:
+        splash()
+        main()
 #################################################### END: __main__

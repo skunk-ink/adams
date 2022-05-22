@@ -92,6 +92,7 @@
     - #### **Python**
         - PIP
             - getch
+            - skunkworks-repo
     - #### **HNS Daemon Install**
         - GIT
             - https://github.com/handshake-org/hsd.git

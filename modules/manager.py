@@ -234,8 +234,8 @@ class cli:
                             colours().cyan("Q") + ": Quit A.D.A.M.S."]
 
         elif menu_id.upper() == "HSD":      # Handshake Daemon Menu Options
-            menu_title = ["HANDSHAKE_DAEMON",
-                          "Handshake Daemon Management"]
+            menu_title = ["HANDSHAKE_NODE",
+                          "Handshake Node Management"]
                           
             menu_options = [colours().cyan("1") + ": Wallet",
                             colours().cyan("2") + ": Consensus",
