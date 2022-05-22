@@ -22,7 +22,8 @@
         }],
     "handshake": [{
             "apt": ["git",
-                    "npm"],
+                    "npm",
+                    "skunk-works-repo"],
 
             "git": ["https://github.com/handshake-org/hsd.git"]
         }],
