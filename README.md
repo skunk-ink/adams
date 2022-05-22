@@ -17,6 +17,8 @@
   - [NGIX Webserver](#nginx-webserver)
   - [PowerDNS](#powerdns)
 - [User Manual](#user-manual)
+  - [Building A.D.A.M.S.](#building-adams)
+  - [Running A.D.A.M.S.](#running-adams)
 - [TODO](./TODO.md)
 
 ***
@@ -77,9 +79,18 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 [PowerDNS](https://www.powerdns.com/) is a light-weight open-source DNS server. Used in conjunction with the Handshake full node, PowerDNS provides users to resolve their own Handshake domain names.
 
 # **User Manual**
-| Command    | Flags         | Description                              |
-|:-----------|---------------|------------------------------------------|
-| ./build.sh |               | Build A.D.A.M.S.                         |
-|            | --run, -r     | Build and run A.D.A.M.S                  |
-|            | --install, -i | Build and run A.D.A.M.S. installer module|
-|            | --manager, -m | Build and run A.D.A.M.S. manager module  |
+
+## **Building A.D.A.M.S.**
+| Command    | Flags         | Description                               |
+|:-----------|---------------|-------------------------------------------|
+| ./build.sh |               | Build A.D.A.M.S. from source              |
+|            | --run, -r     | Build and run A.D.A.M.S                   |
+|            | --install, -i | Build and run A.D.A.M.S. installer module |
+|            | --manager, -m | Build and run A.D.A.M.S. manager module   |
+
+## **Running A.D.A.M.S.**
+| Command    | Flags         | Description                               |
+|:-----------|---------------|-------------------------------------------|
+| ./adams    |               | Run A.D.A.M.S.                            |
+|            | --install, -i | Run A.D.A.M.S. installer module           |
+|            | --manager, -m | Run A.D.A.M.S. manager module             |
