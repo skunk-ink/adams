@@ -109,9 +109,9 @@ class main:
 
 if __name__ == '__main__':
     if sys.argv[1].lower() == 'install' or sys.argv[1].lower() == '--install' or sys.argv[1] == '-i':
-        installer()
+        installer.cli()
     elif sys.argv[1].lower() == 'manager' or sys.argv[1].lower() == '--manager' or sys.argv[1] == '-m':
-        manager()
+        manager.cli()
     else:
         splash()
         main()
