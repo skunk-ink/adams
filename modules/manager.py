@@ -76,17 +76,13 @@ class hsdManager:
 
         record = {"records": [{"type": "NS", "ns": "ns1." + namespace + "."}]}
 
-        try:
-            if disableSubprocesses == False:
-                subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
-            else:
-                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
+        if disableSubprocesses == False:
+            subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
+        else:
+            print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n [+] ") + "Record created, press any key to continue")
-            getch()
-        except:
-            print(colours.yellow(self, "\n [!] ") + "Handshake DNS Record Found, press any key to continue")
-            getch()
+        print(colours.green(self, "\n [+] ") + "Record created, press any key to continue")
+        sleep(2)
 
 class pdnsManager:
     def createZone(self, namespace):
@@ -94,21 +90,18 @@ class pdnsManager:
         if namespace == "":
             namespace = cli.get_input(self, "\n\tDomain Name : ")
 
-        try:
-            if disableSubprocesses == False:
-                subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "create-zone", namespace , "ns1." + namespace], check=True)
-            else:
-                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
+        # Create a new zone
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "create-zone", namespace , "ns1." + namespace], check=True)
+        else:
+            print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n [+] ") + "Zone created, press any key to continue")
-            getch()
-        except:
-            print(colours.yellow(self, "\n [! ") + "DNS Record Found, press any key to continue")
-            getch()
+        print(colours.green(self, "\n [+] ") + "Zone created, press any key to continue")
+        sleep(2)
 
         updateHNS = cli.get_input(self, "\n\tUpdate handshake records (Y/N)? [default = N] : ")
         if updateHNS.lower() == "y":
-            if disableLogging == False: print("pdnsManager: var namespace = " + namespace)
+            if disableLogging == False: print("pdnsManager: var namespace = " + namespace) # Log output
             hsdManager.createRecord(self, namespace)
 
         
@@ -119,17 +112,14 @@ class pdnsManager:
         if namespace == "":
             namespace = cli.get_input(self, "\n\tEnter zone name to secure : ")
 
-        try:
-            if disableSubprocesses == False:
-                subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "secure-zone", namespace], check=True)
-            else:
-                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
+        # Secure an existing zone
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "secure-zone", namespace], check=True)
+        else:
+            print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n [+] ") + "Zone secured, press any key to continue")
-            getch()
-        except:
-            print(colours.yellow(self, "\n [!] ") + "Zone already secured, press any key to continue")
-            getch()
+        print(colours.green(self, "\n [+] ") + "Zone secured, press any key to continue")
+        sleep(2)
                 
 
     #################################################### END: secureZone(self)
@@ -148,17 +138,14 @@ class pdnsManager:
         if record_value == "":
             record_value = cli.get_input(self, "\n\tRecord Value : ")
 
-        try:
-            if disableSubprocesses == False:
-                subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "add-record", namespace + ".", record_name, record_type, record_value], check=True)
-            else:
-                print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
+        # Update PowerDNS Record
+        if disableSubprocesses == False:
+            subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "add-record", namespace + ".", record_name, record_type, record_value], check=True)
+        else:
+            print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
-            print(colours.green(self, "\n [+] ") + "Record created, press any key to continue")
-            getch()
-        except:
-            print(colours.yellow(self, "\n [+] ") + "Record exists, press any key to continue")
-            getch()
+        print(colours.green(self, "\n [+] ") + "Record created, press any key to continue")
+        sleep(2)
     #################################################### END: createRecord(self)
 
         
