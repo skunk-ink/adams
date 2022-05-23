@@ -91,7 +91,7 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 |                 | --manager, -m    | Build and run A.D.A.M.S. manager module   |
 
 ## **Run A.D.A.M.S.**
-| Command         | Flags            | Description                               |
+| Command         | Module           | Description                               |
 |:----------------|------------------|-------------------------------------------|
 | ./adams         |                  | Run A.D.A.M.S.                            |
 |                 | install          | Run A.D.A.M.S. installer module           |
