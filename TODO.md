@@ -62,12 +62,12 @@
 # Binary Builder Script
 - ### Windows
 - ### Linux
-    - APT
-        - python3
-        - python3-pip
-    - PIP
-        - pyinstaller
-        - getch
+    - [x] APT
+        - [x] python3
+        - [x] python3-pip
+    - [x] [x] PIP
+        - [x] pyinstaller
+        - [x] getch
 - ### MacOS
 
 # Installer Module
@@ -77,49 +77,48 @@
     - #### **Windows**
 
     - #### **Linux**
-        - APT
-            - npm
-            - python3-pip
-            - g++
-            - libboost-all-dev
-            - libtool
-            - make
-            - pkg-config
-            - default-libmysqlclient-dev
-            - libssl-dev
-            - libluajit-5.1-dev
-            - python3-venv
-            - autoconf
-            - automake
-            - ragel
-            - bison
-            - flex
-            - zip
-            - unzip
+        - [x] APT
+            - [x] npm
+            - [x] python3-pip
+            - [x] g++
+            - [x] libboost-all-dev
+            - [x] libtool
+            - [x] make
+            - [x] pkg-config
+            - [x] default-libmysqlclient-dev
+            - [x] libssl-dev
+            - [x] libluajit-5.1-dev
+            - [x] python3-venv
+            - [x] autoconf
+            - [x] automake
+            - [x] ragel
+            - [x] bison
+            - [x] flex
+            - [x] zip
+            - [x] unzip
     - #### **MacOS**
     - #### **Python**
-        - PIP
-            - getch
-            - skunkworks-repo
+        - [x] PIP
+            - [x] getch
     - #### **HNS Daemon Install**
         - GIT
-            - https://github.com/handshake-org/hsd.git
+            - [x] https://github.com/handshake-org/hsd.git
     - #### **PowerDNS install**
-        - APT
-            - sqlite3
-            - pdns-server
-            - pdns-backend-sqlite3
+        - [x] APT
+            - [x] sqlite3
+            - [x] pdns-server
+            - [x] pdns-backend-sqlite3
     - #### **PowerDNS Manager Install**
-        - WGET
-            - pdnsmanager-2.1.0.tar.gz
+        - [x] WGET
+            - [x] pdnsmanager-2.1.0.tar.gz
     - #### **NGINX Webserver install**
-        - APT
-            - nginx
+        - [x] APT
+            - [x] nginx
     - #### **Skynet Webportal + Ansible install**
-        - GIT
-            - https://github.com/SkynetLabs/skynet-webportal.git
-            - https://github.com/SkynetLabs/ansible-playbooks.git
-            - https://github.com/SkynetLabs/ansible-private-sample.git
+        - [x] GIT
+            - [x] https://github.com/SkynetLabs/skynet-webportal.git
+            - [x] https://github.com/SkynetLabs/ansible-playbooks.git
+            - [x] https://github.com/SkynetLabs/ansible-private-sample.git
 
 # Manager Module
 - ### **Skynet Webportal**
