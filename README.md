@@ -57,7 +57,7 @@ With an intuitive user interface, A.D.A.M.S empowers users of all skill levels t
 ## Ubuntu 20.04 LTS
 
 To build and run A.D.A.M.S. use the following:
-```
+```bash
 ./build.sh --run
 ```
 
@@ -91,7 +91,7 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 |                 | --manager, -m    | Build and run A.D.A.M.S. manager module   |
 
 ## **Run A.D.A.M.S.**
-| Command         | Flags            | Description                               |
+| Command         | Module           | Description                               |
 |:----------------|------------------|-------------------------------------------|
 | ./adams         |                  | Run A.D.A.M.S.                            |
 |                 | install          | Run A.D.A.M.S. installer module           |

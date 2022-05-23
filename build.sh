@@ -12,7 +12,8 @@ echo -e "\tpython3"
 echo -e "\tpython-pip\n"
 echo -e " ${GREEN}-- PIP Packages --${NC}"
 echo -e "\tpyinstaller"
-echo -e "\tgetch\n"
+echo -e "\tgetch"
+echo -e "\tskunkworks-repo\n"
 
 echo -e "\n ${GREEN}[+]${NC} Updating APT Repositories..." 
 sudo apt update
@@ -23,6 +24,7 @@ sudo apt install -y python3 python3-pip
 echo -e "\n ${GREEN}[+]${NC} Installing Python Dependencies:"
 pip install -U pyinstaller
 pip install getch
+pip install skunkworks-repo
 export PATH=~/.local/bin:$PATH
 
 echo -e "\n ${GREEN}[+]${NC} Building A.D.A.M.S. binary..."
