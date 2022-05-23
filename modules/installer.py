@@ -98,7 +98,7 @@ class install:
     NEED_RESTART = False
     LOCAL_BIN_PATH = '/usr/local/sbin/'                     # Location of local binaries
     PATH = os.getcwd()                                      # A.D.A.M.S. directory
-    HSD_INSTALL_PATH = '~/.hsd/'                            # HSD installation directory
+    HSD_INSTALL_PATH = os.path.expanduser('~') + '/.hsd/'   # HSD installation directory
     HSD_PATH = PATH + '/hsd/'                               # Handshake directory
     HSD_BIN_PATH = PATH + '/hsd/bin/'                       # Handshake binaries build directory
     HSD_SERVICE_SCRIPT = PATH + '/config/hsd.service'       # Premade Handshake daemon service script
@@ -521,14 +521,19 @@ class install:
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
-        print(colours.green(self, '\n [+] ') + 'Installing Handshake Daemon')
+        print(colours.green(self, '\n [+] ') + 'Installing Handshake Node')
 
         if disableSubprocesses == False:
             # Build HSD binaries
             subprocess.run(['npm', 'install', '--production'], cwd=self.HSD_PATH, check=True)
 
             # Copy HSD binaries to "/usr/local/bin"
-            subprocess.run(['sudo', 'cp', '*', self.LOCAL_BIN_PATH], cwd=self.HSD_BIN_PATH, check=True)
+            """
+            NOT WORKING! Fails with exit code 1 while trying to copy binaries.
+                         If manually copied to '/usr/local/sbin' the 'hsd' node
+                         fails to run.
+            """
+            #subprocess.run(['sudo', 'mv', '*', self.LOCAL_BIN_PATH], cwd=self.HSD_BIN_PATH, check=True)
 
             # Create HSD system service
             subprocess.run(['sudo', 'cp', self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
@@ -543,6 +548,9 @@ class install:
             subprocess.run(['sudo', 'systemctl', 'enable', 'hsd'])
 
             # Create HSD node and wallet configuration files
+            if os.path.isdir(self.HSD_INSTALL_PATH) == False:
+                subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
+
             subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
             subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
         else:

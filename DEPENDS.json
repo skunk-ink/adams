@@ -6,9 +6,7 @@
             "apt": ["python3",
                     "python3-pip",
                     "zip",
-                    "unzip"],
-
-            "pip": ["getch"]
+                    "unzip"]
         }],
     "skynet-webportal": [{
             "apt": ["npm",
@@ -23,8 +21,6 @@
     "handshake": [{
             "apt": ["git",
                     "npm"],
-
-            "pip": ["skunkworks-repo"],
 
             "git": ["https://github.com/handshake-org/hsd.git"]
         }],
