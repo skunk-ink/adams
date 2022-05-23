@@ -46,7 +46,15 @@
         - [ ] [Blocklists Management](#blocklists)
     - [ ] [Handshake Daemon](#handshake-daemon)
         - [ ] [Wallet Management](#wallet-1)
+          - [ ] Dashboard
+            - [ ] Accounts
+            - [ ] Wallets
+            - [ ] Transactions
+          - [ ] Send/Receive transactions
         - [ ] [HNS Records Management](#hns-records-management)
+          - [ ] Dashboard
+            - [ ] List Domains
+          - [ ] Create/Update records
     - [ ] [NGINX Webserver](#nginx)
     - [ ] [PowerDNS](#powerdns)
         - [ ] [DNS Records Management](#dns-records-management)
