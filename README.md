@@ -17,8 +17,10 @@
   - [NGIX Webserver](#nginx-webserver)
   - [PowerDNS](#powerdns)
 - [User Manual](#user-manual)
-  - [Building A.D.A.M.S.](#building-adams)
-  - [Running A.D.A.M.S.](#running-adams)
+  - [Build A.D.A.M.S.](#build-adams)
+  - [Run A.D.A.M.S.](#run-adams)
+  - [A.D.A.M.S. Installer Module](#adams-installer-module)
+  - [A.D.A.M.S. Manager Module](#adams-manager-module)
 - [TODO](./TODO.md)
 
 ***
@@ -80,17 +82,36 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 
 # **User Manual**
 
-## **Building A.D.A.M.S.**
-| Command    | Flags         | Description                               |
-|:-----------|---------------|-------------------------------------------|
-| ./build.sh |               | Build A.D.A.M.S. from source              |
-|            | --run, -r     | Build and run A.D.A.M.S                   |
-|            | --install, -i | Build and run A.D.A.M.S. installer module |
-|            | --manager, -m | Build and run A.D.A.M.S. manager module   |
+## **Build A.D.A.M.S.**
+| Command         | Flags            | Description                               |
+|:----------------|------------------|-------------------------------------------|
+| ./build.sh      |                  | Build A.D.A.M.S. from source              |
+|                 | --run, -r        | Build and run A.D.A.M.S                   |
+|                 | --install, -i    | Build and run A.D.A.M.S. installer module |
+|                 | --manager, -m    | Build and run A.D.A.M.S. manager module   |
 
-## **Running A.D.A.M.S.**
-| Command    | Flags         | Description                               |
-|:-----------|---------------|-------------------------------------------|
-| ./adams    |               | Run A.D.A.M.S.                            |
-|            | --install, -i | Run A.D.A.M.S. installer module           |
-|            | --manager, -m | Run A.D.A.M.S. manager module             |
+## **Run A.D.A.M.S.**
+| Command         | Flags            | Description                               |
+|:----------------|------------------|-------------------------------------------|
+| ./adams         |                  | Run A.D.A.M.S.                            |
+|                 | install          | Run A.D.A.M.S. installer module           |
+|                 | manager          | Run A.D.A.M.S. manager module             |
+
+## **A.D.A.M.S. Installer Module**
+| Command         | Flags            | Description                               |
+|:----------------|------------------|-------------------------------------------|
+| ./adams install |                  | Run A.D.A.M.S.                            |
+|                 | adams            | Run A.D.A.M.S. install                    |
+|                 | skynet           | Run Skynet Webportal install              |
+|                 | handshake, hsd   | Run Handshake Full Node install           |
+|                 | powerdns, pdns   | Run PowerDNS install                      |
+|                 | nginx            | Run NGINX install                         |
+
+## **A.D.A.M.S. Manager Module**
+| Command         | Flags            | Description                               |
+|:----------------|------------------|-------------------------------------------|
+| ./adams manager |                  | Run A.D.A.M.S. manager module             |
+|                 | skynet           | Run Skynet Webportal manager              |
+|                 | handshake, hsd   | Run Handshake Full Node manager           |
+|                 | powerdns, pdns   | Run PowerDNS manager                      |
+|                 | nginx            | Run NGINX manager                         |
