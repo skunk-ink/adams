@@ -153,7 +153,7 @@ class cli:
     menu_title = ""
     menu_options = ""
 
-    def __init__(self):
+    def __init__(self, _type:str=None):
         PATH = os.getcwd()                                      # A.D.A.M.S. Directory
         ADAMS_CONFIG = PATH + "/config/adams.conf"
 
@@ -185,7 +185,18 @@ class cli:
                         sleep(1)
 
         clear_screen()
-        self.set_menu("MAIN")
+
+        if _type == None or _type.upper() == 'MAIN': 
+            self.main_menu()
+        elif _type.upper() == 'SKYNET-WEBPORTAL' or _type.upper() == 'SKYNET': 
+            self.skynetManager()
+        elif _type.upper() == 'HSD' or _type.upper() == 'HANDSHAKE': 
+            self.hsdManager()
+        elif _type.upper() == 'PDNS' or _type.upper() == 'POWERDNS': 
+            self.pdnsManager()
+        elif _type.upper() == 'NGINX':
+            self.nginxManager()
+        
         self.main_menu()
         sleep(1)
     #################################################### END: __init__(self)
@@ -223,7 +234,7 @@ class cli:
                             colours().cyan("Q") + ": Quit A.D.A.M.S."]
                    
         elif menu_id.upper() == "SKYNET":   # Skynet Webportal Menu Options
-            menu_title = ["SKYNET_PORTAL",
+            menu_title = ["SKYNET_WEBPORTAL",
                           "Skynet Webportal Management"]
                           
             menu_options = [colours().cyan("1") + ": Wallet",
