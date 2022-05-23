@@ -100,7 +100,7 @@ class install:
     PATH = os.getcwd()                                      # A.D.A.M.S. directory
     HSD_INSTALL_PATH = '~/.hsd/'                            # HSD installation directory
     HSD_PATH = PATH + '/hsd/'                               # Handshake directory
-    HSD_BIN_PATH = PATH + '/hsd/bin/hsd/'                   # Handshake binaries build directory
+    HSD_BIN_PATH = PATH + '/hsd/bin/'                       # Handshake binaries build directory
     HSD_SERVICE_SCRIPT = PATH + '/config/hsd.service'       # Premade Handshake daemon service script
     HSD_SYS_SERVICES_PATH = '/etc/systemd/system/'          # Location of system services
     HSD_CONFIG = PATH + '/config/hsd.conf'                  # Location of HSD node config
