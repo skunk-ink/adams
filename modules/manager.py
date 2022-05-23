@@ -21,6 +21,7 @@ import subprocess
 import os
 import sys
 
+from handshake import api
 from sys import platform
 from time import sleep as sleep
 from colours import colours
@@ -70,6 +71,12 @@ elif platform == "win32":
     from msvcrt import getch as getch
 
 class hsdManager:
+    HSD_API_KEY = ''
+    HSW_API_KEY = ''
+
+    hsd = api.hsd(HSD_API_KEY)
+    hsw = api.hsw(HSW_API_KEY)
+
     def createRecord(self, namespace):
         if namespace == "":
             namespace = cli.get_input(self, "\n\tDomain Name : ")
@@ -189,13 +196,13 @@ class cli:
         if _type == None or _type.upper() == 'MAIN': 
             self.main_menu()
         elif _type.upper() == 'SKYNET-WEBPORTAL' or _type.upper() == 'SKYNET': 
-            self.skynetManager()
+            self.skynetManagerCli()
         elif _type.upper() == 'HSD' or _type.upper() == 'HANDSHAKE': 
-            self.hsdManager()
+            self.hsdManagerCli()
         elif _type.upper() == 'PDNS' or _type.upper() == 'POWERDNS': 
-            self.pdnsManager()
+            self.pdnsManagerCli()
         elif _type.upper() == 'NGINX':
-            self.nginxManager()
+            self.nginxManagerCli()
         
         self.main_menu()
         sleep(1)
@@ -227,8 +234,8 @@ class cli:
                           
             menu_options = [colours().cyan("1") + ": Skynet Webportal",
                             colours().cyan("2") + ": Handshake Daemon",
-                            colours().cyan("3") + ": NGINX Webserver",
-                            colours().cyan("4") + ": PowerDNS",
+                            colours().cyan("3") + ": PowerDNS",
+                            colours().cyan("4") + ": NGINX Webserver",
                             "",
                             colours().cyan("B") + ": Back to A.D.A.M.S.",
                             colours().cyan("Q") + ": Quit A.D.A.M.S."]
@@ -254,15 +261,6 @@ class cli:
                             colours().cyan("B") + ": Back to Management",
                             colours().cyan("Q") + ": Quit A.D.A.M.S."]
             
-        elif menu_id.upper() == "NGINX":    # NGINX Menu Options
-            menu_title = ["NGINX",
-                         "NGINX Webserver Management"]
-                          
-            menu_options = [colours().cyan("1") + ": NGINX Configuration",
-                            "",
-                            colours().cyan("B") + ": Back to Management",
-                            colours().cyan("Q") + ": Quit A.D.A.M.S."]
-            
         elif menu_id.upper() == "PDNS":    # PowerDNS Menu Options
             menu_title = ["PDNS",
                          "PowerDNS Management"]
@@ -270,6 +268,15 @@ class cli:
             menu_options = [colours().cyan("1") + ": New zone",
                             colours().cyan("2") + ": Secure zone",
                             colours().cyan("3") + ": Create record",
+                            "",
+                            colours().cyan("B") + ": Back to Management",
+                            colours().cyan("Q") + ": Quit A.D.A.M.S."]
+            
+        elif menu_id.upper() == "NGINX":    # NGINX Menu Options
+            menu_title = ["NGINX",
+                         "NGINX Webserver Management"]
+                          
+            menu_options = [colours().cyan("1") + ": NGINX Configuration",
                             "",
                             colours().cyan("B") + ": Back to Management",
                             colours().cyan("Q") + ": Quit A.D.A.M.S."]
@@ -288,23 +295,23 @@ class cli:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1":   # Skynet Webportal Management
-                    self.skynetManager()
-                    print(colours().error("skynetManager()) method not found."))
+                    self.skynetManagerCli()
+                    print(colours().error("skynetManagerCli()) method not found."))
                     sleep(1)
 
                 elif user_input.upper() == "2": # Handshake Daemon Management
-                    self.hsdManager()
-                    print(colours().error("hsdManager() method not found."))
+                    self.hsdManagerCli()
+                    print(colours().error("hsdManagerCli() method not found."))
                     sleep(1)
 
-                elif user_input.upper() == "3": # NGINX Management
-                    self.nginxManager()
-                    print(colours().error("nginxManager() method not found."))
+                elif user_input.upper() == "3": # PowerDNS Management
+                    self.pdnsManagerCli()
+                    print(colours().error("pdnsManagerCli() method not found."))
                     sleep(1)
 
-                elif user_input.upper() == "4": # PowerDNS Management
-                    self.pdnsManager()
-                    print(colours().error("pdnsManager() method not found."))
+                elif user_input.upper() == "4": # NGINX Management
+                    self.nginxManagerCli()
+                    print(colours().error("nginxManagerCli() method not found."))
                     sleep(1)
                     
                 elif user_input.upper() == "B":
@@ -324,7 +331,7 @@ class cli:
             main()
     #################################################### END: main_menu()
 
-    def skynetManager(self):
+    def skynetManagerCli(self):
         global menu_title
         
         self.set_menu("SKYNET")  # Initialize Skynet Portal Management Menu
@@ -360,9 +367,9 @@ class cli:
         except KeyboardInterrupt:
             self.main_menu()
             pass
-    #################################################### END: skynetManager()
+    #################################################### END: skynetManagerCli()
 
-    def hsdManager(self):
+    def hsdManagerCli(self):
         global menu_title
         
         self.set_menu("HSD")    # Initialize Handshake Daemon Management Menu
@@ -394,37 +401,9 @@ class cli:
         except KeyboardInterrupt:
             self.main_menu()
             pass
-    #################################################### END: hsdManager()
+    #################################################### END: hsdManagerCli()
 
-    def nginxManager(self):
-        global menu_title
-        
-        self.set_menu("NGINX")  # Initialize NGINX Management Menu
-
-        try:
-            while True:  # Display NGINX Management Menu
-                self.print_header()
-                self.print_options()
-                
-                user_input = self.get_input("\n\tWhat would you like to do? : ")
-                
-                if user_input.upper() == "1":   # NGINX Configuration
-                    #self.nginxConfiguration()
-                    print(colours().error("nginxConfiguration() method not found."))
-                    sleep(1)
-
-                elif user_input.upper() == "B":
-                    self.main_menu()
-
-                elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
-                    clear_screen()    # Clear console window
-                    sys.exit(0) 
-        except KeyboardInterrupt:
-            self.main_menu()
-            pass
-    #################################################### END: nginxManager()
-
-    def pdnsManager(self):
+    def pdnsManagerCli(self):
         global menu_title
         
         self.set_menu("PDNS")   # Initialize PowerDNS Management Menu
@@ -454,7 +433,35 @@ class cli:
         except KeyboardInterrupt:
             self.main_menu()
             pass
-    #################################################### END: hsdManager()
+    #################################################### END: pdnsManagerCli()
+
+    def nginxManagerCli(self):
+        global menu_title
+        
+        self.set_menu("NGINX")  # Initialize NGINX Management Menu
+
+        try:
+            while True:  # Display NGINX Management Menu
+                self.print_header()
+                self.print_options()
+                
+                user_input = self.get_input("\n\tWhat would you like to do? : ")
+                
+                if user_input.upper() == "1":   # NGINX Configuration
+                    #self.nginxConfiguration()
+                    print(colours().error("nginxManager class not found."))
+                    sleep(1)
+
+                elif user_input.upper() == "B":
+                    self.main_menu()
+
+                elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
+                    clear_screen()    # Clear console window
+                    sys.exit(0) 
+        except KeyboardInterrupt:
+            self.main_menu()
+            pass
+    #################################################### END: nginxManagerCli()
 
 if __name__ == '__main__':
     os.system('cls')

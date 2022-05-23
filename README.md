@@ -57,7 +57,7 @@ With an intuitive user interface, A.D.A.M.S empowers users of all skill levels t
 ## Ubuntu 20.04 LTS
 
 To build and run A.D.A.M.S. use the following:
-```
+```bash
 ./build.sh --run
 ```
 
