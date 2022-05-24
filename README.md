@@ -86,9 +86,9 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 | Command         | Flags            | Description                               |
 |:----------------|------------------|-------------------------------------------|
 | ./build.sh      |                  | Build A.D.A.M.S. from source              |
-|                 | --run, -r        | Build and run A.D.A.M.S                   |
-|                 | --install, -i    | Build and run A.D.A.M.S. installer module |
-|                 | --manager, -m    | Build and run A.D.A.M.S. manager module   |
+|                 | --run</br> -r        | Build and run A.D.A.M.S                   |
+|                 | --install</br> -i    | Build and run A.D.A.M.S. installer module |
+|                 | --manager</br> -m    | Build and run A.D.A.M.S. manager module   |
 
 ## **Run A.D.A.M.S.**
 | Command         | Module           | Description                               |
@@ -103,8 +103,8 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 | ./adams install |                  | Run A.D.A.M.S.                            |
 |                 | adams            | Run A.D.A.M.S. install                    |
 |                 | skynet           | Run Skynet Webportal install              |
-|                 | handshake, hsd   | Run Handshake Full Node install           |
-|                 | powerdns, pdns   | Run PowerDNS install                      |
+|                 | handshake</br> hsd   | Run Handshake Full Node install           |
+|                 | powerdns</br> pdns   | Run PowerDNS install                      |
 |                 | nginx            | Run NGINX install                         |
 
 ## **A.D.A.M.S. Manager Module**
@@ -112,6 +112,6 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 |:----------------|------------------|-------------------------------------------|
 | ./adams manager |                  | Run A.D.A.M.S. manager module             |
 |                 | skynet           | Run Skynet Webportal manager              |
-|                 | handshake, hsd   | Run Handshake Full Node manager           |
-|                 | powerdns, pdns   | Run PowerDNS manager                      |
+|                 | handshake</br> hsd   | Run Handshake Full Node manager           |
+|                 | powerdns</br> pdns   | Run PowerDNS manager                      |
 |                 | nginx            | Run NGINX manager                         |

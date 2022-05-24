@@ -27,8 +27,8 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableSubprocesses = False         # Ghost run, does not affect the system
-disableLogging = False              # Disable console logs
+enableSubprocesses = True         # Ghost run, does not affect the system
+enableLogging = False             # Disable console logs
 
 # Load configurations file
 with open("./config/adams.conf") as configFile:
@@ -45,24 +45,24 @@ for line in lines:
             config[i] = value.strip().lower()
             i += 1
 
-        if config[0] == "disablelogging":
+        if config[0] == "enableLogging":
             if config[1].lower() == "false":
-                disableLogging = False
+                enableLogging = True
             else:
-                disableLogging = True
+                enableLogging = False
 
-            if disableLogging == False:
-                print("Disable Logging: " + str(disableLogging))
+            if enableLogging == True:
+                print("Disable Logging: " + str(enableLogging))
                 sleep(1)
 
-        elif config[0] == "disablesubprocesses":
+        elif config[0] == "enableSubprocesses":
             if config[1].lower() == "false":
-                disableSubprocesses = False
+                enableSubprocesses = True
             else:
-                disableSubprocesses = True
+                enableSubprocesses = False
                 
-            if disableLogging == False:
-                print("Disable Subprocesses: " + str(disableSubprocesses))
+            if enableLogging == True:
+                print("Disable Subprocesses: " + str(enableSubprocesses))
                 sleep(1)
 
 if platform == "linux":
@@ -83,7 +83,7 @@ class hsdManager:
 
         record = {"records": [{"type": "NS", "ns": "ns1." + namespace + "."}]}
 
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
         else:
             print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
@@ -98,7 +98,7 @@ class pdnsManager:
             namespace = cli.get_input(self, "\n\tDomain Name : ")
 
         # Create a new zone
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "create-zone", namespace , "ns1." + namespace], check=True)
         else:
             print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
@@ -108,7 +108,7 @@ class pdnsManager:
 
         updateHNS = cli.get_input(self, "\n\tUpdate handshake records (Y/N)? [default = N] : ")
         if updateHNS.lower() == "y":
-            if disableLogging == False: print("pdnsManager: var namespace = " + namespace) # Log output
+            if enableLogging == True: print("pdnsManager: var namespace = " + namespace) # Log output
             hsdManager.createRecord(self, namespace)
 
         
@@ -120,7 +120,7 @@ class pdnsManager:
             namespace = cli.get_input(self, "\n\tEnter zone name to secure : ")
 
         # Secure an existing zone
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "secure-zone", namespace], check=True)
         else:
             print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
@@ -146,7 +146,7 @@ class pdnsManager:
             record_value = cli.get_input(self, "\n\tRecord Value : ")
 
         # Update PowerDNS Record
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(["sudo", "-u", "pdns", "pdnsutil", "add-record", namespace + ".", record_name, record_type, record_value], check=True)
         else:
             print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
@@ -161,36 +161,6 @@ class cli:
     menu_options = ""
 
     def __init__(self, _type:str=None):
-        PATH = os.getcwd()                                      # A.D.A.M.S. Directory
-        ADAMS_CONFIG = PATH + "/config/adams.conf"
-
-        # Load configurations file
-        with open(ADAMS_CONFIG) as configFile:
-            lines = configFile.readlines()
-
-        for line in lines:
-            if line.startswith("#") or line == "":
-                pass
-            else:
-                config = line.split(":")
-                i = 0
-
-                for value in config:
-                    config[i] = value.strip().lower()
-                    i += 1
-
-                if config[0] == "disablelogging":
-                    disableLogging = config[1]
-                    if disableLogging == False:
-                        print("Disable Logging: " + disableLogging)
-                        sleep(1)
-
-                elif config[0] == "disablesubprocesses":
-                    disableSubprocesses = config[1]
-                    if disableLogging == False:
-                        print("Disable Subprocesses: " + disableSubprocesses)
-                        sleep(1)
-
         clear_screen()
 
         if _type == None or _type.upper() == 'MAIN': 
