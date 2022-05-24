@@ -49,7 +49,7 @@ for line in lines:
             config[i] = value.strip().lower()
             i += 1
 
-        if config[0] == 'enablelogging':
+        if config[0] == 'enableLogging':
             if config[1].lower() == 'false':
                 enableLogging = True
             else:
@@ -59,7 +59,7 @@ for line in lines:
                 print('Disable Logging: ' + str(enableLogging))
                 sleep(1)
 
-        elif config[0] == 'enablesubprocesses':
+        elif config[0] == 'enableSubprocesses':
             if config[1].lower() == 'false':
                 enableSubprocesses = True
             else:
@@ -69,7 +69,7 @@ for line in lines:
                 print('Disable Subprocesses: ' + str(enableSubprocesses))
                 sleep(1)
 
-        elif config[0] == 'disableinstallmethods':
+        elif config[0] == 'enableInstallMethods':
             if config[1].lower() == 'false':
                 enableInstallMethods = True
             else:
@@ -79,7 +79,7 @@ for line in lines:
                 print('Disable Install Methods: ' + str(enableInstallMethods))
                 sleep(1)
 
-        elif config[0] == 'enabledependencyinstall':
+        elif config[0] == 'enableDependencyInstall':
             if config[1].lower() == 'false':
                 enableDependencyInstall = True
             else:

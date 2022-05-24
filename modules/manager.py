@@ -45,7 +45,7 @@ for line in lines:
             config[i] = value.strip().lower()
             i += 1
 
-        if config[0] == "enablelogging":
+        if config[0] == "enableLogging":
             if config[1].lower() == "false":
                 enableLogging = True
             else:
@@ -55,7 +55,7 @@ for line in lines:
                 print("Disable Logging: " + str(enableLogging))
                 sleep(1)
 
-        elif config[0] == "enablesubprocesses":
+        elif config[0] == "enableSubprocesses":
             if config[1].lower() == "false":
                 enableSubprocesses = True
             else:
