@@ -527,15 +527,16 @@ class install:
             # Build HSD binaries
             subprocess.run(['npm', 'install', '--production'], cwd=self.HSD_PATH, check=True)
 
-            # Copy HSD binaries to "/usr/local/bin"
-            """
-            NOT WORKING! Fails with exit code 1 while trying to copy binaries.
-                         If manually copied to '/usr/local/sbin' the 'hsd' node
-                         fails to run.
-            """
-            #subprocess.run(['sudo', 'mv', '*', self.LOCAL_BIN_PATH], cwd=self.HSD_BIN_PATH, check=True)
+            # Create hsd symbolic link in "/usr/local/bin"
+            subprocess.run(['sudo', 'npm', 'i', '-g'], cwd=self.HSD_PATH, check=True)
 
-            # Create HSD system service
+            # Create system user 'hsd'
+            subprocess.run(['sudo', 'adduser', 'hsd'], check=True)
+
+            # Create system group 'hsd'
+            subprocess.run(['sudo', 'addgroup', 'hsd'], check=True)
+
+            # Create HSD system service 'hsd.service'
             subprocess.run(['sudo', 'cp', self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
 
             # Set "hsd.service" owner
@@ -553,6 +554,11 @@ class install:
 
             subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
             subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
+
+            # Enable and start 'hsd' service
+            subprocess.run(['sudo', 'systemctl', 'enable', 'hsd.service'], check=True)
+            subprocess.run(['sudo', 'systemctl', 'start', 'hsd.service'], check=True)
+
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
         print()
