@@ -531,10 +531,10 @@ class install:
             subprocess.run(['sudo', 'npm', 'i', '-g'], cwd=self.HSD_PATH, check=True)
 
             # Create system user 'hsd'
-            subprocess.run(['sudo', 'adduser', 'hsd'], check=True)
+            subprocess.run(['sudo', 'adduser', '--system', 'hsd'], check=True)
 
             # Create system group 'hsd'
-            subprocess.run(['sudo', 'addgroup', 'hsd'], check=True)
+            subprocess.run(['sudo', 'addgroup', '--system', 'hsd'], check=True)
 
             # Create HSD system service 'hsd.service'
             subprocess.run(['sudo', 'cp', self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
