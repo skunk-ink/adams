@@ -108,34 +108,42 @@ class main:
     #################################################### END: main_menu()
 
 if __name__ == '__main__':
-    try:
+    if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'install' or sys.argv[1].lower() == '--install' or sys.argv[1] == '-i':
-            if sys.argv[2].lower() == 'adams':
-                installer.install('adams')
-            elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
-                installer.install('skynet-webportal')
-            elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
-                installer.install('handshake')
-            elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
-                installer.install('powerdns')
-            elif sys.argv[2].lower() == 'nginx':
-                installer.install('nginx')
+            if len(sys.argv) > 2:
+                if sys.argv[2].lower() == 'adams':
+                    installer.install('adams')
+                elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
+                    installer.install('skynet-webportal')
+                elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
+                    installer.install('handshake')
+                elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
+                    installer.install('powerdns')
+                elif sys.argv[2].lower() == 'nginx':
+                    installer.install('nginx')
+                else:
+                    print("`" + str(sys.argv[2]) + "` is an invalid `" + str(sys.argv[1]) + "` command.")
             else:
                 installer.cli()
         elif sys.argv[1].lower() == 'manager' or sys.argv[1].lower() == '--manager' or sys.argv[1] == '-m':
-            if sys.argv[2].lower() == 'adams':
-                manager.cli()
-            elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
-                manager.cli('skynet')
-            elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
-                manager.cli('handshake')
-            elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
-                manager.cli('powerdns')
-            elif sys.argv[2].lower() == 'nginx':
-                manager.cli('nginx')
+            if len(sys.argv) > 2:
+                if sys.argv[2].lower() == 'adams':
+                    manager.cli()
+                elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
+                    manager.cli('skynet')
+                elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
+                    manager.cli('handshake')
+                elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
+                    manager.cli('powerdns')
+                elif sys.argv[2].lower() == 'nginx':
+                    manager.cli('nginx')
+                else:
+                    print("`" + str(sys.argv[2]) + "` is an invalid `" + str(sys.argv[1]) + "` command.")
             else:
-                manager.cli('hsd')
-    except:
+                manager.cli()
+        else:
+            print("No module named `" + str(sys.argv[1] + "` found."))
+    else:
         splash()
         main()
 #################################################### END: __main__
