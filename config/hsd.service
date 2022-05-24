@@ -1,5 +1,5 @@
 [Unit]
-Description=Handshake Fullnode and Authoritative Server
+Description=Handshake Node and Authoritative Server
 Documentation=https://hsd-dev.org/
 Wants=network-online.target
 After=network-online.target
