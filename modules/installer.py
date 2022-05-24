@@ -29,10 +29,10 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-disableInstaller = False            # Disable all install methods
-disableSubprocesses = False         # Ghost run, does not affect the system
-disableDependencyInstall = False    # Disable dependency check on all install methods
-disableLogging = False              # Disable console logs
+enableInstallMethods = True            # Disable all install methods
+enableSubprocesses = True           # Ghost run, does not affect the system
+enableDependencyInstall = True      # Disable dependency check on all install methods
+enableLogging = False               # Disable console logs
 
 # Load configurations file
 with open('./config/adams.conf') as configFile:
@@ -49,44 +49,44 @@ for line in lines:
             config[i] = value.strip().lower()
             i += 1
 
-        if config[0] == 'disablelogging':
+        if config[0] == 'enablelogging':
             if config[1].lower() == 'false':
-                disableLogging = False
+                enableLogging = True
             else:
-                disableLogging = True
+                enableLogging = False
 
-            if disableLogging == False:
-                print('Disable Logging: ' + str(disableLogging))
+            if enableLogging == True:
+                print('Disable Logging: ' + str(enableLogging))
                 sleep(1)
 
-        elif config[0] == 'disablesubprocesses':
+        elif config[0] == 'enablesubprocesses':
             if config[1].lower() == 'false':
-                disableSubprocesses = False
+                enableSubprocesses = True
             else:
-                disableSubprocesses = True
+                enableSubprocesses = False
                 
-            if disableLogging == False:
-                print('Disable Subprocesses: ' + str(disableSubprocesses))
+            if enableLogging == True:
+                print('Disable Subprocesses: ' + str(enableSubprocesses))
                 sleep(1)
 
         elif config[0] == 'disableinstallmethods':
             if config[1].lower() == 'false':
-                disableInstaller = False
+                enableInstallMethods = True
             else:
-                disableInstaller = True
+                enableInstallMethods = False
                 
-            if disableLogging == False:
-                print('Disable Install Methods: ' + str(disableInstaller))
+            if enableLogging == True:
+                print('Disable Install Methods: ' + str(enableInstallMethods))
                 sleep(1)
 
-        elif config[0] == 'disabledependencyinstall':
+        elif config[0] == 'enabledependencyinstall':
             if config[1].lower() == 'false':
-                disableDependencyInstall = False
+                enableDependencyInstall = True
             else:
-                disableDependencyInstall = True
+                enableDependencyInstall = False
                 
-            if disableLogging == False:
-                print('Disable Dependencies: ' + str(disableDependencyInstall))
+            if enableLogging == True:
+                print('Disable Dependencies: ' + str(enableDependencyInstall))
                 sleep(1)
 
 if platform == 'linux':
@@ -120,7 +120,7 @@ class install:
             if type == 'adams':
                 print(colours.red(self, '\nInstalling A.D.A.M.S.'))
 
-                if disableDependencyInstall == False:
+                if enableDependencyInstall == True:
                     self.installDepends(self.getDependencies(sys.platform, 'all'))
 
                 self.handshake()
@@ -133,7 +133,7 @@ class install:
             elif type == 'skynet-webportal':
                 print(colours.red(self, '\nInstalling Skynet Webportal'))
 
-                if disableDependencyInstall == False:
+                if enableDependencyInstall == True:
                     self.installDepends(self.getDependencies(sys.platform, 'skynet-webportal'))
 
                 self.skynet_webportal()
@@ -143,7 +143,7 @@ class install:
             elif type == 'handshake':
                 print(colours.red(self, '\nInstalling Handshake Daemon'))
 
-                if disableDependencyInstall == False:
+                if enableDependencyInstall == True:
                     self.installDepends(self.getDependencies(sys.platform, 'handshake'))
 
                 self.handshake()
@@ -153,7 +153,7 @@ class install:
             elif type == 'powerdns':
                 print(colours.red(self, '\nInstalling PowerDNS'))
 
-                if disableDependencyInstall == False:
+                if enableDependencyInstall == True:
                     self.installDepends(self.getDependencies(sys.platform, 'powerdns'))
 
                 self.powerdns()
@@ -163,7 +163,7 @@ class install:
             elif type == 'nginx':
                 print(colours.red(self, '\nInstalling NGINX Webserver'))
 
-                if disableDependencyInstall == False:
+                if enableDependencyInstall == True:
                     self.installDepends(self.getDependencies(sys.platform, 'nginx'))
 
                 self.nginx()
@@ -174,11 +174,11 @@ class install:
                 print(colours.yellow(self, '\n [!]') + ' RESTART NEEDED: Type "yes" to reboot now, or "no" to return to menu')
                 userInput = cli.get_input(self, '\n\tWould you like to restart now? : ')
                 if userInput.lower() == 'yes':
-                    if disableLogging == False:
+                    if enableLogging == True:
                         print(colours.yellow(self, '\n [!] ') + 'Reboot initiated...')
                         sleep(1)
 
-                    if disableSubprocesses == False:
+                    if enableSubprocesses == True:
                         subprocess.run(['sudo', 'reboot', 'now'], check=True)
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -384,7 +384,7 @@ class install:
             if hasRepo is False:
                 print(colours.green(self, '\n [+] ') + 'Adding PowerDNS sources...')
                 addSource = 'echo "deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main" > /etc/apt/sources.list.d/pdns.list'
-                if disableSubprocesses == False:
+                if enableSubprocesses == True:
                     subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.PATH, check=True)
                 else:
                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -394,7 +394,7 @@ class install:
 
             if hasPackage is False:
                 addSource = 'echo "Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600" > /etc/apt/preferences.d/pdns'
-                if disableSubprocesses == False:
+                if enableSubprocesses == True:
                     subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.PATH, check=True)
                 else:
                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -405,7 +405,7 @@ class install:
             if hasRepo is False or hasPackage is False:    
                 # Downloaded and add PowerDNS APT Key
                 print(colours.green(self, '\n [+] ') + 'Adding APT-KEY...')
-                if disableSubprocesses == False:
+                if enableSubprocesses == True:
                     subprocess.run(['wget', 'https://repo.powerdns.com/FD380FBB-pub.asc'], cwd=self.PATH, check=True)
                     subprocess.run(['sudo', 'apt-key', 'add', 'FD380FBB-pub.asc'], cwd=self.PATH, check=True)
                     subprocess.run(['rm', '-fr', 'FD380FBB-pub.asc'], cwd=self.PATH, check=True)
@@ -429,7 +429,7 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, '\n [+] ') + 'Installing "' + package + '"...')
-                    if disableSubprocesses == False:
+                    if enableSubprocesses == True:
                         subprocess.run(['sudo', 'apt', 'install', '-y', package], check=True)
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -440,7 +440,7 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, '\n [+] ') + 'Installing "' + package + '"...')
-                    if disableSubprocesses == False:
+                    if enableSubprocesses == True:
                         subprocess.run(['pip', 'install', package], check=True)
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -452,7 +452,7 @@ class install:
                     packageName = self.parseURL(package)
                     if os.path.exists(self.PATH + '/' + packageName[:-4]) == False:
                         print(colours.green(self, '\n [+] ') + 'Cloning "' + str(package) + '"...')
-                        if disableSubprocesses == False:
+                        if enableSubprocesses == True:
                             subprocess.run(['git', 'clone', package], cwd=self.PATH, check=True)
                         else:
                             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -465,7 +465,7 @@ class install:
                 for package in depends[packageType]:
                     package = str(package).strip()
                     print(colours.green(self, '\n [+] ') + 'Installing "' + package + '"...')
-                    if disableSubprocesses == False:
+                    if enableSubprocesses == True:
                         subprocess.run(['npm', 'install', package], cwd=self.PATH, check=True)
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -478,7 +478,7 @@ class install:
                     packageName = self.parseURL(package)
                     if os.path.isfile(self.PATH + '/' + packageName) == False:
                         print(colours.green(self, '\n [+] ') + 'Downloading "' + str(packageName) + '"...')
-                        if disableSubprocesses == False:
+                        if enableSubprocesses == True:
                             subprocess.run(['wget', package], cwd=self.PATH, check=True)
                         else:
                             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -489,12 +489,12 @@ class install:
                         
                         if os.path.isfile(self.PATH + '/' + packageName) == True and os.path.isdir(self.PATH + '/' + packageName[-6:]) == False:
                             print('\t Unpacking "' + str(packageName) + '"...')
-                            if disableSubprocesses == False:
+                            if enableSubprocesses == True:
                                 subprocess.run(['tar', '-xvf', packageName], cwd=self.PATH, check=True)
                             else:
                                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                             print('\t Cleaning up "' + str(packageName) + '"...')
-                            if disableSubprocesses == False:
+                            if enableSubprocesses == True:
                                 subprocess.run(['rm', '-fr', packageName], cwd=self.PATH, check=True)
                             else:
                                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -507,13 +507,13 @@ class install:
         sleep(1)
 
         ''' print(colours.green(self, ' [+] ') + 'Installing Yarn')
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(['npm', 'install', 'yarn'], cwd=(self.SKYNET_PATH + '/packages/website'))
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         print(colours.green(self, ' [+] ') + 'Building Skynet Portal Page')
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(['yarn', 'build'], cwd=(self.SKYNET_PATH + '/packages/website'))
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -523,7 +523,7 @@ class install:
     def handshake(self):
         print(colours.green(self, '\n [+] ') + 'Installing Handshake Node')
 
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             # Build HSD binaries
             subprocess.run(['npm', 'install', '--production'], cwd=self.HSD_PATH, check=True)
 
@@ -573,7 +573,7 @@ class install:
 
         for file in files:
             if checkFor in file:
-                if disableSubprocesses == False:
+                if enableSubprocesses == True:
                     subprocess.run(['mv', file, 'pdnsmanager/'], cwd=self.PATH, check=True)
                 else:
                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -597,21 +597,21 @@ class install:
         print(colours.green(self, '\n [+] ') + 'Disabling Stub Resolver...')
         if dnsExists == False or stubListenterExists == False:
             addLine = 'echo "# PowerDNS Configurations" >> /etc/systemd/resolved.conf'
-            if disableSubprocesses == False:
+            if enableSubprocesses == True:
                 subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
             else:
                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         if dnsExists == False:
             addLine = 'echo "DNS=1.1.1.1" >> /etc/systemd/resolved.conf'
-            if disableSubprocesses == False:
+            if enableSubprocesses == True:
                 subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
             else:
                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         if stubListenterExists == False:
             addLine = 'echo "DNSStubListener=no" >> /etc/systemd/resolved.conf'
-            if disableSubprocesses == False:
+            if enableSubprocesses == True:
                 subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
             else:
                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -619,21 +619,21 @@ class install:
 
         # Create Symlink
         print(colours.green(self, '\n [+] ') + 'Creating Symlink')
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(['sudo', 'ln', '-sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], check=True)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         # Configure pdns.conf file
         print(colours.green(self, '\n [+] ') + 'Configuring "' + self.POWERDNS_CONF_PATH + '"')
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(['sudo', 'rm', '-fr', self.POWERDNS_CONF_PATH], check=True)
             subprocess.run(['sudo', 'cp', self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
         
         # Set pdns.conf file permissions
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(['sudo', 'chmod', '640', self.POWERDNS_CONF_PATH], check=True)
             subprocess.run(['sudo', 'chown', '-R', 'root:pdns', self.POWERDNS_CONF_PATH], check=True)
         else:
@@ -641,11 +641,11 @@ class install:
 
 
         # Initialize the sqlite database with schema
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             os.system('sudo sqlite3 /var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql')
 
         # Change ownership of the directory to the `pdns` user and group
-        if disableSubprocesses == False:
+        if enableSubprocesses == True:
             subprocess.run(['sudo', 'chown', '-R', 'pdns:pdns', '/var/lib/powerdns'], check=True)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -729,35 +729,35 @@ class cli:
                 user_input = self.get_input('\n\tWhat would you like to do? : ')
                 
                 if user_input.upper() == '1':   # Install A.D.A.M.S.
-                    if disableInstaller == False:
+                    if enableInstallMethods == True:
                         install('adams')
                     else:
                         print(colours.error(self, 'adams() method not yet complete.'))
                         sleep(1)
 
                 elif user_input.upper() == '2': # Install Skynet Webportal
-                    if disableInstaller == False:
+                    if enableInstallMethods == True:
                         install('skynet-webportal')
                     else:
                         print(colours.error(self, 'skynet_webportal() method not yet complete.'))
                         sleep(1)
 
                 elif user_input.upper() == '3': # Install Handshake Daemon
-                    if disableInstaller == False:
+                    if enableInstallMethods == True:
                         install('handshake')
                     else:
                         print(colours.error(self, 'handshake() method not yet complete.'))
                         sleep(1)
 
                 elif user_input.upper() == '4': # Install PowerDNS
-                    if disableInstaller == False:
+                    if enableInstallMethods == True:
                         install('powerdns')
                     else:
                         print(colours.error(self, 'powerdns() method not yet complete.'))
                         sleep(1)
 
                 elif user_input.upper() == '5': # Install NGINX Webserver
-                    if disableInstaller == False:
+                    if enableInstallMethods == True:
                         install('nginx')
                     else:
                         print(colours.error(self, 'nginx() method not yet complete.'))
