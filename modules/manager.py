@@ -84,7 +84,8 @@ class hsdManager:
         record = {"records": [{"type": "NS", "ns": "ns1." + namespace + "."}]}
 
         if enableSubprocesses == True:
-            subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
+            self.hsw.rpc_sendUPDATE(namespace, record)
+            #subprocess.run(["hsw-cli", "rpc", "sendupdate", namespace, record], check=True)
         else:
             print(colours.yellow(self, "\n [!] ") + "Subprocess disabled")
 
@@ -223,12 +224,33 @@ class cli:
 
         elif menu_id.upper() == "HSD":      # Handshake Daemon Menu Options
             menu_title = ["HANDSHAKE_NODE",
-                          "Handshake Node Management"]
+                          "Handshake Management"]
                           
-            menu_options = [colours().cyan("1") + ": Wallet",
-                            colours().cyan("2") + ": Consensus",
+            menu_options = [colours().cyan("1") + ": Wallet Management",
+                            colours().cyan("2") + ": HNS Records Management",
                             "",
                             colours().cyan("B") + ": Back to Management",
+                            colours().cyan("Q") + ": Quit A.D.A.M.S."]
+            
+        elif menu_id.upper() == "HSW":      # Handshake Wallet Menu Options
+            menu_title = ["HANDSHAKE_WALLET",
+                          "Handshake Wallet Management"]
+                          
+            menu_options = [colours().cyan("1") + ": Accounts and balances",
+                            colours().cyan("2") + ": Send HNS",
+                            colours().cyan("2") + ": Receive HNS",
+                            "",
+                            colours().cyan("B") + ": Back to HSD Management",
+                            colours().cyan("Q") + ": Quit A.D.A.M.S."]
+            
+        elif menu_id.upper() == "HSD_RECORDS":      # Handshake Wallet Menu Options
+            menu_title = ["HANDSHAKE_RECORDS",
+                          "Handshake Records Management"]
+                          
+            menu_options = [colours().cyan("1") + ": View Records",
+                            colours().cyan("2") + ": Create/Update Record",
+                            "",
+                            colours().cyan("B") + ": Back to HSD Management",
                             colours().cyan("Q") + ": Quit A.D.A.M.S."]
             
         elif menu_id.upper() == "PDNS":    # PowerDNS Menu Options
@@ -351,15 +373,11 @@ class cli:
                 
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
-                if user_input.upper() == "1":   # Handshake Wallet
-                    #self.hsdWallet()
-                    print(colours().error("hsdWallet() method not found."))
-                    sleep(1)
+                if user_input.upper() == "1":   # Wallet Management
+                    self.hsdWalletManagerCli()
 
-                elif user_input.upper() == "2": # View Consensus
-                    #self.hsdConsensus()
-                    print(colours().error("hsdConsensus() method not found."))
-                    sleep(1)
+                elif user_input.upper() == "2": # HNS Records Management
+                    self.hsdRecordsManagerCli()
 
                 elif user_input.upper() == "B":
                     self.main_menu()
@@ -372,6 +390,77 @@ class cli:
             self.main_menu()
             pass
     #################################################### END: hsdManagerCli()
+
+    def hsdWalletManagerCli(self):
+        global menu_title
+        
+        self.set_menu("HSW")  # Initialize Handshake Wallet Management Menu
+
+        try:
+            while True:  # Display Handshake Wallet Management Menu
+                self.print_header()
+                self.print_options()
+                
+                user_input = self.get_input("\n\tWhat would you like to do? : ")
+                
+                if user_input.upper() == "1":
+                    #self.skynetWallet()
+                    print(colours().error("Handshake accounts not yet implemented."))
+                    sleep(1)
+
+                elif user_input.upper() == "2":
+                    #self.skynetContracts()
+                    print(colours().error("Handshake transactions not yet implemented."))
+                    sleep(1)
+
+                elif user_input.upper() == "3":
+                    #self.skynetBlocklists()
+                    print(colours().error("Handshake transactions not yet implemented."))
+                    sleep(1)
+
+                elif user_input.upper() == "B":
+                    self.hsdManagerCli()
+
+                elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
+                    clear_screen()    # Clear console window
+                    sys.exit(0)    
+        except KeyboardInterrupt:
+            self.main_menu()
+            pass
+    #################################################### END: hsdWalletManagerCli(self)
+
+    def hsdRecordsManagerCli(self):
+        global menu_title
+        
+        self.set_menu("HSD_RECORDS")  # Initialize Handshake Wallet Management Menu
+
+        try:
+            while True:  # Display Handshake Wallet Management Menu
+                self.print_header()
+                self.print_options()
+                
+                user_input = self.get_input("\n\tWhat would you like to do? : ")
+                
+                if user_input.upper() == "1":
+                    #self.skynetWallet()
+                    print(colours().error("Records management not yet implemented."))
+                    sleep(1)
+
+                elif user_input.upper() == "2":
+                    #self.skynetContracts()
+                    print(colours().error("Records management not yet implemented."))
+                    sleep(1)
+
+                elif user_input.upper() == "B":
+                    self.hsdManagerCli()
+
+                elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
+                    clear_screen()    # Clear console window
+                    sys.exit(0)    
+        except KeyboardInterrupt:
+            self.main_menu()
+            pass
+    #################################################### END: hsdWalletManagerCli(self)
 
     def pdnsManagerCli(self):
         global menu_title

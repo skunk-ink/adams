@@ -65,7 +65,7 @@
     - [x] APT
         - [x] python3
         - [x] python3-pip
-    - [x] [x] PIP
+    - [x] PIP
         - [x] pyinstaller
         - [x] getch
 - ### MacOS
@@ -101,7 +101,7 @@
         - [x] PIP
             - [x] getch
     - #### **HNS Daemon Install**
-        - GIT
+        - [x] GIT
             - [x] https://github.com/handshake-org/hsd.git
     - #### **PowerDNS install**
         - [x] APT
