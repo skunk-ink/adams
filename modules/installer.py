@@ -143,7 +143,7 @@ class install:
     NEED_RESTART = False
     LOCAL_BIN_PATH = '/usr/local/sbin/'                     # Location of local binaries
     PATH = os.getcwd()                                      # A.D.A.M.S. directory
-    HSD_INSTALL_PATH = os.path.expanduser('~') + '/.hsd/'   # HSD installation directory
+    HSD_INSTALL_PATH = '/home/hsd/.hsd/'                    # HSD installation directory
     HSD_PATH = PATH + '/hsd/'                               # Handshake directory
     HSD_BIN_PATH = PATH + '/hsd/bin/'                       # Handshake binaries build directory
     HSD_SERVICE_SCRIPT = PATH + '/config/hsd.service'       # Premade Handshake daemon service script
@@ -617,6 +617,24 @@ class install:
 
             subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
             subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
+
+            # Set "~/.hsd" owner
+            subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH], check=True)
+
+            # Set "~/.hsd/hsd.conf" owner
+            subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH + "/hsd.conf"], check=True)
+
+            # Set "~/.hsd/hsw.conf" owner
+            subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH + "/hsw.conf"], check=True)
+
+            # Set "~/.hsd" permissions
+            subprocess.run(['sudo', 'chmod', '665', self.HSD_INSTALL_PATH])
+
+            # Set "~/.hsd/hsd.conf" permissions
+            subprocess.run(['sudo', 'chmod', '664', self.HSD_INSTALL_PATH + "/hsd.conf"], check=True)
+
+            # Set "~/.hsd/hsw.conf" permissions
+            subprocess.run(['sudo', 'chmod', '664', self.HSD_INSTALL_PATH + "/hsw.conf"], check=True)
 
             # Enable and start 'hsd' service
             subprocess.run(['sudo', 'systemctl', 'enable', 'hsd.service'], check=True)
