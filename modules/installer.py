@@ -613,10 +613,10 @@ class install:
 
             # Create HSD node and wallet configuration files
             if os.path.isdir(self.HSD_INSTALL_PATH) == False:
-                subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
+                subprocess.run(['sudo', 'mkdir', self.HSD_INSTALL_PATH], check=True)
 
-            subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
-            subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
+            subprocess.run(['sudo', 'cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
+            subprocess.run(['sudo', 'cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
 
             # Set "~/.hsd" owner
             subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH], check=True)
@@ -628,7 +628,7 @@ class install:
             subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH + "/hsw.conf"], check=True)
 
             # Set "~/.hsd" permissions
-            subprocess.run(['sudo', 'chmod', '665', self.HSD_INSTALL_PATH])
+            subprocess.run(['sudo', 'chmod', '755', self.HSD_INSTALL_PATH])
 
             # Set "~/.hsd/hsd.conf" permissions
             subprocess.run(['sudo', 'chmod', '664', self.HSD_INSTALL_PATH + "/hsd.conf"], check=True)
