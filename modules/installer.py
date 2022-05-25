@@ -143,7 +143,7 @@ class install:
     NEED_RESTART = False
     LOCAL_BIN_PATH = '/usr/local/sbin/'                     # Location of local binaries
     PATH = os.getcwd()                                      # A.D.A.M.S. directory
-    HSD_INSTALL_PATH = '/home/hsd/.hsd/'                    # HSD installation directory
+    HSD_INSTALL_PATH = os.path.expanduser('~') + '/.hsd/'   # HSD installation directory
     HSD_PATH = PATH + '/hsd/'                               # Handshake directory
     HSD_BIN_PATH = PATH + '/hsd/bin/'                       # Handshake binaries build directory
     HSD_SERVICE_SCRIPT = PATH + '/config/hsd.service'       # Premade Handshake daemon service script
@@ -613,10 +613,10 @@ class install:
 
             # Create HSD node and wallet configuration files
             if os.path.isdir(self.HSD_INSTALL_PATH) == False:
-                subprocess.run(['sudo', 'mkdir', self.HSD_INSTALL_PATH], check=True)
+                subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
 
-            subprocess.run(['sudo', 'cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
-            subprocess.run(['sudo', 'cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
+            subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
+            subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
 
             # Enable and start 'hsd' service
             subprocess.run(['sudo', 'systemctl', 'enable', 'hsd.service'], check=True)
