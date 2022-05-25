@@ -5,7 +5,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/hsd --prefix /home/hsd/.hsd
+ExecStart=/usr/local/bin/hsd
 SyslogIdentifier=hsd
 User=hsd
 Group=hsd
