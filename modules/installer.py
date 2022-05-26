@@ -141,19 +141,20 @@ elif platform == 'win32':
 
 class install:
     NEED_RESTART = False
-    LOCAL_BIN_PATH = '/usr/local/sbin/'                     # Location of local binaries
+    LOCAL_BIN_PATH = '/usr/local/sbin'                      # Location of local binaries
     PATH = os.getcwd()                                      # A.D.A.M.S. directory
-    HSD_INSTALL_PATH = '/home/hsd/.hsd/'                    # HSD installation directory
-    HSD_PATH = PATH + '/hsd/'                               # Handshake directory
-    HSD_BIN_PATH = PATH + '/hsd/bin/'                       # Handshake binaries build directory
+    DOWNLOADS_PATH = PATH + '/downloads'                    # Download directory
+    HSD_INSTALL_PATH = '/home/hsd/.hsd'                     # HSD installation directory
+    HSD_PATH = PATH + '/hsd'                                # Handshake directory
+    HSD_BIN_PATH = PATH + '/hsd/bin'                        # Handshake binaries build directory
     HSD_SERVICE_SCRIPT = PATH + '/config/hsd.service'       # Premade Handshake daemon service script
-    HSD_SYS_SERVICES_PATH = '/etc/systemd/system/'          # Location of system services
+    HSD_SYS_SERVICES_PATH = '/etc/systemd/system'           # Location of system services
     HSD_CONFIG = PATH + '/config/hsd.conf'                  # Location of HSD node config
     HSW_CONFIG = PATH + '/config/hsw.conf'                  # Location of HSD wallet config
-    SKYNET_PATH = PATH + '/skynet-webportal/'               # Skynet Webportal directory
-    ANSIBLE_PLAYBOOKS_PATH = PATH + '/ansible-playbooks/'   # Ansible Playbooks directory
-    ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private/'       # Ansible Private directory
-    POWERDNS_PATH = PATH + '/pdns/'                         # PowerDNS directory
+    SKYNET_PATH = PATH + '/skynet-webportal'                # Skynet Webportal directory
+    ANSIBLE_PLAYBOOKS_PATH = PATH + '/ansible-playbooks'    # Ansible Playbooks directory
+    ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private'        # Ansible Private directory
+    POWERDNS_PATH = PATH + '/pdns'                          # PowerDNS directory
     POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'          # PowerDNS configuration file
     POWERDNS_CONF_FILE = PATH + '/config/pdns.conf'         # Premade PowerDNS configuration file
 
@@ -536,10 +537,14 @@ class install:
                     for package in depends[packageType]:
                         package = str(package).strip()
                         packageName = self.parseURL(package)
-                        if os.path.isfile(self.PATH + '/' + packageName) == False:
+                        if os.path.exists(self.DOWNLOADS_PATH) == False:
+                            if enableSubprocesses == True:
+                                subprocess.run(['mkdir', self.DOWNLOADS_PATH], cwd=self.PATH, check=True)
+
+                        if os.path.isfile(self.DOWNLOADS_PATH + '/' + packageName) == False:
                             print(colours.green(self, '\n [+] ') + 'Downloading "' + str(packageName) + '"...')
                             if enableSubprocesses == True:
-                                subprocess.run(['wget', package], cwd=self.PATH, check=True)
+                                subprocess.run(['wget', package], cwd=self.DOWNLOADS_PATH, check=True)
                             else:
                                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                         else:
@@ -547,19 +552,25 @@ class install:
 
                         if str(package).endswith('tar.gz'):
                             
-                            if os.path.isfile(self.PATH + '/' + packageName) == True and os.path.isdir(self.PATH + '/' + packageName[-6:]) == False:
+                            if os.path.isfile(self.DOWNLOADS_PATH + '/' + packageName) == True and os.path.isdir(self.DOWNLOADS_PATH + '/' + packageName[-6:]) == False:
                                 print('\t Unpacking "' + str(packageName) + '"...')
                                 if enableSubprocesses == True:
-                                    subprocess.run(['tar', '-xvf', packageName], cwd=self.PATH, check=True)
+                                    subprocess.run(['tar', '-xvf', packageName], cwd=self.DOWNLOADS_PATH, check=True)
                                 else:
                                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                                 print('\t Cleaning up "' + str(packageName) + '"...')
                                 if enableSubprocesses == True:
-                                    subprocess.run(['rm', '-fr', packageName], cwd=self.PATH, check=True)
+                                    subprocess.run(['rm', '-fr', packageName], cwd=self.DOWNLOADS_PATH, check=True)
                                 else:
                                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                             else:
-                                print(colours.yellow(self, '\n [+] ') + 'Existing "' + packageName[:-6] + '" directory found')
+                                print(colours.yellow(self, '\n [+] ') + 'Existing "' + packageName[:-3] + '" directory found')
+
+                        elif str(package).endswith('.sh'):
+                            if enableSubprocesses == True:
+                                    subprocess.run(['./' + packageName[-3:]], cwd=self.DOWNLOADS_PATH, check=True)
+                            else:
+                                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
         else:
             print(colours.error(self, 'Dependencies installer has been disabled. See `config/adams.conf`'))
             sleep(3)
