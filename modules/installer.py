@@ -491,6 +491,10 @@ class install:
                         print(colours.green(self, '\n [+] ') + 'Installing "' + package + '"...')
                         if enableSubprocesses == True:
                             subprocess.run(['sudo', 'apt', 'install', '-y', package], check=True)
+
+                            if package == 'npm':
+                                os.environ['NPM_CONFIG_PREFIX'] = '~/.npm-global'
+                                subprocess.run(['source', '~/.profile'])
                         else:
                             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
@@ -526,7 +530,7 @@ class install:
                         package = str(package).strip()
                         print(colours.green(self, '\n [+] ') + 'Installing "' + package + '"...')
                         if enableSubprocesses == True:
-                            subprocess.run(['npm', 'install', package], cwd=self.PATH, check=True)
+                            subprocess.run(['npm', 'install', '-g', package], cwd=self.PATH, check=True)
                         else:
                             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
