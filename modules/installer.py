@@ -599,16 +599,7 @@ class install:
             # Build HSD binaries
             subprocess.run(['npm', 'install', '-g', '--production'], cwd=self.HSD_PATH, check=True)
 
-            """ # Create hsd symbolic link in "/usr/local/bin"
-            subprocess.run(['sudo', 'npm', 'i', '-g'], cwd=self.HSD_PATH, check=True)
-
-            # Create system user 'hsd'
-            subprocess.run(['sudo', 'adduser', '--system', 'hsd'], check=True)
-
-            # Create system group 'hsd'
-            subprocess.run(['sudo', 'addgroup', '--system', 'hsd'], check=True) """
-
-            # Set the 'hsd.service' variable 'User' to current user
+            # Read default 'hsd.service' file
             with open(self.HSD_SERVICE_SCRIPT, 'r') as script:
                 hsdServiceScript = script.readlines()
 
@@ -616,6 +607,7 @@ class install:
             username = self.USER_DIR.split('/')
             iName = len(username) - 1
 
+            # Set the 'hsd.service' variables 'ExecStart' and 'User'
             for line in hsdServiceScript:
                 if line.startswith('ExecStart='):
                     hsdServiceScript[lnCount] = 'ExecStart=' + self.USER_DIR + '/.npm-global/bin/hsd\n'
@@ -625,6 +617,7 @@ class install:
 
                 lnCount += 1
 
+            # Write new 'hsd.service' file
             with open(self.HSD_SERVICE_SCRIPT, 'w') as script:
                 script.writelines(hsdServiceScript)
                 
@@ -646,33 +639,37 @@ class install:
             apiKey = apiKey.strip("b'")
             apiKey = apiKey.strip("\\n'")
 
-            # Set the 'hsd.conf' api-key to newly generated key
+            # Read default 'hsd.conf' file
             with open(self.HSD_CONFIG, 'r') as script:
                 hsdConfig = script.readlines()
 
             lnCount = 0
 
+            # Replace 'api-key' in 'hsd.conf' with newly generated apiKey
             for line in hsdConfig:
                 if line.startswith('api-key:'):
                     hsdConfig[lnCount] = 'api-key: ' + apiKey + '\n'
 
                 lnCount += 1
 
+            # Write new 'hsd.conf' file
             with open(self.HSD_CONFIG, 'w') as script:
                 script.writelines(hsdConfig)
 
-            # Set the 'hsw.conf' api-key to newly generated key
+            # Read default 'hsw.conf' file
             with open(self.HSW_CONFIG, 'r') as script:
                 hswConfig = script.readlines()
 
             lnCount = 0
 
+            # Replace 'api-key' in 'hsw.conf' with newly generated apiKey
             for line in hswConfig:
                 if line.startswith('api-key:'):
                     hswConfig[lnCount] = 'api-key: ' + apiKey + '\n'
 
                 lnCount += 1
 
+            # Write new 'hsw.conf' file
             with open(self.HSW_CONFIG, 'w') as script:
                 script.writelines(hswConfig)
 
