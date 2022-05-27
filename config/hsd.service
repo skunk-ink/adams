@@ -5,10 +5,9 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/hsd
+ExecStart=hsd
 SyslogIdentifier=hsd
-User=hsd
-Group=hsd
+User=user
 Type=simple
 Restart=on-failure
 RestartSec=1

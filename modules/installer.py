@@ -17,14 +17,12 @@
                     ▀▀▀█████████▀▀▀                    
 '''
 
-from faulthandler import disable
 import os
 import sys
 import subprocess
 import json
 
 from sys import platform
-from urllib.parse import urlparse
 from time import sleep as sleep
 from colours import colours
 from display import clear_screen
@@ -141,21 +139,21 @@ elif platform == 'win32':
 
 class install:
     NEED_RESTART = False
-    LOCAL_BIN_PATH = '/usr/local/sbin/'                     # Location of local binaries
-    PATH = os.getcwd()                                      # A.D.A.M.S. directory
-    HSD_INSTALL_PATH = '/home/hsd/.hsd/'                    # HSD installation directory
-    HSD_PATH = PATH + '/hsd/'                               # Handshake directory
-    HSD_BIN_PATH = PATH + '/hsd/bin/'                       # Handshake binaries build directory
-    HSD_SERVICE_SCRIPT = PATH + '/config/hsd.service'       # Premade Handshake daemon service script
-    HSD_SYS_SERVICES_PATH = '/etc/systemd/system/'          # Location of system services
-    HSD_CONFIG = PATH + '/config/hsd.conf'                  # Location of HSD node config
-    HSW_CONFIG = PATH + '/config/hsw.conf'                  # Location of HSD wallet config
-    SKYNET_PATH = PATH + '/skynet-webportal/'               # Skynet Webportal directory
-    ANSIBLE_PLAYBOOKS_PATH = PATH + '/ansible-playbooks/'   # Ansible Playbooks directory
-    ANSIBLE_PRIVATE_PATH = PATH + '/ansible-private/'       # Ansible Private directory
-    POWERDNS_PATH = PATH + '/pdns/'                         # PowerDNS directory
+    ADAMS_PATH = os.getcwd()                                      # A.D.A.M.S. directory
+    USER_DIR = os.path.expanduser('~')                      # User home directory
+    HSD_INSTALL_PATH = USER_DIR + '/.hsd'                   # HSD installation directory
+    HSD_PATH = ADAMS_PATH + '/hsd'                                # Handshake directory
+    HSD_BIN_PATH = ADAMS_PATH + '/hsd/bin'                        # Handshake binaries build directory
+    HSD_SERVICE_SCRIPT = ADAMS_PATH + '/config/hsd.service'       # Premade Handshake daemon service script
+    HSD_SYS_SERVICES_PATH = '/etc/systemd/system'           # Location of system services
+    HSD_CONFIG = ADAMS_PATH + '/config/hsd.conf'                  # Location of HSD node config
+    HSW_CONFIG = ADAMS_PATH + '/config/hsw.conf'                  # Location of HSD wallet config
+    SKYNET_PATH = ADAMS_PATH + '/skynet-webportal'                # Skynet Webportal directory
+    ANSIBLE_PLAYBOOKS_PATH = ADAMS_PATH + '/ansible-playbooks'    # Ansible Playbooks directory
+    ANSIBLE_PRIVATE_PATH = ADAMS_PATH + '/ansible-private'        # Ansible Private directory
+    POWERDNS_PATH = ADAMS_PATH + '/pdns'                          # PowerDNS directory
     POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'          # PowerDNS configuration file
-    POWERDNS_CONF_FILE = PATH + '/config/pdns.conf'         # Premade PowerDNS configuration file
+    POWERDNS_CONF_FILE = ADAMS_PATH + '/config/pdns.conf'         # Premade PowerDNS configuration file
 
     def __init__(self, type):
 
@@ -445,7 +443,7 @@ class install:
                     print(colours.green(self, '\n [+] ') + 'Adding PowerDNS sources...')
                     addSource = 'echo "deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main" > /etc/apt/sources.list.d/pdns.list'
                     if enableSubprocesses == True:
-                        subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.PATH, check=True)
+                        subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.ADAMS_PATH, check=True)
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                     print()
@@ -455,7 +453,7 @@ class install:
                 if hasPackage is False:
                     addSource = 'echo "Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600" > /etc/apt/preferences.d/pdns'
                     if enableSubprocesses == True:
-                        subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.PATH, check=True)
+                        subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.ADAMS_PATH, check=True)
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                 else:
@@ -466,10 +464,10 @@ class install:
                     # Downloaded and add PowerDNS APT Key
                     print(colours.green(self, '\n [+] ') + 'Adding APT-KEY...')
                     if enableSubprocesses == True:
-                        subprocess.run(['wget', 'https://repo.powerdns.com/FD380FBB-pub.asc'], cwd=self.PATH, check=True)
-                        subprocess.run(['sudo', 'apt-key', 'add', 'FD380FBB-pub.asc'], cwd=self.PATH, check=True)
-                        subprocess.run(['rm', '-fr', 'FD380FBB-pub.asc'], cwd=self.PATH, check=True)
-                        subprocess.run(['sudo', 'apt', 'update'], cwd=self.PATH, check=True)
+                        subprocess.run(['wget', 'https://repo.powerdns.com/FD380FBB-pub.asc'], cwd=self.ADAMS_PATH, check=True)
+                        subprocess.run(['sudo', 'apt-key', 'add', 'FD380FBB-pub.asc'], cwd=self.ADAMS_PATH, check=True)
+                        subprocess.run(['rm', '-fr', 'FD380FBB-pub.asc'], cwd=self.ADAMS_PATH, check=True)
+                        subprocess.run(['sudo', 'apt', 'update'], cwd=self.ADAMS_PATH, check=True)
                         print()
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
@@ -491,6 +489,17 @@ class install:
                         print(colours.green(self, '\n [+] ') + 'Installing "' + package + '"...')
                         if enableSubprocesses == True:
                             subprocess.run(['sudo', 'apt', 'install', '-y', package], check=True)
+
+                            if package == 'npm':
+                                if os.path.exists(self.USER_DIR + '/.npm-global') == False:
+                                    subprocess.run(['mkdir', self.USER_DIR + '/.npm-global'], check=True)
+
+                                subprocess.run(['npm', 'config', 'set', 'prefix', '"~/.npm-global"'], check=True)
+
+                                line = 'export ADAMS_PATH=~/.npm-global/bin:$ADAMS_PATH'
+                                subprocess.run(['echo', line, '>>', '~/.profile'], check=True)
+                                # os.environ['NPM_CONFIG_PREFIX'] = '~/.npm-global'
+                                # subprocess.run(['source', '~/.profile'], check=True)
                         else:
                             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
@@ -510,10 +519,10 @@ class install:
                     print(colours.red(self, '\n\n  -- Cloning Github Repositories --'))
                     for package in depends[packageType]:
                         packageName = self.parseURL(package)
-                        if os.path.exists(self.PATH + '/' + packageName[:-4]) == False:
+                        if os.path.exists(self.ADAMS_PATH + '/' + packageName[:-4]) == False:
                             print(colours.green(self, '\n [+] ') + 'Cloning "' + str(package) + '"...')
                             if enableSubprocesses == True:
-                                subprocess.run(['git', 'clone', package], cwd=self.PATH, check=True)
+                                subprocess.run(['git', 'clone', package], cwd=self.ADAMS_PATH, check=True)
                             else:
                                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                         else:
@@ -526,7 +535,7 @@ class install:
                         package = str(package).strip()
                         print(colours.green(self, '\n [+] ') + 'Installing "' + package + '"...')
                         if enableSubprocesses == True:
-                            subprocess.run(['npm', 'install', package], cwd=self.PATH, check=True)
+                            subprocess.run(['npm', 'install', package], cwd=self.ADAMS_PATH, check=True)
                         else:
                             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
@@ -536,10 +545,10 @@ class install:
                     for package in depends[packageType]:
                         package = str(package).strip()
                         packageName = self.parseURL(package)
-                        if os.path.isfile(self.PATH + '/' + packageName) == False:
+                        if os.path.isfile(self.ADAMS_PATH + '/' + packageName) == False:
                             print(colours.green(self, '\n [+] ') + 'Downloading "' + str(packageName) + '"...')
                             if enableSubprocesses == True:
-                                subprocess.run(['wget', package], cwd=self.PATH, check=True)
+                                subprocess.run(['wget', package], cwd=self.ADAMS_PATH, check=True)
                             else:
                                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                         else:
@@ -547,15 +556,15 @@ class install:
 
                         if str(package).endswith('tar.gz'):
                             
-                            if os.path.isfile(self.PATH + '/' + packageName) == True and os.path.isdir(self.PATH + '/' + packageName[-6:]) == False:
+                            if os.path.isfile(self.ADAMS_PATH + '/' + packageName) == True and os.path.isdir(self.ADAMS_PATH + '/' + packageName[-6:]) == False:
                                 print('\t Unpacking "' + str(packageName) + '"...')
                                 if enableSubprocesses == True:
-                                    subprocess.run(['tar', '-xvf', packageName], cwd=self.PATH, check=True)
+                                    subprocess.run(['tar', '-xvf', packageName], cwd=self.ADAMS_PATH, check=True)
                                 else:
                                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                                 print('\t Cleaning up "' + str(packageName) + '"...')
                                 if enableSubprocesses == True:
-                                    subprocess.run(['rm', '-fr', packageName], cwd=self.PATH, check=True)
+                                    subprocess.run(['rm', '-fr', packageName], cwd=self.ADAMS_PATH, check=True)
                                 else:
                                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
                             else:
@@ -588,17 +597,30 @@ class install:
 
         if enableSubprocesses == True:
             # Build HSD binaries
-            subprocess.run(['npm', 'install', '--production'], cwd=self.HSD_PATH, check=True)
+            subprocess.run(['npm', 'install', '-g', '--production'], cwd=self.HSD_PATH, check=True)
 
-            # Create hsd symbolic link in "/usr/local/bin"
-            subprocess.run(['sudo', 'npm', 'i', '-g'], cwd=self.HSD_PATH, check=True)
+            # Read default 'hsd.service' file
+            with open(self.HSD_SERVICE_SCRIPT, 'r') as script:
+                hsdServiceScript = script.readlines()
 
-            # Create system user 'hsd'
-            subprocess.run(['sudo', 'adduser', '--system', 'hsd'], check=True)
+            lnCount = 0
+            username = self.USER_DIR.split('/')
+            iName = len(username) - 1
 
-            # Create system group 'hsd'
-            subprocess.run(['sudo', 'addgroup', '--system', 'hsd'], check=True)
+            # Set the 'hsd.service' variables 'ExecStart' and 'User'
+            for line in hsdServiceScript:
+                if line.startswith('ExecStart='):
+                    hsdServiceScript[lnCount] = 'ExecStart=' + self.USER_DIR + '/.npm-global/bin/hsd\n'
 
+                if line.startswith('User='):
+                    hsdServiceScript[lnCount] = 'User=' + str(username[iName]) + '\n'
+
+                lnCount += 1
+
+            # Write new 'hsd.service' file
+            with open(self.HSD_SERVICE_SCRIPT, 'w') as script:
+                script.writelines(hsdServiceScript)
+                
             # Create HSD system service 'hsd.service'
             subprocess.run(['sudo', 'cp', self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
 
@@ -611,30 +633,56 @@ class install:
             # Enable "hsd.service"
             subprocess.run(['sudo', 'systemctl', 'enable', 'hsd'])
 
+            # Generate new API key
+            nodeString = 'bcrypto=require("bcrypto"); console.log(bcrypto.random.randomBytes(32).toString("hex"))'
+            apiKey = str(subprocess.check_output(['node', '-e', nodeString], cwd='/home/ubuntu/adams/hsd', shell=False))
+            apiKey = apiKey.strip("b'")
+            apiKey = apiKey.strip("\\n'")
+
+            # Read default 'hsd.conf' file
+            with open(self.HSD_CONFIG, 'r') as script:
+                hsdConfig = script.readlines()
+
+            lnCount = 0
+
+            # Replace 'api-key' in 'hsd.conf' with newly generated apiKey
+            for line in hsdConfig:
+                if line.startswith('api-key:'):
+                    hsdConfig[lnCount] = 'api-key: ' + apiKey + '\n'
+
+                lnCount += 1
+
+            # Write new 'hsd.conf' file
+            with open(self.HSD_CONFIG, 'w') as script:
+                script.writelines(hsdConfig)
+
+            # Read default 'hsw.conf' file
+            with open(self.HSW_CONFIG, 'r') as script:
+                hswConfig = script.readlines()
+
+            lnCount = 0
+
+            # Replace 'api-key' in 'hsw.conf' with newly generated apiKey
+            for line in hswConfig:
+                if line.startswith('api-key:'):
+                    hswConfig[lnCount] = 'api-key: ' + apiKey + '\n'
+
+                lnCount += 1
+
+            # Write new 'hsw.conf' file
+            with open(self.HSW_CONFIG, 'w') as script:
+                script.writelines(hswConfig)
+
             # Create HSD node and wallet configuration files
             if os.path.isdir(self.HSD_INSTALL_PATH) == False:
-                subprocess.run(['sudo', 'mkdir', self.HSD_INSTALL_PATH], check=True)
+                subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
 
-            subprocess.run(['sudo', 'cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
-            subprocess.run(['sudo', 'cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
+            # Create HSD node and wallet configuration files
+            if os.path.isdir(self.HSD_INSTALL_PATH) == False:
+                subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
 
-            # Set "~/.hsd" owner
-            subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH], check=True)
-
-            # Set "~/.hsd/hsd.conf" owner
-            subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH + "/hsd.conf"], check=True)
-
-            # Set "~/.hsd/hsw.conf" owner
-            subprocess.run(['sudo', 'chown', 'hsd:hsd', self.HSD_INSTALL_PATH + "/hsw.conf"], check=True)
-
-            # Set "~/.hsd" permissions
-            subprocess.run(['sudo', 'chmod', '755', self.HSD_INSTALL_PATH])
-
-            # Set "~/.hsd/hsd.conf" permissions
-            subprocess.run(['sudo', 'chmod', '664', self.HSD_INSTALL_PATH + "/hsd.conf"], check=True)
-
-            # Set "~/.hsd/hsw.conf" permissions
-            subprocess.run(['sudo', 'chmod', '664', self.HSD_INSTALL_PATH + "/hsw.conf"], check=True)
+            subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
+            subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
 
             # Enable and start 'hsd' service
             subprocess.run(['sudo', 'systemctl', 'enable', 'hsd.service'], check=True)
@@ -643,10 +691,10 @@ class install:
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
         print()
-    #################################################### END: hsd(self)
+    #################################################### END: handshake(self)
 
     def powerdns(self):
-        files = os.listdir(self.PATH)
+        files = os.listdir(self.ADAMS_PATH)
         checkFor = 'pdnsmanager'
 
         print(colours.green(self, '\n [+] ') + 'Configuring PowerDNS')
@@ -655,7 +703,7 @@ class install:
         for file in files:
             if checkFor in file:
                 if enableSubprocesses == True:
-                    subprocess.run(['mv', file, 'pdnsmanager/'], cwd=self.PATH, check=True)
+                    subprocess.run(['mv', file, 'pdnsmanager/'], cwd=self.ADAMS_PATH, check=True)
                 else:
                     print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
