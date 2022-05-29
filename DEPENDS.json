@@ -1,51 +1,52 @@
 {
-    "windows": [{
-            "exec": []
-        }],
-    "linux": [{
-            "apt": ["python3",
-                    "python3-pip",
-                    "zip",
-                    "unzip"]
-        }],
-    "skynet-webportal": [{
-            "apt": ["npm",
-                    "git"],
+        "windows": [{
+                "exec": []
+                }],
+        "linux": [{
+                "apt": ["python3",
+                        "python3-pip",
+                        "python3-tk",
+                        "zip",
+                        "unzip"]
+                }],
+        "skynet-webportal": [{
+                "apt": ["npm",
+                        "git"],
 
-            "npm": ["yarn"],
+                "npm": ["yarn"],
 
-            "git": ["https://github.com/SkynetLabs/skynet-webportal.git",
-                    "https://github.com/SkynetLabs/ansible-playbooks.git",
-                    "https://github.com/SkynetLabs/ansible-private-sample.git"]
-        }],
-    "handshake": [{
-            "apt": ["git",
-                    "npm"],
+                "git": ["https://github.com/SkynetLabs/skynet-webportal.git",
+                        "https://github.com/SkynetLabs/ansible-playbooks.git",
+                        "https://github.com/SkynetLabs/ansible-private-sample.git"]
+                }],
+        "handshake": [{
+                "apt": ["git",
+                        "npm"],
 
-            "git": ["https://github.com/handshake-org/hsd.git"]
-        }],
-    "powerdns": [{
-            "apt": ["g++",
-                    "libboost-all-dev",
-                    "libtool",
-                    "make",
-                    "pkg-config",
-                    "default-libmysqlclient-dev",
-                    "libssl-dev",
-                    "libluajit-5.1-dev",
-                    "python3-venv",
-                    "autoconf",
-                    "automake",
-                    "ragel",
-                    "bison",
-                    "flex",
-                    "sqlite3",
-                    "pdns-server",
-                    "pdns-backend-sqlite3"],
+                "git": ["https://github.com/handshake-org/hsd.git"]
+                }],
+        "powerdns": [{
+                "apt": ["g++",
+                        "libboost-all-dev",
+                        "libtool",
+                        "make",
+                        "pkg-config",
+                        "default-libmysqlclient-dev",
+                        "libssl-dev",
+                        "libluajit-5.1-dev",
+                        "python3-venv",
+                        "autoconf",
+                        "automake",
+                        "ragel",
+                        "bison",
+                        "flex",
+                        "sqlite3",
+                        "pdns-server",
+                        "pdns-backend-sqlite3"],
 
-            "wget": ["https://dl.pdnsmanager.org/pdnsmanager-2.1.0.tar.gz"]
-        }],
-    "nginx": [{
-            "apt": ["nginx"]
-        }]
+                "wget": ["https://dl.pdnsmanager.org/pdnsmanager-2.1.0.tar.gz"]
+                }],
+        "nginx": [{
+                "apt": ["nginx"]
+                }]
 }
