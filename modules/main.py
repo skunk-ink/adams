@@ -134,7 +134,7 @@ if __name__ == '__main__':
                 elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
                     manager.cli('skynet')
                 elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
-                    from modules.hsmanager import cli as hsmanager
+                    from hsmanager import cli as hsmanager
                     hsmanager()
                 elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
                     manager.cli('powerdns')

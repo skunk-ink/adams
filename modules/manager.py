@@ -147,7 +147,7 @@ class cli:
         elif _type.upper() == "SKYNET-WEBPORTAL" or _type.upper() == "SKYNET": 
             self.skynetManagerCli()
         elif _type.upper() == "HSD" or _type.upper() == "HANDSHAKE":
-            from modules.hsmanager import cli as hsmanager
+            from hsmanager import cli as hsmanager
             hsmanager()
         elif _type.upper() == "PDNS" or _type.upper() == "POWERDNS": 
             self.pdnsManagerCli()
@@ -245,7 +245,7 @@ class cli:
                     sleep(1)
 
                 elif user_input.upper() == '2': # Handshake Daemon Management
-                    from modules.hsmanager import cli as hsmanager
+                    from hsmanager import cli as hsmanager
                     hsmanager()
                     print(colours().error('hsdManagerCli() method not found.'))
                     sleep(1)

@@ -635,7 +635,7 @@ class install:
 
             # Generate new API key
             nodeString = 'bcrypto=require("bcrypto"); console.log(bcrypto.random.randomBytes(32).toString("hex"))'
-            apiKey = str(subprocess.check_output(['node', '-e', nodeString], cwd='/home/ubuntu/adams/hsd', shell=False))
+            apiKey = str(subprocess.check_output(['node', '-e', nodeString], cwd=self.ADAMS_PATH + '/hsd', shell=False))
             apiKey = apiKey.strip("b'")
             apiKey = apiKey.strip("\\n'")
 
