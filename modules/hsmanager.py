@@ -55,7 +55,7 @@ if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
         print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
         getch()
         import installer
-        installer.cli()
+        installer.install('handshake')
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
@@ -66,7 +66,7 @@ elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False:
         print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
         getch()
         import installer
-        installer.cli()
+        installer.install('handshake')
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
