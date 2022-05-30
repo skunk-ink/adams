@@ -34,13 +34,13 @@ elif platform == 'win32':
 if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
     print('\033[41m\033[97m\n\t > ERROR : Handshake node not detected. Please install before continuing.\033[0m\033[0m')
     getch()
-    from main import main
-    main()
+    clear_screen()
+    sys.exit(0)
 elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False:
     print(colours.error('\n [!] ') + 'Handshake node misconfigured.')
     getch()
-    from main import main
-    main()
+    clear_screen()
+    sys.exit(0)
 
 # Load configurations file
 with open(ADAMS_CONFIG) as configFile:

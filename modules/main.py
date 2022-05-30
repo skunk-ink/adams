@@ -91,8 +91,10 @@ class main:
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
                 if user_input.upper() == "1" or user_input.upper() == "I":
+                    import installer
                     installer.cli()
                 elif user_input.upper() == "2" or user_input.upper() == "C":
+                    import manager
                     manager.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
@@ -132,7 +134,8 @@ if __name__ == '__main__':
                 elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
                     manager.cli('skynet')
                 elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
-                    manager.cli('handshake')
+                    from modules.hsmanager import cli as hsmanager
+                    hsmanager()
                 elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
                     manager.cli('powerdns')
                 elif sys.argv[2].lower() == 'nginx':
