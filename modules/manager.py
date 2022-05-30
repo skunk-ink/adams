@@ -245,10 +245,13 @@ class cli:
                     sleep(1)
 
                 elif user_input.upper() == '2': # Handshake Daemon Management
-                    from hsmanager import cli as hsmanager
-                    hsmanager()
-                    print(colours().error('hsdManagerCli() method not found.'))
-                    sleep(1)
+                    try:
+                        from hsmanager import cli as hsmanager
+                        hsmanager()
+                    except ImportError:
+                        print(colours().error('Handshake node not detected!'))
+                        sleep(1)
+                        clear_screen()
 
                 elif user_input.upper() == '3': # PowerDNS Management
                     self.pdnsManagerCli()

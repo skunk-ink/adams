@@ -1,3 +1,22 @@
+'''               _                                    
+     __ _      __| |     __ _      _ _ _      ____     
+    / _` |    / _` |    / _` |    | ` ` |    / __/     
+   | (_| |   | (_| |   | (_| |    | | | |    \__ \     
+    \__,_| ⍟ \__,_|▄⍟▄\__,_|█⍟▄|_|_|_| ⍟ /___/ ⍟  
+                   ███           ███                   
+                 ███               ███                 
+                ██                   ██                
+                         ▄▄█▄▄                         
+               ▄       ███───███       ▄               
+              ███     ███──█──███     ███              
+               ▀       ██──▄──██       ▀               
+                         ▀▀█▀▀                         
+                ██                   ██                
+                 ███               ███                 
+    Automated Decentralization And Management System   
+                    ▀▀▀█████████▀▀▀                    
+'''
+
 from getpass import getpass
 import os
 import sys
@@ -7,7 +26,6 @@ from sys import platform
 from time import sleep as sleep
 from colours import colours
 from display import clear_screen
-
 
 ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 USER_DIR = os.path.expanduser('~')                      # User home directory
@@ -32,15 +50,26 @@ elif platform == 'win32':
     from msvcrt import getch as getch
 
 if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
-    print('\033[41m\033[97m\n\tHANDSHAKE ERROR : Node not detected. Please install before running the Handshake Node management module.\033[0m\033[0m')
-    getch()
-    clear_screen()
-    sys.exit(0)
+    try:
+        print('\033[91m\n [!] \033[0mHandshake node not detected. Please install.')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
+        getch()
+        import installer
+        installer.cli()
+    except KeyboardInterrupt:
+        clear_screen()
+        sys.exit(0)
+
 elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False:
-    print('\033[41m\033[97m\n\tHANDSHAKE ERROR : Node misconfigured. Please reinstall before running the Handshake Node management module.\033[0m\033[0m')
-    getch()
-    clear_screen()
-    sys.exit(0)
+    try:
+        print('\033[91m\n [!] \033[0mHandshake node misconfigured. Please reinstall.')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
+        getch()
+        import installer
+        installer.cli()
+    except KeyboardInterrupt:
+        clear_screen()
+        sys.exit(0)
 
 # Load configurations file
 with open(ADAMS_CONFIG) as configFile:
