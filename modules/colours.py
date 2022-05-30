@@ -93,6 +93,6 @@ class colours:
         return yellow + bold + text + endc + endc
         
     def error(self, text):
-        text = "\n\t > ERROR : " + text
+        text = "\n\tERROR : " + text
         return red_bg + white + text + endc + endc
         
