@@ -412,7 +412,7 @@ class install:
                     packages = ''
         
         print()
-        print(colours.prompt(self, 'Press any key to continue, or "ctrl+c" to return to main menu.'))
+        print(colours.prompt(self, 'Press any key to continue, or use "ctrl+c" cancel install.'))
         getch()
     #################################################### END: printDepends(self, depends)
 
