@@ -31,6 +31,17 @@ if platform == 'linux':
 elif platform == 'win32':
     from msvcrt import getch as getch
 
+if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
+    print('\033[41m\033[97m\n\tHANDSHAKE ERROR : Node not detected. Please install before running the Handshake Node management module.\033[0m\033[0m')
+    getch()
+    clear_screen()
+    sys.exit(0)
+elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False:
+    print('\033[41m\033[97m\n\tHANDSHAKE ERROR : Node misconfigured. Please reinstall before running the Handshake Node management module.\033[0m\033[0m')
+    getch()
+    clear_screen()
+    sys.exit(0)
+
 # Load configurations file
 with open(ADAMS_CONFIG) as configFile:
     lines = configFile.readlines()
@@ -113,7 +124,7 @@ for line in lines:
         elif networkType.lower() == 'simnet':
             HSW_PORT = 15039
 
-class hsd_interface:
+class hsmanager:
     hsd = None
     hsw = None
 
@@ -238,19 +249,19 @@ class hsd_interface:
     #################################################### END: createRecord(self, namespace)
 
 class cli:
-    hsdIFace = None
+    hs_manager = None
     menu_title = ''
     menu_options = ''
     menu_display = []
 
     def __init__(self, _type:str=None):
         global HNS_WALLET_ID
-        global hsdIFace
-        hsdIFace = hsd_interface()
+        global hs_manager
+        hs_manager = hsmanager()
 
         walletFound = False
 
-        for wallet in hsdIFace.getWallets():
+        for wallet in hs_manager.getWallets():
             if str(wallet) == HNS_WALLET_ID:
                 walletFound = True
                 
@@ -262,9 +273,9 @@ class cli:
                 user_input = self.get_input('\n\tWould you like to create a wallet with the ID of `' + HNS_WALLET_ID + '`? [yes or no] : ')
 
                 if user_input.lower() == 'yes' or user_input.lower() == 'y':
-                    hsdIFace.createWallet(HNS_WALLET_ID)
+                    hs_manager.createWallet(HNS_WALLET_ID)
 
-                    for wallet in hsdIFace.getWallets():
+                    for wallet in hs_manager.getWallets():
                         if str(wallet) == HNS_WALLET_ID:
                             walletFound = True
                 else:
@@ -273,9 +284,9 @@ class cli:
                     if HNS_WALLET_ID == '':
                         HNS_WALLET_ID = 'adams'
 
-                    hsdIFace.createWallet(HNS_WALLET_ID)
+                    hs_manager.createWallet(HNS_WALLET_ID)
 
-                    for wallet in hsdIFace.getWallets():
+                    for wallet in hs_manager.getWallets():
                         if str(wallet) == HNS_WALLET_ID:
                             walletFound = True
 
@@ -298,7 +309,7 @@ class cli:
             script.writelines(adamsConfig)
 
         # Set wallet RPC to specified wallet id
-            hsdIFace.setWallet(HNS_WALLET_ID)
+            hs_manager.setWallet(HNS_WALLET_ID)
 
         clear_screen()
 
@@ -341,7 +352,7 @@ class cli:
     #################################################### END: print_options()
 
     def set_menu(self, menu_id):
-        global hsdIFace
+        global hs_manager
         global menu_title
         global menu_options
         
@@ -449,9 +460,9 @@ class cli:
                     self.print_header()
                     self.print_options()
                     
-                    print(colours().green('\t  Wallet ID : ') + str(hsdIFace.walletName()))
-                    print(colours().green('\t  Balance   : ') + str(hsdIFace.getBalance(hsdIFace.walletName())) + ' HNS')
-                    print(colours().green('\t  Address   : ') + str(hsdIFace.getAddress()))
+                    print(colours().green('\t  Wallet ID : ') + str(hs_manager.walletName()))
+                    print(colours().green('\t  Balance   : ') + str(hs_manager.getBalance(hs_manager.walletName())) + ' HNS')
+                    print(colours().green('\t  Address   : ') + str(hs_manager.getAddress()))
         
                     user_input = self.get_input('\n\tWhat would you like to do? : ')
                     
@@ -477,7 +488,7 @@ class cli:
                 elif menu_id.upper() == 'ACCOUNTS':      # Handshake Wallet Menu Options
                     user_input = None
                     while True:
-                        accounts = hsdIFace.getAccounts()
+                        accounts = hs_manager.getAccounts()
                             
                         menu_title = ['HANDSHAKE_WALLET',
                                     'Wallet Accounts for `' + HNS_WALLET_ID + '`']
@@ -508,7 +519,7 @@ class cli:
                                 accountIndex += 1
 
                                 if user_input == str(accountIndex):
-                                    results = hsdIFace.getAccountInfo(str(account))
+                                    results = hs_manager.getAccountInfo(str(account))
 
                                     self.menu_display.append(colours().green('Account ID') + '  : ' + str(results['name']))
                                     balance = results['balance']
@@ -671,7 +682,7 @@ class cli:
 
 if __name__ == "__main__":
     clear_screen()
-    #hsd = hsd_interface()
+    #hsd = hsmanager()
     #hsd.getWallets()
     #print(hsd.getBalance('skunk'))
     cli()
