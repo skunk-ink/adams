@@ -198,11 +198,8 @@ class install:
                     self.handshake()
                     print(colours.prompt(self, '\n Handshake Node install complete! Press any key to continue.'))
                     getch()
-                    try:
-                        import hsmanager
-                        hsmanager.cli()
-                    except ImportError:
-                        clear_screen()
+                    import hsmanager
+                    hsmanager.cli()
                 else:
                     print(colours.error(self, 'Handshake Node installer has been disabled. See `config/adams.conf`'))
                     sleep(3)

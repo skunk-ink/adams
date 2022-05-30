@@ -555,18 +555,7 @@ class cli:
                                     self.menu_display.append(colours().green('Balance') + '     : ' + str(balance['account']))
                                     self.menu_display.append(colours().green('Initialized') + ' : ' + str(results['initialized']))
                                     self.menu_display.append(colours().green('Watch Only') + '  : ' + str(results['watchOnly']))
-                                    receiveAddress = ''
-                                    charCount = 0
-                                    for char in str(results['receiveAddress']):
-                                        if charCount == 21:
-                                            receiveAddress += '\n\t                ' + str(char)
-                                            charCount = 0
-                                        else:
-                                            receiveAddress += str(char)
-                                        
-                                        charCount += 1
-
-                                    self.menu_display.append(colours().green('Address') + '     : ' + receiveAddress)
+                                    self.menu_display.append(colours().green('Address') + '     : ' + results['receiveAddress'])
 
                             self.print_header()
                             self.print_options()
