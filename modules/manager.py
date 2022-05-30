@@ -82,7 +82,7 @@ class pdnsManager:
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
-        print(colours.green(self, '\n [+] ') + 'Zone created, press any key to continue')
+        print(colours.green(self, '\n [+] ') + 'Zone created')
         sleep(2)
 
         updateHNS = cli.get_input(self, '\n\tUpdate handshake records (Y/N)? [default = N] : ')
@@ -104,7 +104,7 @@ class pdnsManager:
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
-        print(colours.green(self, '\n [+] ') + 'Zone secured, press any key to continue')
+        print(colours.green(self, '\n [+] ') + 'Zone secured')
         sleep(2)
                 
 
@@ -130,7 +130,7 @@ class pdnsManager:
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
-        print(colours.green(self, '\n [+] ') + 'Record created, press any key to continue')
+        print(colours.green(self, '\n [+] ') + 'Record created')
         sleep(2)
     #################################################### END: createRecord(self)
 
@@ -155,7 +155,6 @@ class cli:
             self.nginxManagerCli()
         
         self.main_menu()
-        sleep(1)
     #################################################### END: __init__(self)
 
     def get_input(self, prompt):
@@ -249,8 +248,9 @@ class cli:
                         from hsmanager import cli as hsmanager
                         hsmanager()
                     except ImportError:
-                        print(colours().error('Handshake node not detected!'))
-                        sleep(1)
+                        # print(colours().error('Handshake node not detected! Please install.'))
+                        print(colours().error('Import of `hsmanager` failed. Please restart A.D.A.M.S.'))
+                        sleep(2)
                         clear_screen()
 
                 elif user_input.upper() == '3': # PowerDNS Management

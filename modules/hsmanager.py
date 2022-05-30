@@ -51,8 +51,8 @@ elif platform == 'win32':
 
 if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
     try:
-        print('\033[91m\n [!] \033[0mHandshake node not detected. Please install.')
-        print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
+        print('\033[41m\033[97m\n\t Handshake node not detected! Please install. \033[0m\033[0m')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
         import installer
         installer.install('handshake')
@@ -62,8 +62,8 @@ if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
 
 elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False:
     try:
-        print('\033[91m\n [!] \033[0mHandshake node misconfigured. Please reinstall.')
-        print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
+        print('\033[41m\033[97m\n\t Handshake node misconfigured! Please reinstall. \033[0m\033[0m')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
         import installer
         installer.install('handshake')
@@ -273,7 +273,7 @@ class hsmanager:
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
-        print(colours.green(self, '\n [+] ') + 'Record created, press any key to continue')
+        print(colours.green(self, '\n [+] ') + 'Record created')
         sleep(2)
     #################################################### END: createRecord(self, namespace)
 
