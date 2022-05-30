@@ -21,8 +21,6 @@ import os
 import sys
 
 from sys import platform
-import manager
-import installer
 from time import sleep
 from display import clear_screen
 from colours import colours
@@ -110,6 +108,7 @@ class main:
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'install' or sys.argv[1].lower() == '--install' or sys.argv[1] == '-i':
+            import installer
             if len(sys.argv) > 2:
                 if sys.argv[2].lower() == 'adams':
                     installer.install('adams')
@@ -125,7 +124,8 @@ if __name__ == '__main__':
                     print("`" + str(sys.argv[2]) + "` is an invalid `" + str(sys.argv[1]) + "` command.")
             else:
                 installer.cli()
-        elif sys.argv[1].lower() == 'manager' or sys.argv[1].lower() == '--manager' or sys.argv[1] == '-m':
+        elif sys.argv[1].lower() == 'manage' or sys.argv[1].lower() == 'manager' or sys.argv[1].lower() == '--manager' or sys.argv[1] == '-m':
+            import manager
             if len(sys.argv) > 2:
                 if sys.argv[2].lower() == 'adams':
                     manager.cli()
