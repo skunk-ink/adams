@@ -41,10 +41,64 @@ class main:
     menu_options = {}   # Initialize array: menu_options
     menu_prompt = ""    # Initialize string: menu_prompt
     
-    def __init__(self):
-        clear_screen()
-        self.set_menu("MAIN")
-        self.main_menu()
+    def __init__(self, _moduleName:list=['none']):
+        """
+            Description:
+
+                    A.D.A.M.S. initializations.
+
+            PARAMS:
+                [*] Denotes required argument
+
+                [ ] _moduleName : Name of module to import.
+        """
+        if len(_moduleName) > 1:
+            if _moduleName[1].lower() == 'install' or _moduleName[1].lower() == '--install' or _moduleName[1] == '-i':
+                import installer
+                if len(_moduleName) > 2:
+                    if _moduleName[2].lower() == 'adams':
+                        installer.install('adams')
+                    elif _moduleName[2].lower() == 'skynet-webportal' or _moduleName[2].lower() == 'skynet':
+                        installer.install('skynet-webportal')
+                    elif _moduleName[2].lower() == 'handshake' or _moduleName[2].lower() == 'hsd':
+                        installer.install('handshake')
+                    elif _moduleName[2].lower() == 'powerdns' or _moduleName[2].lower() == 'pdns':
+                        installer.install('powerdns')
+                    elif _moduleName[2].lower() == 'nginx':
+                        installer.install('nginx')
+                    else:
+                        print("`" + str(_moduleName[2]) + "` is an invalid `" + str(_moduleName[1]) + "` command.")
+                else:
+                    installer.cli()
+            elif _moduleName[1].lower() == 'manage' or _moduleName[1].lower() == 'manager' or _moduleName[1].lower() == '--manager' or _moduleName[1] == '-m':
+                import manager
+                if len(_moduleName) > 2:
+                    if _moduleName[2].lower() == 'adams':
+                        manager.cli()
+                    elif _moduleName[2].lower() == 'skynet-webportal' or _moduleName[2].lower() == 'skynet':
+                        manager.cli('skynet')
+                    elif _moduleName[2].lower() == 'handshake' or _moduleName[2].lower() == 'hsd':
+                        from hsmanager import cli as hsmanager
+                        hsmanager()
+                    elif _moduleName[2].lower() == 'powerdns' or _moduleName[2].lower() == 'pdns':
+                        manager.cli('powerdns')
+                    elif _moduleName[2].lower() == 'nginx':
+                        manager.cli('nginx')
+                    else:
+                        print("`" + str(_moduleName[2]) + "` is an invalid `" + str(_moduleName[1]) + "` command.")
+                else:
+                    manager.cli()
+            elif _moduleName[1].lower() == 'main':
+                clear_screen()
+                self.set_menu("MAIN")
+                self.main_menu()
+            else:
+                print("No module named `" + str(_moduleName[1] + "` found."))
+        else:
+            splash()
+            clear_screen()
+            self.set_menu("MAIN")
+            self.main_menu()
     #################################################### END: __init__()
 
     def get_input(self, prompt):
@@ -108,45 +162,5 @@ class main:
     #################################################### END: main_menu()
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        if sys.argv[1].lower() == 'install' or sys.argv[1].lower() == '--install' or sys.argv[1] == '-i':
-            import installer
-            if len(sys.argv) > 2:
-                if sys.argv[2].lower() == 'adams':
-                    installer.install('adams')
-                elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
-                    installer.install('skynet-webportal')
-                elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
-                    installer.install('handshake')
-                elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
-                    installer.install('powerdns')
-                elif sys.argv[2].lower() == 'nginx':
-                    installer.install('nginx')
-                else:
-                    print("`" + str(sys.argv[2]) + "` is an invalid `" + str(sys.argv[1]) + "` command.")
-            else:
-                installer.cli()
-        elif sys.argv[1].lower() == 'manage' or sys.argv[1].lower() == 'manager' or sys.argv[1].lower() == '--manager' or sys.argv[1] == '-m':
-            import manager
-            if len(sys.argv) > 2:
-                if sys.argv[2].lower() == 'adams':
-                    manager.cli()
-                elif sys.argv[2].lower() == 'skynet-webportal' or sys.argv[2].lower() == 'skynet':
-                    manager.cli('skynet')
-                elif sys.argv[2].lower() == 'handshake' or sys.argv[2].lower() == 'hsd':
-                    from hsmanager import cli as hsmanager
-                    hsmanager()
-                elif sys.argv[2].lower() == 'powerdns' or sys.argv[2].lower() == 'pdns':
-                    manager.cli('powerdns')
-                elif sys.argv[2].lower() == 'nginx':
-                    manager.cli('nginx')
-                else:
-                    print("`" + str(sys.argv[2]) + "` is an invalid `" + str(sys.argv[1]) + "` command.")
-            else:
-                manager.cli()
-        else:
-            print("No module named `" + str(sys.argv[1] + "` found."))
-    else:
-        splash()
-        main()
+    main(sys.argv)  
 #################################################### END: __main__

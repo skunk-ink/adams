@@ -30,6 +30,7 @@ from display import clear_screen
 ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 USER_DIR = os.path.expanduser('~')                      # User home directory
 ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'        # Location of A.D.A.M.S. config
+HSD_PATH = ADAMS_PATH + '/hsd/'
 HSD_CONFIG = USER_DIR + '/.hsd/hsd.conf'                # Location of HSD node config
 HSW_CONFIG = USER_DIR + '/.hsd/hsw.conf'                # Location of HSD wallet config
 
@@ -49,24 +50,24 @@ if platform == 'linux':
 elif platform == 'win32':
     from msvcrt import getch as getch
 
-if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
+if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False and os.path.exists(HSD_PATH) == False:
     try:
         print('\033[41m\033[97m\n\t Handshake node not detected! Please install. \033[0m\033[0m')
         print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
-        import installer
-        installer.install('handshake')
+        from main import main
+        main(['adams', 'install', 'handshake'])
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
 
-elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False:
+elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False or os.path.exists(HSD_PATH) == False:
     try:
         print('\033[41m\033[97m\n\t Handshake node misconfigured! Please reinstall. \033[0m\033[0m')
         print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
-        import installer
-        installer.install('handshake')
+        from main import main
+        main(['adams', 'install', 'handshake'])
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
@@ -438,8 +439,8 @@ class cli:
                     self.hsdNode()
 
                 elif user_input.upper() == 'B':
-                    import manager
-                    manager.cli()
+                    from main import main
+                    main(['adams', 'manager'])
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
@@ -451,7 +452,7 @@ class cli:
             self.main_menu()
         except KeyboardInterrupt:
             from main import main
-            main()
+            main(['adams', 'main'])
     #################################################### END: main_menu()
 
     def hsdWallet(self, menu_id:str='MAIN'):

@@ -147,7 +147,7 @@ class cli:
         elif _type.upper() == "SKYNET-WEBPORTAL" or _type.upper() == "SKYNET": 
             self.skynetManagerCli()
         elif _type.upper() == "HSD" or _type.upper() == "HANDSHAKE":
-            from hsmanager import cli as hsmanager
+            import hsmanager
             hsmanager()
         elif _type.upper() == "PDNS" or _type.upper() == "POWERDNS": 
             self.pdnsManagerCli()
@@ -245,7 +245,7 @@ class cli:
 
                 elif user_input.upper() == '2': # Handshake Daemon Management
                     try:
-                        from hsmanager import cli as hsmanager
+                        import hsmanager
                         hsmanager()
                     except ImportError:
                         # print(colours().error('Handshake node not detected! Please install.'))
@@ -264,8 +264,8 @@ class cli:
                     sleep(1)
                     
                 elif user_input.upper() == 'B':
-                    from main import main
-                    main()
+                    import main
+                    main.main(['adams','main'])
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
@@ -276,8 +276,8 @@ class cli:
             sleep(2)
             self.main_menu()
         except KeyboardInterrupt:
-            from main import main
-            main()
+            import main
+            main.main(['adams','main'])
     #################################################### END: main_menu()
 
     def skynetManagerCli(self):
