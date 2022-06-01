@@ -20,6 +20,7 @@
 from getpass import getpass
 import os
 import sys
+from xml import dom
 
 from handshake import api
 from sys import platform
@@ -166,6 +167,31 @@ class hsmanager:
         hsw = api.hsw(HSW_API_KEY, _port=HSW_PORT)
     #################################################### END: __init__(self)
 
+    def authenticate(self):
+        # Check if wallet is unlocked
+        results = hsw.rpc_getWalletInfo()['result']
+        for result in results:
+            if results['unlocked_until'] > 0:
+                isUnlocked = True
+            else:
+                isUnlocked = False
+
+        # If wallet is locked, prompt for password
+        if isUnlocked == False:
+            passwordOK = False
+
+            while passwordOK == False:
+                password = cli.get_input_pass(self, '\n\tEnter your wallet password : ')
+                result = hsw.rpc_walletPassphrase(password)['error']
+
+                if result == None:
+                    passwordOK = True
+                    isUnlocked = True
+                else:
+                    print(colours.yellow(self, '\n [!] ') + 'Invalid password!')
+                    passwordOK = False
+                    isUnlocked = False
+
     def getWallets(self):
         return hsw.listWallets()
     #################################################### END: getWallets(self)
@@ -238,6 +264,26 @@ class hsmanager:
         balance = hsw.rpc_getBalance()
         return balance['result']
     #################################################### END: getBalance(self, walletID:str)
+
+    def sendAuctionOpen(self, _domainName:str):
+        self.authenticate()
+        return hsw.rpc_sendOPEN(_domainName)['result']
+    #################################################### END: sendAuctionOpen(self, _domainName:str)
+
+    def sendAuctionBid(self, _domainName:str, _bidAmount:float, _lockupBlind:float, _accountName:str='default'):
+        self.authenticate()
+        return hsw.rpc_sendBID(_domainName, _bidAmount, _lockupBlind, _accountName)['result']
+    #################################################### END: sendAuctionBid(self, _domainName:str, _bidAmount:float, _lockupBlind:float, _accountName:str='default')
+
+    def sendAuctionReveal(self, _domainName:str):
+        self.authenticate()
+        return hsw.rpc_sendREVEAL(_domainName)['result']
+    #################################################### END: sendAuctionReveal(self, _domainName:str)
+
+    def sendAuctionRedeem(self, _domainName:str):
+        self.authenticate()
+        return hsw.rpc_sendREDEEM(_domainName)['result']
+    #################################################### END: sendAuctionRedeem(self, _domainName:str)
 
     def createRecord(self, namespace):
         if namespace == '':
@@ -404,6 +450,12 @@ class cli:
                             colours().cyan('2') + ': Send HNS',
                             colours().cyan('3') + ': Receive HNS',
                             '',
+                            'Auction Commands:',
+                            colours().cyan('4') + ': Send Open',
+                            colours().cyan('5') + ': Send Bid',
+                            colours().cyan('6') + ': Send Reveal',
+                            colours().cyan('7') + ': Send Redeem',
+                            '',
                             colours().cyan('B') + ': Back to HSD Management',
                             colours().cyan('Q') + ': Quit A.D.A.M.S.']
                             
@@ -502,11 +554,27 @@ class cli:
 
                     elif user_input.upper() == '2':
                         menu_options = []
-                        menu_id = 'SEND'
+                        menu_id = 'SEND_HNS'
 
                     elif user_input.upper() == '3':
                         menu_options = []
-                        menu_id = 'RECEIVE'
+                        menu_id = 'RECEIVE_HNS'
+
+                    elif user_input.upper() == '4':
+                        menu_options = []
+                        menu_id = 'SEND_OPEN'
+
+                    elif user_input.upper() == '5':
+                        menu_options = []
+                        menu_id = 'SEND_BID'
+
+                    elif user_input.upper() == '6':
+                        menu_options = []
+                        menu_id = 'SEND_REVEAL'
+
+                    elif user_input.upper() == '7':
+                        menu_options = []
+                        menu_id = 'SEND_REDEEM'
 
                     elif user_input.upper() == 'B':
                         self.main_menu()
@@ -570,7 +638,7 @@ class cli:
                             clear_screen()    # Clear console window
                             sys.exit(0)  
                                     
-                elif menu_id.upper() == 'SEND':      # Handshake Wallet Menu Options
+                elif menu_id.upper() == 'SEND_HNS':      # Handshake Wallet Menu Options
                     
                     print(colours().error('Transaction UI not implemented.'))
                     sleep(2)
@@ -601,7 +669,7 @@ class cli:
                         clear_screen()    # Clear console window
                         sys.exit(0)  
                                     
-                elif menu_id.upper() == 'RECEIVE':      # Handshake Wallet Menu Options
+                elif menu_id.upper() == 'RECEIVE_HNS':      # Handshake Wallet Menu Options
                     
                     print(colours().error('Transaction UI not implemented.'))
                     sleep(2)
@@ -631,6 +699,65 @@ class cli:
                     elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                         clear_screen()    # Clear console window
                         sys.exit(0)  
+                                    
+                elif menu_id.upper() == 'SEND_OPEN':      # Send OPEN on auction
+
+                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
+
+                    try:
+                        hs_manager.sendAuctionOpen(domainName)
+                        print(colours.green(self, '\n [+] ') + 'Auction started for `' + domainName + '`')
+                    except:
+                        print(colours.yellow(self, '\n [!] ') + 'Failed to start auction for `' + domainName + '`')
+                    
+                    sleep(2)
+
+                    self.hsdWallet('MAIN') 
+                                    
+                elif menu_id.upper() == 'SEND_BID':      # Send BID on auction
+
+                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
+                    bid = self.get_input('\n\tEnter your bid : ')
+                    lockupBlind = self.get_input('\n\tEnter your blind bid : ')
+
+                    try:
+                        hs_manager.sendAuctionBid(domainName, bid, lockupBlind)
+                        print(colours.green(self, '\n [+] ') + 'Bid sent for `' + domainName + '`')
+                    except:
+                        print(colours.yellow(self, '\n [!] ') + 'Failed to send bid for `' + domainName + '`')
+                    
+                    sleep(2)
+
+                    self.hsdWallet('MAIN') 
+                                                        
+                elif menu_id.upper() == 'SEND_REVEAL':      # Send REVEAL on auction
+
+                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
+
+                    try:
+                        hs_manager.sendAuctionReveal(domainName)
+                        print(colours.green(self, '\n [+] ') + 'Reveal sent for `' + domainName + '`')
+                    except:
+                        print(colours.yellow(self, '\n [!] ') + 'Failed to send reveal for `' + domainName + '`')
+                    
+                    sleep(2)
+
+                    self.hsdWallet('MAIN') 
+                                                        
+                elif menu_id.upper() == 'SEND_REDEEM':      # Send REVEAL on auction
+
+                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
+
+                    try:
+                        hs_manager.sendAuctionRedeem(domainName)
+                        print(colours.green(self, '\n [+] ') + 'Redeemed `' + domainName + '`')
+                    except:
+                        print(colours.yellow(self, '\n [!] ') + 'Failed to redeem `' + domainName + '`')
+                    
+                    sleep(2)
+
+                    self.hsdWallet('MAIN') 
+                    
         except KeyboardInterrupt:
             self.main_menu()
             pass
@@ -689,7 +816,7 @@ class cli:
                     sleep(1)
 
                 elif user_input.upper() == 'B':
-                    self.hsdManagerCli()
+                    self.main_menu()
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
