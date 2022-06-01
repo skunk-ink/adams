@@ -30,8 +30,9 @@ from display import clear_screen
 ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 USER_DIR = os.path.expanduser('~')                      # User home directory
 ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'        # Location of A.D.A.M.S. config
-POWERDNS_PATH = ADAMS_PATH + '/pdns'                    # PowerDNS directory
-POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'          # PowerDNS configuration file
+SKYNET_PATH = ADAMS_PATH + '/skynet-webportal'                  # Skynet Webportal directory
+ANSIBLE_PLAYBOOKS_PATH = ADAMS_PATH + '/ansible-playbooks'      # Ansible Playbooks directory
+ANSIBLE_PRIVATE_PATH = ADAMS_PATH + '/ansible-private'          # Ansible Private directory
 
 # A.D.A.M.S. configuration variables
 ENABLE_SUBPROCESSES = True         # Ghost run, does not affect the system
@@ -42,24 +43,24 @@ if platform == 'linux':
 elif platform == 'win32':
     from msvcrt import getch as getch
 
-if os.path.exists(POWERDNS_PATH) == False and os.path.exists(POWERDNS_CONF_PATH) == False:
+if os.path.exists(SKYNET_PATH) == False and os.path.exists(ANSIBLE_PLAYBOOKS_PATH) == False and os.path.exists(ANSIBLE_PRIVATE_PATH) == False:
     try:
-        print('\033[41m\033[97m\n\t PowerDNS not detected! Please install. \033[0m\033[0m')
+        print('\033[41m\033[97m\n\t Skynet Webportal not detected! Please install. \033[0m\033[0m')
         print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
         from main import main
-        main(['adams', 'install', 'powerdns'])
+        main(['adams', 'install', 'skynet-webportal'])
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
 
-elif os.path.exists(POWERDNS_PATH) == False or os.path.exists(POWERDNS_CONF_PATH) == False:
+elif os.path.exists(SKYNET_PATH) == False or os.path.exists(ANSIBLE_PLAYBOOKS_PATH) == False or os.path.exists(ANSIBLE_PRIVATE_PATH) == False:
     try:
-        print('\033[41m\033[97m\n\t PowerDNS misconfigured! Please reinstall. \033[0m\033[0m')
+        print('\033[41m\033[97m\n\t Skynet Webportal misconfigured! Please reinstall. \033[0m\033[0m')
         print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
         from main import main
-        main(['adams', 'install', 'powerdns'])
+        main(['adams', 'install', 'skynet-webportal'])
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
@@ -99,66 +100,6 @@ for line in lines:
                 print('Disable Subprocesses: ' + str(ENABLE_SUBPROCESSES))
                 sleep(1)
 
-class pdnsManager:
-    def createZone(self, namespace):
-
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tDomain Name : ')
-
-        # Create a new zone
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'create-zone', namespace , 'ns1.' + namespace], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        print(colours.green(self, '\n [+] ') + 'Zone created')
-        sleep(2)
-
-        updateHNS = cli.get_input(self, '\n\tUpdate handshake records (Y/N)? [default = N] : ')
-        if updateHNS.lower() == 'y':
-            if ENABLE_LOGGING == True: print('pdnsManager: var namespace = ' + namespace) # Log output
-            # hsdManager.createRecord(self, namespace)        
-    #################################################### END: createZone(self)
-
-    def secureZone(self, namespace):
-        
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tEnter zone name to secure : ')
-
-        # Secure an existing zone
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'secure-zone', namespace], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        print(colours.green(self, '\n [+] ') + 'Zone secured')
-        sleep(2)
-    #################################################### END: secureZone(self)
-
-    def createRecord(self, namespace, record_name, record_type, record_value):
-
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tDomain Name : ')
-
-        if record_name == '':
-            record_name = cli.get_input(self, '\n\tRecord Name : ')
-
-        if record_type == '':
-            record_type = str(cli.get_input(self, '\n\tRecord Type : ')).upper()
-
-        if record_value == '':
-            record_value = cli.get_input(self, '\n\tRecord Value : ')
-
-        # Update PowerDNS Record
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'add-record', namespace + '.', record_name, record_type, record_value], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        print(colours.green(self, '\n [+] ') + 'Record created')
-        sleep(2)
-    #################################################### END: createRecord(self)
-        
 class cli:
     menu_title = ''
     menu_options = ''
@@ -197,13 +138,13 @@ class cli:
         global menu_title
         global menu_options
         
-        if menu_id.upper() == 'MAIN':    # PowerDNS Main Menu Options
-            menu_title = ['PDNS',
-                         'PowerDNS Management']
+        if menu_id.upper() == 'MAIN':       # Skynet Webportal Menu Options
+            menu_title = ['SKYNET_WEBPORTAL',
+                          'Skynet Webportal Management']
                           
-            menu_options = [colours().cyan('1') + ': New zone',
-                            colours().cyan('2') + ': Secure zone',
-                            colours().cyan('3') + ': Create record',
+            menu_options = [colours().cyan('1') + ': Wallet',
+                            colours().cyan('2') + ': Contracts',
+                            colours().cyan('3') + ': Blocklists',
                             '',
                             colours().cyan('B') + ': Back to Management',
                             colours().cyan('Q') + ': Quit A.D.A.M.S.']
@@ -212,31 +153,37 @@ class cli:
     ### START: main_menu()
 
     def main_menu(self):
-        self.set_menu('MAIN')    # Initialize A.D.A.M.S. Configuration Menu
+        self.set_menu('MAIN')    # Skynet Webportal Main Menu
         
         try:
-            while True:  # Display PowerDNS Management Menu
+            while True:  # Display Skynet Portal Management Menu
                 self.print_header()
                 self.print_options()
                 
                 user_input = self.get_input('\n\tWhat would you like to do? : ')
                 
-                if user_input.upper() == '1':   # Create new zone
-                    pdnsManager.createZone(self, '')
+                if user_input.upper() == '1':
+                    #self.skynetWallet()
+                    print(colours().error('skynetWallet() method not found.'))
+                    sleep(1)
 
-                elif user_input.upper() == '2': # Secure existing zone
-                    pdnsManager.secureZone(self, '')
+                elif user_input.upper() == '2':
+                    #self.skynetContracts()
+                    print(colours().error('skynetContracts() method not found.'))
+                    sleep(1)
 
-                elif user_input.upper() == '3': # Create new record
-                    pdnsManager.createRecord(self, '', '', '', '')
+                elif user_input.upper() == '3':
+                    #self.skynetBlocklists()
+                    print(colours().error('skynetBlocklists() method not found.'))
+                    sleep(1)
 
                 elif user_input.upper() == 'B':
-                    from main import main
-                    main(['adams', 'manager'])
+                    import main
+                    main.main(['adams', 'manager'])
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
-                    sys.exit(0)   
+                    sys.exit(0)  
 
         except AttributeError as e:
             print(colours().error(str(e)))
@@ -246,9 +193,9 @@ class cli:
         except KeyboardInterrupt:
             import main
             main.main(['adams','main'])
-    #################################################### END: pdnsManagerCli()
+    #################################################### END: main_menu()
 
 if __name__ == "__main__":
-    clear_screen()
+    os.system("cls")
     cli()
 #################################################### END: __main__

@@ -18,6 +18,7 @@
 '''
 
 from getpass import getpass
+import subprocess
 import os
 import sys
 
@@ -26,11 +27,77 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
+ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
+USER_DIR = os.path.expanduser('~')                      # User home directory
+ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'        # Location of A.D.A.M.S. config
+NGINX = False
+
+# A.D.A.M.S. configuration variables
+ENABLE_SUBPROCESSES = True         # Ghost run, does not affect the system
+ENABLE_LOGGING = False             # Disable console logs
+
 if platform == 'linux':
     from getch import getch as getch
 elif platform == 'win32':
     from msvcrt import getch as getch
-        
+
+if os.path.exists(NGINX) == False:
+    try:
+        print('\033[41m\033[97m\n\t NGINX not detected! Please install. \033[0m\033[0m')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+        getch()
+        from main import main
+        main(['adams', 'install', 'nginx'])
+    except KeyboardInterrupt:
+        clear_screen()
+        sys.exit(0)
+
+elif os.path.exists(NGINX) == False:
+    try:
+        print('\033[41m\033[97m\n\t NGINX node misconfigured! Please reinstall. \033[0m\033[0m')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+        getch()
+        from main import main
+        main(['adams', 'install', 'nginx'])
+    except KeyboardInterrupt:
+        clear_screen()
+        sys.exit(0)
+
+# Load configurations file
+with open(ADAMS_CONFIG) as configFile:
+    lines = configFile.readlines()
+
+for line in lines:
+    if line.startswith('#') or line == '':
+        pass
+    else:
+        config = line.split(':')
+        i = 0
+
+        for value in config:
+            config[i] = value.strip().lower()
+            i += 1
+
+        if config[0] == 'enablelogging':
+            if config[1].lower() == 'true':
+                ENABLE_LOGGING = True
+            else:
+                ENABLE_LOGGING = False
+
+            if ENABLE_LOGGING == True:
+                print('Disable Logging: ' + str(ENABLE_LOGGING))
+                sleep(1)
+
+        elif config[0] == 'enablesubprocesses':
+            if config[1].lower() == 'true':
+                ENABLE_SUBPROCESSES = True
+            else:
+                ENABLE_SUBPROCESSES = False
+                
+            if ENABLE_LOGGING == True:
+                print('Disable Subprocesses: ' + str(ENABLE_SUBPROCESSES))
+                sleep(1)
+
 class cli:
     menu_title = ''
     menu_options = ''
@@ -40,18 +107,6 @@ class cli:
 
         if _type == None or _type.upper() == "MAIN": 
             self.main_menu()
-        elif _type.upper() == "SKYNET-WEBPORTAL" or _type.upper() == "SKYNET": 
-            import skymanager
-            skymanager.cli()
-        elif _type.upper() == "HSD" or _type.upper() == "HANDSHAKE":
-            import hsmanager
-            hsmanager.cli()
-        elif _type.upper() == "PDNS" or _type.upper() == "POWERDNS": 
-            import pdnsmanager
-            pdnsmanager.cli()
-        elif _type.upper() == "NGINX":
-            import nginxmanager
-            nginxmanager.cli()
         
         self.main_menu()
     #################################################### END: __init__(self)
@@ -81,54 +136,40 @@ class cli:
         global menu_title
         global menu_options
         
-        if menu_id.upper() == 'MAIN':       # Main Menu Options
-            menu_title = ['ADAMS_MANAGMENT',
-                          'A.D.A.M.S. Management']
+        if menu_id.upper() == 'MAIN':       # NGINX Menu Options
+            menu_title = ['NGINX',
+                         'NGINX Webserver Management']
                           
-            menu_options = [colours().cyan('1') + ': Skynet Webportal',
-                            colours().cyan('2') + ': Handshake Daemon',
-                            colours().cyan('3') + ': PowerDNS',
-                            colours().cyan('4') + ': NGINX Webserver',
+            menu_options = [colours().cyan('1') + ': NGINX Configuration',
                             '',
-                            colours().cyan('B') + ': Back to A.D.A.M.S.',
+                            colours().cyan('B') + ': Back to Management',
                             colours().cyan('Q') + ': Quit A.D.A.M.S.']
 
     #################################################### END: set_menu(menu_id)
     ### START: main_menu()
 
     def main_menu(self):
-        self.set_menu('MAIN')    # Initialize A.D.A.M.S. Configuration Menu
-        
+        self.set_menu('MAIN')    # Initialize NGINX Management Menu
+
         try:
-            while True: # Display A.D.A.M.S. Configuration Menu
+            while True:  # Display NGINX Management Menu
                 self.print_header()
                 self.print_options()
                 
                 user_input = self.get_input('\n\tWhat would you like to do? : ')
                 
-                if user_input.upper() == '1':   # Skynet Webportal Management
-                    import skymanager
-                    skymanager.cli()
+                if user_input.upper() == '1':   # NGINX Configuration
+                    #self.nginxConfiguration()
+                    print(colours().error('nginxManager class not found.'))
+                    sleep(1)
 
-                elif user_input.upper() == '2': # Handshake Daemon Management
-                    import hsmanager
-                    hsmanager.cli()
-
-                elif user_input.upper() == '3': # PowerDNS Management
-                    import pdnsmanager
-                    pdnsmanager.cli()
-
-                elif user_input.upper() == '4': # NGINX Management
-                    import nginxmanager
-                    nginxmanager.cli()
-                    
                 elif user_input.upper() == 'B':
                     import main
-                    main.main(['adams','main'])
+                    main.main(['adams', 'manager'])
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
-                    sys.exit(0)
+                    sys.exit(0) 
 
         except AttributeError as e:
             print(colours().error(str(e)))

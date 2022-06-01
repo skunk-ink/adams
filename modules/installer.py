@@ -139,21 +139,21 @@ elif platform == 'win32':
 
 class install:
     NEED_RESTART = False
-    ADAMS_PATH = os.getcwd()                                      # A.D.A.M.S. directory
-    USER_DIR = os.path.expanduser('~')                      # User home directory
-    HSD_INSTALL_PATH = USER_DIR + '/.hsd'                   # HSD installation directory
-    HSD_PATH = ADAMS_PATH + '/hsd'                                # Handshake directory
-    HSD_BIN_PATH = ADAMS_PATH + '/hsd/bin'                        # Handshake binaries build directory
-    HSD_SERVICE_SCRIPT = ADAMS_PATH + '/config/hsd.service'       # Premade Handshake Node service script
-    HSD_SYS_SERVICES_PATH = '/etc/systemd/system'           # Location of system services
-    HSD_CONFIG = ADAMS_PATH + '/config/hsd.conf'                  # Location of HSD node config
-    HSW_CONFIG = ADAMS_PATH + '/config/hsw.conf'                  # Location of HSD wallet config
-    SKYNET_PATH = ADAMS_PATH + '/skynet-webportal'                # Skynet Webportal directory
-    ANSIBLE_PLAYBOOKS_PATH = ADAMS_PATH + '/ansible-playbooks'    # Ansible Playbooks directory
-    ANSIBLE_PRIVATE_PATH = ADAMS_PATH + '/ansible-private'        # Ansible Private directory
-    POWERDNS_PATH = ADAMS_PATH + '/pdns'                          # PowerDNS directory
-    POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'          # PowerDNS configuration file
-    POWERDNS_CONF_FILE = ADAMS_PATH + '/config/pdns.conf'         # Premade PowerDNS configuration file
+    ADAMS_PATH = os.getcwd()                                        # A.D.A.M.S. directory
+    USER_DIR = os.path.expanduser('~')                              # User home directory
+    HSD_INSTALL_PATH = USER_DIR + '/.hsd'                           # HSD installation directory
+    HSD_PATH = ADAMS_PATH + '/hsd'                                  # Handshake directory
+    HSD_BIN_PATH = ADAMS_PATH + '/hsd/bin'                          # Handshake binaries build directory
+    HSD_SERVICE_SCRIPT = ADAMS_PATH + '/config/hsd.service'         # Premade Handshake Node service script
+    HSD_SYS_SERVICES_PATH = '/etc/systemd/system'                   # Location of system services
+    HSD_CONFIG = ADAMS_PATH + '/config/hsd.conf'                    # Location of HSD node config
+    HSW_CONFIG = ADAMS_PATH + '/config/hsw.conf'                    # Location of HSD wallet config
+    SKYNET_PATH = ADAMS_PATH + '/skynet-webportal'                  # Skynet Webportal directory
+    ANSIBLE_PLAYBOOKS_PATH = ADAMS_PATH + '/ansible-playbooks'      # Ansible Playbooks directory
+    ANSIBLE_PRIVATE_PATH = ADAMS_PATH + '/ansible-private'          # Ansible Private directory
+    POWERDNS_PATH = ADAMS_PATH + '/pdns'                            # PowerDNS directory
+    POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'                  # PowerDNS configuration file
+    POWERDNS_CONF_FILE = ADAMS_PATH + '/config/pdns.conf'           # Premade PowerDNS configuration file
 
     def __init__(self, type):
 
@@ -243,8 +243,8 @@ class install:
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
         except KeyboardInterrupt:
-            from main import main
-            main()
+            import main
+            main.main(['adams','main'])
     #################################################### END: __init__(self, type)
 
     def getDependencies(self, sysPlatform, depends):
@@ -501,8 +501,6 @@ class install:
 
                                     line = 'export ADAMS_PATH=~/.npm-global/bin:$ADAMS_PATH'
                                     subprocess.run(['echo', line, '>>', '~/.profile'], check=True)
-                                    # os.environ['NPM_CONFIG_PREFIX'] = '~/.npm-global'
-                                    # subprocess.run(['source', '~/.profile'], check=True)
                             else:
                                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
@@ -787,7 +785,6 @@ class install:
 
         self.NEED_RESTART = True
 
-
     #################################################### END: pdns(self)
 
     def nginx(self):
@@ -879,8 +876,8 @@ class cli:
                     install('nginx')
                     
                 elif user_input.upper() == 'B':
-                    from main import main as main
-                    main()
+                    import main
+                    main.main(['adams','main'])
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
@@ -890,9 +887,10 @@ class cli:
             print(colours().error(str(e)))
             sleep(2)
             self.main_menu()
+            
         except KeyboardInterrupt:
-            from main import main as main
-            main()
+            import main
+            main.main(['adams','main'])
     #################################################### END: main_menu()
 
 if __name__ == "__main__":

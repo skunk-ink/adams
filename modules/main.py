@@ -71,22 +71,23 @@ class main:
                 else:
                     installer.cli()
             elif _moduleName[1].lower() == 'manage' or _moduleName[1].lower() == 'manager' or _moduleName[1].lower() == '--manager' or _moduleName[1] == '-m':
-                import manager
                 if len(_moduleName) > 2:
-                    if _moduleName[2].lower() == 'adams':
-                        manager.cli()
-                    elif _moduleName[2].lower() == 'skynet-webportal' or _moduleName[2].lower() == 'skynet':
-                        manager.cli('skynet')
+                    if _moduleName[2].lower() == 'skynet-webportal' or _moduleName[2].lower() == 'skynet':
+                        import skymanager
+                        skymanager.cli()
                     elif _moduleName[2].lower() == 'handshake' or _moduleName[2].lower() == 'hsd':
-                        from hsmanager import cli as hsmanager
-                        hsmanager()
+                        import hsmanager
+                        hsmanager.cli()
                     elif _moduleName[2].lower() == 'powerdns' or _moduleName[2].lower() == 'pdns':
-                        manager.cli('powerdns')
+                        import pdnsmanager
+                        pdnsmanager.cli()
                     elif _moduleName[2].lower() == 'nginx':
-                        manager.cli('nginx')
+                        import nginxmanager
+                        nginxmanager.cli()
                     else:
                         print("`" + str(_moduleName[2]) + "` is an invalid `" + str(_moduleName[1]) + "` command.")
                 else:
+                    import manager
                     manager.cli()
             elif _moduleName[1].lower() == 'main':
                 clear_screen()
@@ -128,8 +129,8 @@ class main:
             self.menu_title = ["MAIN", 
                           "A.D.A.M.S."]
                           
-            self.menu_options = {"1" : "Install", 
-                            "2" : "Configuration",
+            self.menu_options = {"1" : "Management",
+                            "2" : "Install", 
                             "SPACE" : "", 
                             "Q" : "Quit"}
     #################################################### END: set_menu(menu_id)
@@ -144,12 +145,12 @@ class main:
                 
                 user_input = self.get_input("\n\tWhat would you like to do? : ")
                 
-                if user_input.upper() == "1" or user_input.upper() == "I":
-                    import installer
-                    installer.cli()
-                elif user_input.upper() == "2" or user_input.upper() == "C":
+                if user_input.upper() == "1" or user_input.upper() == "M":
                     import manager
                     manager.cli()
+                elif user_input.upper() == "2" or user_input.upper() == "I":
+                    import installer
+                    installer.cli()
                 elif user_input.upper() == "EXIT" or user_input.upper() == "Q" or user_input.upper() == "QUIT":
                     clear_screen()    # Clear console window
                     sys.exit(0)
@@ -160,6 +161,61 @@ class main:
         except KeyboardInterrupt:
             self.main_menu()
     #################################################### END: main_menu()
+
+    def management(self):
+        self.set_menu("MANAGEMENT")
+        
+        # Initialize A.D.A.M.S. Configuration Menu
+        
+        try:
+            while True: # Display A.D.A.M.S. Configuration Menu
+                self.print_header()
+                self.print_options()
+                
+                user_input = self.get_input('\n\tWhat would you like to do? : ')
+                
+                if user_input.upper() == '1':   # Skynet Webportal Management
+                    import skymanager
+                    skymanager.cli()
+                    print(colours().error('skynetManagerCli()) method not found.'))
+                    sleep(1)
+
+                elif user_input.upper() == '2': # Handshake Daemon Management
+                    try:
+                        import hsmanager
+                        hsmanager.cli()
+                    except ImportError:
+                        # print(colours().error('Handshake node not detected! Please install.'))
+                        print(colours().error('Import of `hsmanager` failed. Please restart A.D.A.M.S.'))
+                        sleep(2)
+                        clear_screen()
+
+                elif user_input.upper() == '3': # PowerDNS Management
+                    import pdnsmanager
+                    pdnsmanager.cli()
+                    print(colours().error('pdnsManagerCli() method not found.'))
+                    sleep(1)
+
+                elif user_input.upper() == '4': # NGINX Management
+                    import nginxmanager
+                    nginxmanager.cli()
+                    print(colours().error('nginxManagerCli() method not found.'))
+                    sleep(1)
+                    
+                elif user_input.upper() == 'B':
+                    self.main_menu()
+
+                elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
+                    clear_screen()    # Clear console window
+                    sys.exit(0)
+
+        except AttributeError as e:
+            print(colours().error(str(e)))
+            sleep(2)
+            self.main_menu()
+        except KeyboardInterrupt:
+            self.main_menu()
+    #################################################### END: management(self)
 
 if __name__ == '__main__':
     main(sys.argv)  

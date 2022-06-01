@@ -701,8 +701,5 @@ class cli:
 
 if __name__ == "__main__":
     clear_screen()
-    #hsd = hsmanager()
-    #hsd.getWallets()
-    #print(hsd.getBalance('skunk'))
     cli()
 #################################################### END: __main__
