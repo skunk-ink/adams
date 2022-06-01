@@ -30,7 +30,7 @@ from display import clear_screen
 ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 USER_DIR = os.path.expanduser('~')                      # User home directory
 ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'        # Location of A.D.A.M.S. config
-POWERDNS_PATH = ADAMS_PATH + '/pdns'                    # PowerDNS directory
+POWERDNS_PATH = ADAMS_PATH + '/pdnsmanager'             # PowerDNS directory
 POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'          # PowerDNS configuration file
 
 # A.D.A.M.S. configuration variables
