@@ -18,7 +18,6 @@
 '''
 
 from getpass import getpass
-import subprocess
 import os
 import sys
 
@@ -27,11 +26,18 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-enableSubprocesses = True         # Ghost run, does not affect the system
-enableLogging = False             # Disable console logs
+USER_DIR = os.path.expanduser('~')                  # User home directory
+ADAMS_PATH = os.getcwd()                            # A.D.A.M.S. directory
+ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'    # Location of A.D.A.M.S. config
+
+ENABLE_ADAMS = True                                 # Enable A.D.A.M.S. Installer
+ENABLE_SKYNET = True                                # Enable Skynet Webportal Installer
+ENABLE_HANDSHAKE = True                             # Enable Handshake Node Installer
+ENABLE_POWERDNS = True                              # Enable PowerDNS Installer
+ENABLE_NGINX = True                                 # Enable NGINX Installer
 
 # Load configurations file
-with open('./config/adams.conf') as configFile:
+with open(ADAMS_CONFIG) as configFile:
     lines = configFile.readlines()
 
 for line in lines:
@@ -45,95 +51,90 @@ for line in lines:
             config[i] = value.strip().lower()
             i += 1
 
-        if config[0] == 'enablelogging':
+        if config[0].lower() == 'enablelogging':
             if config[1].lower() == 'true':
-                enableLogging = True
+                ENABLE_LOGGING = True
             else:
-                enableLogging = False
+                ENABLE_LOGGING = False
 
-            if enableLogging == True:
-                print('Disable Logging: ' + str(enableLogging))
+            if ENABLE_LOGGING == True:
+                print('Logging Enabled = : ' + str(ENABLE_LOGGING))
                 sleep(1)
 
-        elif config[0] == 'enablesubprocesses':
+        elif config[0].lower() == 'enablesubprocesses':
             if config[1].lower() == 'true':
-                enableSubprocesses = True
+                ENABLE_SUBPROCESSES = True
             else:
-                enableSubprocesses = False
+                ENABLE_SUBPROCESSES = False
                 
-            if enableLogging == True:
-                print('Disable Subprocesses: ' + str(enableSubprocesses))
+            if ENABLE_LOGGING == True:
+                print('Subprocesses Enabled =  ' + str(ENABLE_SUBPROCESSES))
+                sleep(1)
+
+        elif config[0].lower() == 'enableadams':
+            if config[1].lower() == 'true':
+                ENABLE_ADAMS = True
+            else:
+                ENABLE_ADAMS = False
+                
+            if ENABLE_LOGGING == True:
+                print('A.D.A.M.S. Enabled = ' + str(ENABLE_ADAMS))
+                sleep(1)
+
+        elif config[0].lower() == 'enableskynet':
+            if config[1].lower() == 'true':
+                ENABLE_SKYNET = True
+            else:
+                ENABLE_SKYNET = False
+                
+            if ENABLE_LOGGING == True:
+                print('Skynet Webportal Enabled = ' + str(ENABLE_SKYNET))
+                sleep(1)
+
+        elif config[0].lower() == 'enablehandshake':
+            if config[1].lower() == 'true':
+                ENABLE_HANDSHAKE = True
+            else:
+                ENABLE_HANDSHAKE = False
+                
+            if ENABLE_LOGGING == True:
+                print('Handshake Node Enabled = ' + str(ENABLE_HANDSHAKE))
+                sleep(1)
+
+        elif config[0].lower() == 'enablepowerdns':
+            if config[1].lower() == 'true':
+                ENABLE_POWERDNS = True
+            else:
+                ENABLE_POWERDNS = False
+                
+            if ENABLE_LOGGING == True:
+                print('PowerDNS Enabled = ' + str(ENABLE_POWERDNS))
+                sleep(1)
+
+        elif config[0].lower() == 'enablenginx':
+            if config[1].lower() == 'true':
+                ENABLE_NGINX = True
+            else:
+                ENABLE_NGINX = False
+                
+            if ENABLE_LOGGING == True:
+                print('NGINX Enabled = ' + str(ENABLE_NGINX))
+                sleep(1)
+
+        elif config[0].lower() == 'enabledependencyinstall':
+            if config[1].lower() == 'true':
+                ENABLE_DEPENDS = True
+            else:
+                ENABLE_DEPENDS = False
+                
+            if ENABLE_LOGGING == True:
+                print('Disable Dependencies: ' + str(ENABLE_DEPENDS))
                 sleep(1)
 
 if platform == 'linux':
     from getch import getch as getch
 elif platform == 'win32':
     from msvcrt import getch as getch
-
-class pdnsManager:
-    def createZone(self, namespace):
-
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tDomain Name : ')
-
-        # Create a new zone
-        if enableSubprocesses == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'create-zone', namespace , 'ns1.' + namespace], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        print(colours.green(self, '\n [+] ') + 'Zone created, press any key to continue')
-        sleep(2)
-
-        updateHNS = cli.get_input(self, '\n\tUpdate handshake records (Y/N)? [default = N] : ')
-        if updateHNS.lower() == 'y':
-            if enableLogging == True: print('pdnsManager: var namespace = ' + namespace) # Log output
-            # hsdManager.createRecord(self, namespace)
-
-        
-    #################################################### END: createZone(self)
-
-    def secureZone(self, namespace):
-        
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tEnter zone name to secure : ')
-
-        # Secure an existing zone
-        if enableSubprocesses == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'secure-zone', namespace], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        print(colours.green(self, '\n [+] ') + 'Zone secured, press any key to continue')
-        sleep(2)
-                
-
-    #################################################### END: secureZone(self)
-
-    def createRecord(self, namespace, record_name, record_type, record_value):
-
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tDomain Name : ')
-
-        if record_name == '':
-            record_name = cli.get_input(self, '\n\tRecord Name : ')
-
-        if record_type == '':
-            record_type = str(cli.get_input(self, '\n\tRecord Type : ')).upper()
-
-        if record_value == '':
-            record_value = cli.get_input(self, '\n\tRecord Value : ')
-
-        # Update PowerDNS Record
-        if enableSubprocesses == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'add-record', namespace + '.', record_name, record_type, record_value], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        print(colours.green(self, '\n [+] ') + 'Record created, press any key to continue')
-        sleep(2)
-    #################################################### END: createRecord(self)
-
         
 class cli:
     menu_title = ''
@@ -145,17 +146,19 @@ class cli:
         if _type == None or _type.upper() == "MAIN": 
             self.main_menu()
         elif _type.upper() == "SKYNET-WEBPORTAL" or _type.upper() == "SKYNET": 
-            self.skynetManagerCli()
+            import skymanager
+            skymanager.cli()
         elif _type.upper() == "HSD" or _type.upper() == "HANDSHAKE":
-            from hsmanager import cli as hsmanager
-            hsmanager()
+            import hsmanager
+            hsmanager.cli()
         elif _type.upper() == "PDNS" or _type.upper() == "POWERDNS": 
-            self.pdnsManagerCli()
+            import pdnsmanager
+            pdnsmanager.cli()
         elif _type.upper() == "NGINX":
-            self.nginxManagerCli()
+            import nginxmanager
+            nginxmanager.cli()
         
         self.main_menu()
-        sleep(1)
     #################################################### END: __init__(self)
 
     def get_input(self, prompt):
@@ -194,37 +197,6 @@ class cli:
                             '',
                             colours().cyan('B') + ': Back to A.D.A.M.S.',
                             colours().cyan('Q') + ': Quit A.D.A.M.S.']
-                   
-        elif menu_id.upper() == 'SKYNET':   # Skynet Webportal Menu Options
-            menu_title = ['SKYNET_WEBPORTAL',
-                          'Skynet Webportal Management']
-                          
-            menu_options = [colours().cyan('1') + ': Wallet',
-                            colours().cyan('2') + ': Contracts',
-                            colours().cyan('3') + ': Blocklists',
-                            '',
-                            colours().cyan('B') + ': Back to Management',
-                            colours().cyan('Q') + ': Quit A.D.A.M.S.']
-            
-        elif menu_id.upper() == 'PDNS':    # PowerDNS Menu Options
-            menu_title = ['PDNS',
-                         'PowerDNS Management']
-                          
-            menu_options = [colours().cyan('1') + ': New zone',
-                            colours().cyan('2') + ': Secure zone',
-                            colours().cyan('3') + ': Create record',
-                            '',
-                            colours().cyan('B') + ': Back to Management',
-                            colours().cyan('Q') + ': Quit A.D.A.M.S.']
-            
-        elif menu_id.upper() == 'NGINX':    # NGINX Menu Options
-            menu_title = ['NGINX',
-                         'NGINX Webserver Management']
-                          
-            menu_options = [colours().cyan('1') + ': NGINX Configuration',
-                            '',
-                            colours().cyan('B') + ': Back to Management',
-                            colours().cyan('Q') + ': Quit A.D.A.M.S.']
 
     #################################################### END: set_menu(menu_id)
     ### START: main_menu()
@@ -240,32 +212,40 @@ class cli:
                 user_input = self.get_input('\n\tWhat would you like to do? : ')
                 
                 if user_input.upper() == '1':   # Skynet Webportal Management
-                    self.skynetManagerCli()
-                    print(colours().error('skynetManagerCli()) method not found.'))
-                    sleep(1)
+                    if ENABLE_SKYNET == True:
+                        import skymanager
+                        skymanager.cli()
+                    else:
+                        print(colours.error(self, 'Skynet Webportal management has been disabled. See `config/adams.conf`'))
+                        sleep(3)
 
                 elif user_input.upper() == '2': # Handshake Daemon Management
-                    try:
-                        from hsmanager import cli as hsmanager
-                        hsmanager()
-                    except ImportError:
-                        print(colours().error('Handshake node not detected!'))
-                        sleep(1)
-                        clear_screen()
+                    if ENABLE_HANDSHAKE == True:
+                        import hsmanager
+                        hsmanager.cli()
+                    else:
+                        print(colours.error(self, 'Handshake node management has been disabled. See `config/adams.conf`'))
+                        sleep(3)
 
                 elif user_input.upper() == '3': # PowerDNS Management
-                    self.pdnsManagerCli()
-                    print(colours().error('pdnsManagerCli() method not found.'))
-                    sleep(1)
+                    if ENABLE_POWERDNS == True:
+                        import pdnsmanager
+                        pdnsmanager.cli()
+                    else:
+                        print(colours.error(self, 'PowerDNS server management has been disabled. See `config/adams.conf`'))
+                        sleep(3)
 
                 elif user_input.upper() == '4': # NGINX Management
-                    self.nginxManagerCli()
-                    print(colours().error('nginxManagerCli() method not found.'))
-                    sleep(1)
+                    if ENABLE_NGINX == True:
+                        import nginxmanager
+                        nginxmanager.cli()
+                    else:
+                        print(colours.error(self, 'NGINX webserver management has been disabled. See `config/adams.conf`'))
+                        sleep(3)
                     
                 elif user_input.upper() == 'B':
-                    from main import main
-                    main()
+                    import main
+                    main.main(['adams','main'])
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
@@ -276,107 +256,9 @@ class cli:
             sleep(2)
             self.main_menu()
         except KeyboardInterrupt:
-            from main import main
-            main()
+            import main
+            main.main(['adams','main'])
     #################################################### END: main_menu()
-
-    def skynetManagerCli(self):
-        global menu_title
-        
-        self.set_menu('SKYNET')  # Initialize Skynet Portal Management Menu
-
-        try:
-            while True:  # Display Skynet Portal Management Menu
-                self.print_header()
-                self.print_options()
-                
-                user_input = self.get_input('\n\tWhat would you like to do? : ')
-                
-                if user_input.upper() == '1':
-                    #self.skynetWallet()
-                    print(colours().error('skynetWallet() method not found.'))
-                    sleep(1)
-
-                elif user_input.upper() == '2':
-                    #self.skynetContracts()
-                    print(colours().error('skynetContracts() method not found.'))
-                    sleep(1)
-
-                elif user_input.upper() == '3':
-                    #self.skynetBlocklists()
-                    print(colours().error('skynetBlocklists() method not found.'))
-                    sleep(1)
-
-                elif user_input.upper() == 'B':
-                    self.main_menu()
-
-                elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
-                    clear_screen()    # Clear console window
-                    sys.exit(0)    
-        except KeyboardInterrupt:
-            self.main_menu()
-            pass
-    #################################################### END: skynetManagerCli()
-
-    def pdnsManagerCli(self):
-        global menu_title
-        
-        self.set_menu('PDNS')   # Initialize PowerDNS Management Menu
-
-        try:
-            while True:  # Display PowerDNS Management Menu
-                self.print_header()
-                self.print_options()
-                
-                user_input = self.get_input('\n\tWhat would you like to do? : ')
-                
-                if user_input.upper() == '1':   # Create new zone
-                    pdnsManager.createZone(self, '')
-
-                elif user_input.upper() == '2': # Secure existing zone
-                    pdnsManager.secureZone(self, '')
-
-                elif user_input.upper() == '3': # Create new record
-                    pdnsManager.createRecord(self, '', '', '', '')
-
-                elif user_input.upper() == 'B':
-                    self.main_menu()
-
-                elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
-                    clear_screen()    # Clear console window
-                    sys.exit(0)   
-        except KeyboardInterrupt:
-            self.main_menu()
-            pass
-    #################################################### END: pdnsManagerCli()
-
-    def nginxManagerCli(self):
-        global menu_title
-        
-        self.set_menu('NGINX')  # Initialize NGINX Management Menu
-
-        try:
-            while True:  # Display NGINX Management Menu
-                self.print_header()
-                self.print_options()
-                
-                user_input = self.get_input('\n\tWhat would you like to do? : ')
-                
-                if user_input.upper() == '1':   # NGINX Configuration
-                    #self.nginxConfiguration()
-                    print(colours().error('nginxManager class not found.'))
-                    sleep(1)
-
-                elif user_input.upper() == 'B':
-                    self.main_menu()
-
-                elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
-                    clear_screen()    # Clear console window
-                    sys.exit(0) 
-        except KeyboardInterrupt:
-            self.main_menu()
-            pass
-    #################################################### END: nginxManagerCli()
 
 if __name__ == "__main__":
     os.system("cls")

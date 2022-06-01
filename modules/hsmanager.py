@@ -27,9 +27,10 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 USER_DIR = os.path.expanduser('~')                      # User home directory
+ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'        # Location of A.D.A.M.S. config
+HSD_PATH = ADAMS_PATH + '/hsd/'
 HSD_CONFIG = USER_DIR + '/.hsd/hsd.conf'                # Location of HSD node config
 HSW_CONFIG = USER_DIR + '/.hsd/hsw.conf'                # Location of HSD wallet config
 
@@ -49,24 +50,24 @@ if platform == 'linux':
 elif platform == 'win32':
     from msvcrt import getch as getch
 
-if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False:
+if os.path.exists(HSD_CONFIG) == False and os.path.exists(HSW_CONFIG) == False and os.path.exists(HSD_PATH) == False:
     try:
-        print('\033[91m\n [!] \033[0mHandshake node not detected. Please install.')
-        print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
+        print('\033[41m\033[97m\n\t Handshake node not detected! Please install. \033[0m\033[0m')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
-        import installer
-        installer.install('handshake')
+        from main import main
+        main(['adams', 'install', 'handshake'])
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
 
-elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False:
+elif os.path.exists(HSD_CONFIG) == False or os.path.exists(HSW_CONFIG) == False or os.path.exists(HSD_PATH) == False:
     try:
-        print('\033[91m\n [!] \033[0mHandshake node misconfigured. Please reinstall.')
-        print('\033[93m\033[1m\n\tPress any key to install now, or use `ctrl+c` to return.\033[0m\033[0m')
+        print('\033[41m\033[97m\n\t Handshake node misconfigured! Please reinstall. \033[0m\033[0m')
+        print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
         getch()
-        import installer
-        installer.install('handshake')
+        from main import main
+        main(['adams', 'install', 'handshake'])
     except KeyboardInterrupt:
         clear_screen()
         sys.exit(0)
@@ -273,7 +274,7 @@ class hsmanager:
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
-        print(colours.green(self, '\n [+] ') + 'Record created, press any key to continue')
+        print(colours.green(self, '\n [+] ') + 'Record created')
         sleep(2)
     #################################################### END: createRecord(self, namespace)
 
@@ -438,8 +439,8 @@ class cli:
                     self.hsdNode()
 
                 elif user_input.upper() == 'B':
-                    import manager
-                    manager.cli()
+                    from main import main
+                    main(['adams', 'manager'])
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     clear_screen()    # Clear console window
@@ -451,7 +452,7 @@ class cli:
             self.main_menu()
         except KeyboardInterrupt:
             from main import main
-            main()
+            main(['adams', 'main'])
     #################################################### END: main_menu()
 
     def hsdWallet(self, menu_id:str='MAIN'):
@@ -555,18 +556,7 @@ class cli:
                                     self.menu_display.append(colours().green('Balance') + '     : ' + str(balance['account']))
                                     self.menu_display.append(colours().green('Initialized') + ' : ' + str(results['initialized']))
                                     self.menu_display.append(colours().green('Watch Only') + '  : ' + str(results['watchOnly']))
-                                    receiveAddress = ''
-                                    charCount = 0
-                                    for char in str(results['receiveAddress']):
-                                        if charCount == 21:
-                                            receiveAddress += '\n\t                ' + str(char)
-                                            charCount = 0
-                                        else:
-                                            receiveAddress += str(char)
-                                        
-                                        charCount += 1
-
-                                    self.menu_display.append(colours().green('Address') + '     : ' + receiveAddress)
+                                    self.menu_display.append(colours().green('Address') + '     : ' + results['receiveAddress'])
 
                             self.print_header()
                             self.print_options()
@@ -711,8 +701,5 @@ class cli:
 
 if __name__ == "__main__":
     clear_screen()
-    #hsd = hsmanager()
-    #hsd.getWallets()
-    #print(hsd.getBalance('skunk'))
     cli()
 #################################################### END: __main__
