@@ -27,8 +27,8 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 USER_DIR = os.path.expanduser('~')                      # User home directory
+ADAMS_PATH = os.getcwd()                                # A.D.A.M.S. directory
 ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'        # Location of A.D.A.M.S. config
 HSD_PATH = ADAMS_PATH + '/hsd/'
 HSD_CONFIG = USER_DIR + '/.hsd/hsd.conf'                # Location of HSD node config
