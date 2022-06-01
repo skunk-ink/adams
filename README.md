@@ -83,35 +83,35 @@ The [NGINX Webserver](https://www.nginx.com/resources/wiki/) is a high preforman
 # **User Manual**
 
 ## **Build A.D.A.M.S.**
-| Command         | Flags            | Description                               |
-|:----------------|------------------|-------------------------------------------|
-| ./build.sh      |                  | Build A.D.A.M.S. from source              |
-|                 | --run</br> -r        | Build and run A.D.A.M.S                   |
-|                 | --install</br> -i    | Build and run A.D.A.M.S. installer module |
-|                 | --manager</br> -m    | Build and run A.D.A.M.S. manager module   |
+| Command       | Flags              | Description                               |
+|:--------------|--------------------|-------------------------------------------|
+| ./build.sh    |                    | Build A.D.A.M.S. from source              |
+|               | --run</br> -r      | Build and run A.D.A.M.S                   |
+|               | --install</br> -i  | Build and run A.D.A.M.S. installer module |
+|               | --manager</br> -m  | Build and run A.D.A.M.S. manager module   |
 
 ## **Run A.D.A.M.S.**
-| Command         | Module           | Description                               |
-|:----------------|------------------|-------------------------------------------|
-| ./adams         |                  | Run A.D.A.M.S.                            |
-|                 | install          | Run A.D.A.M.S. installer module           |
-|                 | manager          | Run A.D.A.M.S. manager module             |
+| Command       | Module             | Description                               |
+|:--------------|--------------------|-------------------------------------------|
+| adams         |                    | Run A.D.A.M.S.                            |
+|               | install            | Run A.D.A.M.S. installer module           |
+|               | manager            | Run A.D.A.M.S. manager module             |
 
 ## **A.D.A.M.S. Installer Module**
-| Command         | Flags            | Description                               |
-|:----------------|------------------|-------------------------------------------|
-| ./adams install |                  | Run A.D.A.M.S.                            |
-|                 | adams            | Run A.D.A.M.S. install                    |
-|                 | skynet           | Run Skynet Webportal install              |
-|                 | handshake</br> hsd   | Run Handshake Full Node install           |
-|                 | powerdns</br> pdns   | Run PowerDNS install                      |
-|                 | nginx            | Run NGINX install                         |
+| Command       | Flags              | Description                               |
+|:--------------|--------------------|-------------------------------------------|
+| adams install |                    | Run A.D.A.M.S.                            |
+|               | adams              | Run A.D.A.M.S. install                    |
+|               | skynet             | Run Skynet Webportal install              |
+|               | handshake</br> hsd | Run Handshake Full Node install           |
+|               | powerdns</br> pdns | Run PowerDNS install                      |
+|               | nginx              | Run NGINX install                         |
 
 ## **A.D.A.M.S. Manager Module**
-| Command         | Flags            | Description                               |
-|:----------------|------------------|-------------------------------------------|
-| ./adams manager |                  | Run A.D.A.M.S. manager module             |
-|                 | skynet           | Run Skynet Webportal manager              |
-|                 | handshake</br> hsd   | Run Handshake Full Node manager           |
-|                 | powerdns</br> pdns   | Run PowerDNS manager                      |
-|                 | nginx            | Run NGINX manager                         |
+| Command       | Flags              | Description                               |
+|:--------------|--------------------|-------------------------------------------|
+| adams manager |                    | Run A.D.A.M.S. manager module             |
+|               | skynet             | Run Skynet Webportal manager              |
+|               | handshake</br> hsd | Run Handshake Full Node manager           |
+|               | powerdns</br> pdns | Run PowerDNS manager                      |
+|               | nginx              | Run NGINX manager                         |
