@@ -583,217 +583,231 @@ class install:
     #################################################### END: installDepends(self, depends)
 
     def skynet_webportal(self):
-        print(colours.error(self, 'skynet_webportal() method not yet complete.'))
-        sleep(1)
+        if ENABLE_SKYNET == True:
+            pass
 
-        ''' print(colours.green(self, ' [+] ') + 'Installing Yarn')
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['npm', 'install', 'yarn'], cwd=(self.SKYNET_PATH + '/packages/website'))
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+            ''' print(colours.green(self, ' [+] ') + 'Installing Yarn')
+            if ENABLE_SUBPROCESSES == True:
+                subprocess.run(['npm', 'install', 'yarn'], cwd=(self.SKYNET_PATH + '/packages/website'))
+            else:
+                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
-        print(colours.green(self, ' [+] ') + 'Building Skynet Portal Page')
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['yarn', 'build'], cwd=(self.SKYNET_PATH + '/packages/website'))
+            print(colours.green(self, ' [+] ') + 'Building Skynet Portal Page')
+            if ENABLE_SUBPROCESSES == True:
+                subprocess.run(['yarn', 'build'], cwd=(self.SKYNET_PATH + '/packages/website'))
+            else:
+                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+            print() '''
         else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-        print() '''
+            print(colours.error(self, 'Skynet Webportal installer has been disabled. See `config/adams.conf`'))
+            sleep(3)
     #################################################### END: skynet_webportal(self)
 
     def handshake(self):
-        print(colours.green(self, '\n [+] ') + 'Installing Handshake Node')
+        if ENABLE_HANDSHAKE == True:
+            print(colours.green(self, '\n [+] ') + 'Installing Handshake Node')
 
-        if ENABLE_SUBPROCESSES == True:
-            # Build HSD binaries
-            subprocess.run(['npm', 'install', '-g', '--production'], cwd=self.HSD_PATH, check=True)
-
-            # Read default 'hsd.service' file
-            with open(self.HSD_SERVICE_SCRIPT, 'r') as script:
-                hsdServiceScript = script.readlines()
-
-            lnCount = 0
-            username = self.USER_DIR.split('/')
-            iName = len(username) - 1
-
-            # Set the 'hsd.service' variables 'ExecStart' and 'User'
-            for line in hsdServiceScript:
-                if line.startswith('ExecStart='):
-                    hsdServiceScript[lnCount] = 'ExecStart=' + self.USER_DIR + '/.npm-global/bin/hsd\n'
-
-                if line.startswith('User='):
-                    hsdServiceScript[lnCount] = 'User=' + str(username[iName]) + '\n'
-
-                lnCount += 1
-
-            # Write new 'hsd.service' file
-            with open(self.HSD_SERVICE_SCRIPT, 'w') as script:
-                script.writelines(hsdServiceScript)
-                
-            # Create HSD system service 'hsd.service'
-            subprocess.run(['sudo', 'cp', self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
-
-            # Set "hsd.service" owner
-            subprocess.run(['sudo', 'chown', 'root:root', self.HSD_SYS_SERVICES_PATH], check=True)
-
-            # Set "hsd.service" permissions
-            subprocess.run(['sudo', 'chmod', '777', self.HSD_SYS_SERVICES_PATH])
-
-            # Enable "hsd.service"
-            subprocess.run(['sudo', 'systemctl', 'enable', 'hsd'])
-
-            # Generate new API key
-            nodeString = 'bcrypto=require("bcrypto"); console.log(bcrypto.random.randomBytes(32).toString("hex"))'
-            apiKey = str(subprocess.check_output(['node', '-e', nodeString], cwd=self.ADAMS_PATH + '/hsd', shell=False))
-            apiKey = apiKey.strip("b'")
-            apiKey = apiKey.strip("\\n'")
-
-            # Read default 'hsd.conf' file
-            with open(self.HSD_CONFIG, 'r') as script:
-                hsdConfig = script.readlines()
-
-            lnCount = 0
-
-            # Replace 'api-key' in 'hsd.conf' with newly generated apiKey
-            for line in hsdConfig:
-                if line.startswith('api-key:'):
-                    hsdConfig[lnCount] = 'api-key: ' + apiKey + '\n'
-
-                lnCount += 1
-
-            # Write new 'hsd.conf' file
-            with open(self.HSD_CONFIG, 'w') as script:
-                script.writelines(hsdConfig)
-
-            # Read default 'hsw.conf' file
-            with open(self.HSW_CONFIG, 'r') as script:
-                hswConfig = script.readlines()
-
-            lnCount = 0
-
-            # Replace 'api-key' in 'hsw.conf' with newly generated apiKey
-            for line in hswConfig:
-                if line.startswith('api-key:'):
-                    hswConfig[lnCount] = 'api-key: ' + apiKey + '\n'
-
-                lnCount += 1
-
-            # Write new 'hsw.conf' file
-            with open(self.HSW_CONFIG, 'w') as script:
-                script.writelines(hswConfig)
-
-            # Create HSD node and wallet configuration files
-            if os.path.isdir(self.HSD_INSTALL_PATH) == False:
-                subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
-
-            # Create HSD node and wallet configuration files
-            if os.path.isdir(self.HSD_INSTALL_PATH) == False:
-                subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
-
-            subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
-            subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
-
-            # Enable and start 'hsd' service
-            subprocess.run(['sudo', 'systemctl', 'enable', 'hsd.service'], check=True)
-            subprocess.run(['sudo', 'systemctl', 'start', 'hsd.service'], check=True)
-
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-        print()
-    #################################################### END: handshake(self)
-
-    def powerdns(self):
-        files = os.listdir(self.ADAMS_PATH)
-        checkFor = 'pdnsmanager'
-
-        print(colours.green(self, '\n [+] ') + 'Configuring PowerDNS')
-        print(colours.green(self, '\n [+] ') + 'Installing PowerDNS Manager')
-
-        for file in files:
-            if checkFor in file:
-                if ENABLE_SUBPROCESSES == True:
-                    subprocess.run(['mv', file, 'pdnsmanager/'], cwd=self.ADAMS_PATH, check=True)
-                else:
-                    print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        # Check and disable existing stub resolver
-        dnsExists = False
-        stubListenterExists = False
-
-        # Check resolved.conf for configuration
-        with open("/etc/systemd/resolved.conf") as resolveFile:
-            lines = resolveFile.readlines()
-
-        for line in lines:
-            if line == 'DNS=1.1.1.1':
-                dnsExists = True
-
-            if line == 'DNSStubListener=no':
-                stubListenterExists = True
-
-        # Add configurations to resolved.conf
-        print(colours.green(self, '\n [+] ') + 'Disabling Stub Resolver...')
-        if dnsExists == False or stubListenterExists == False:
-            addLine = 'echo "# PowerDNS Configurations" >> /etc/systemd/resolved.conf'
             if ENABLE_SUBPROCESSES == True:
-                subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
-            else:
-                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+                # Build HSD binaries
+                subprocess.run(['npm', 'install', '-g', '--production'], cwd=self.HSD_PATH, check=True)
 
-        if dnsExists == False:
-            addLine = 'echo "DNS=1.1.1.1" >> /etc/systemd/resolved.conf'
-            if ENABLE_SUBPROCESSES == True:
-                subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
-            else:
-                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+                # Read default 'hsd.service' file
+                with open(self.HSD_SERVICE_SCRIPT, 'r') as script:
+                    hsdServiceScript = script.readlines()
 
-        if stubListenterExists == False:
-            addLine = 'echo "DNSStubListener=no" >> /etc/systemd/resolved.conf'
-            if ENABLE_SUBPROCESSES == True:
-                subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
+                lnCount = 0
+                username = self.USER_DIR.split('/')
+                iName = len(username) - 1
+
+                # Set the 'hsd.service' variables 'ExecStart' and 'User'
+                for line in hsdServiceScript:
+                    if line.startswith('ExecStart='):
+                        hsdServiceScript[lnCount] = 'ExecStart=' + self.USER_DIR + '/.npm-global/bin/hsd\n'
+
+                    if line.startswith('User='):
+                        hsdServiceScript[lnCount] = 'User=' + str(username[iName]) + '\n'
+
+                    lnCount += 1
+
+                # Write new 'hsd.service' file
+                with open(self.HSD_SERVICE_SCRIPT, 'w') as script:
+                    script.writelines(hsdServiceScript)
+                    
+                # Create HSD system service 'hsd.service'
+                subprocess.run(['sudo', 'cp', self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
+
+                # Set "hsd.service" owner
+                subprocess.run(['sudo', 'chown', 'root:root', self.HSD_SYS_SERVICES_PATH], check=True)
+
+                # Set "hsd.service" permissions
+                subprocess.run(['sudo', 'chmod', '777', self.HSD_SYS_SERVICES_PATH])
+
+                # Enable "hsd.service"
+                subprocess.run(['sudo', 'systemctl', 'enable', 'hsd'])
+
+                # Generate new API key
+                nodeString = 'bcrypto=require("bcrypto"); console.log(bcrypto.random.randomBytes(32).toString("hex"))'
+                apiKey = str(subprocess.check_output(['node', '-e', nodeString], cwd=self.ADAMS_PATH + '/hsd', shell=False))
+                apiKey = apiKey.strip("b'")
+                apiKey = apiKey.strip("\\n'")
+
+                # Read default 'hsd.conf' file
+                with open(self.HSD_CONFIG, 'r') as script:
+                    hsdConfig = script.readlines()
+
+                lnCount = 0
+
+                # Replace 'api-key' in 'hsd.conf' with newly generated apiKey
+                for line in hsdConfig:
+                    if line.startswith('api-key:'):
+                        hsdConfig[lnCount] = 'api-key: ' + apiKey + '\n'
+
+                    lnCount += 1
+
+                # Write new 'hsd.conf' file
+                with open(self.HSD_CONFIG, 'w') as script:
+                    script.writelines(hsdConfig)
+
+                # Read default 'hsw.conf' file
+                with open(self.HSW_CONFIG, 'r') as script:
+                    hswConfig = script.readlines()
+
+                lnCount = 0
+
+                # Replace 'api-key' in 'hsw.conf' with newly generated apiKey
+                for line in hswConfig:
+                    if line.startswith('api-key:'):
+                        hswConfig[lnCount] = 'api-key: ' + apiKey + '\n'
+
+                    lnCount += 1
+
+                # Write new 'hsw.conf' file
+                with open(self.HSW_CONFIG, 'w') as script:
+                    script.writelines(hswConfig)
+
+                # Create HSD node and wallet configuration files
+                if os.path.isdir(self.HSD_INSTALL_PATH) == False:
+                    subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
+
+                # Create HSD node and wallet configuration files
+                if os.path.isdir(self.HSD_INSTALL_PATH) == False:
+                    subprocess.run(['mkdir', self.HSD_INSTALL_PATH], check=True)
+
+                subprocess.run(['cp', self.HSD_CONFIG, self.HSD_INSTALL_PATH], check=True)
+                subprocess.run(['cp', self.HSW_CONFIG, self.HSD_INSTALL_PATH], check=True)
+
+                # Enable and start 'hsd' service
+                subprocess.run(['sudo', 'systemctl', 'enable', 'hsd.service'], check=True)
+                subprocess.run(['sudo', 'systemctl', 'start', 'hsd.service'], check=True)
+
             else:
                 print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
             print()
-
-        # Create Symlink
-        print(colours.green(self, '\n [+] ') + 'Creating Symlink')
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', 'ln', '-sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], check=True)
         else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+            print(colours.error(self, 'Handshake node installer has been disabled. See `config/adams.conf`'))
+            sleep(3)
+    #################################################### END: handshake(self)
 
-        # Configure pdns.conf file
-        print(colours.green(self, '\n [+] ') + 'Configuring "' + self.POWERDNS_CONF_PATH + '"')
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', 'rm', '-fr', self.POWERDNS_CONF_PATH], check=True)
-            subprocess.run(['sudo', 'cp', self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
+    def powerdns(self):
+        if ENABLE_POWERDNS == True:
+            files = os.listdir(self.ADAMS_PATH)
+            checkFor = 'pdnsmanager'
+
+            print(colours.green(self, '\n [+] ') + 'Configuring PowerDNS')
+            print(colours.green(self, '\n [+] ') + 'Installing PowerDNS Manager')
+
+            for file in files:
+                if checkFor in file:
+                    if ENABLE_SUBPROCESSES == True:
+                        subprocess.run(['mv', file, 'pdnsmanager/'], cwd=self.ADAMS_PATH, check=True)
+                    else:
+                        print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+
+            # Check and disable existing stub resolver
+            dnsExists = False
+            stubListenterExists = False
+
+            # Check resolved.conf for configuration
+            with open("/etc/systemd/resolved.conf") as resolveFile:
+                lines = resolveFile.readlines()
+
+            for line in lines:
+                if line == 'DNS=1.1.1.1':
+                    dnsExists = True
+
+                if line == 'DNSStubListener=no':
+                    stubListenterExists = True
+
+            # Add configurations to resolved.conf
+            print(colours.green(self, '\n [+] ') + 'Disabling Stub Resolver...')
+            if dnsExists == False or stubListenterExists == False:
+                addLine = 'echo "# PowerDNS Configurations" >> /etc/systemd/resolved.conf'
+                if ENABLE_SUBPROCESSES == True:
+                    subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
+                else:
+                    print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+
+            if dnsExists == False:
+                addLine = 'echo "DNS=1.1.1.1" >> /etc/systemd/resolved.conf'
+                if ENABLE_SUBPROCESSES == True:
+                    subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
+                else:
+                    print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+
+            if stubListenterExists == False:
+                addLine = 'echo "DNSStubListener=no" >> /etc/systemd/resolved.conf'
+                if ENABLE_SUBPROCESSES == True:
+                    subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
+                else:
+                    print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+                print()
+
+            # Create Symlink
+            print(colours.green(self, '\n [+] ') + 'Creating Symlink')
+            if ENABLE_SUBPROCESSES == True:
+                subprocess.run(['sudo', 'ln', '-sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], check=True)
+            else:
+                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+
+            # Configure pdns.conf file
+            print(colours.green(self, '\n [+] ') + 'Configuring "' + self.POWERDNS_CONF_PATH + '"')
+            if ENABLE_SUBPROCESSES == True:
+                subprocess.run(['sudo', 'rm', '-fr', self.POWERDNS_CONF_PATH], check=True)
+                subprocess.run(['sudo', 'cp', self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
+            else:
+                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+            
+            # Set pdns.conf file permissions
+            if ENABLE_SUBPROCESSES == True:
+                subprocess.run(['sudo', 'chmod', '640', self.POWERDNS_CONF_PATH], check=True)
+                subprocess.run(['sudo', 'chown', '-R', 'root:pdns', self.POWERDNS_CONF_PATH], check=True)
+            else:
+                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+
+
+            # Initialize the sqlite database with schema
+            if ENABLE_SUBPROCESSES == True:
+                os.system('sudo sqlite3 /var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql')
+
+            # Change ownership of the directory to the `pdns` user and group
+            if ENABLE_SUBPROCESSES == True:
+                subprocess.run(['sudo', 'chown', '-R', 'pdns:pdns', '/var/lib/powerdns'], check=True)
+            else:
+                print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
+
+            self.NEED_RESTART = True
         else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-        
-        # Set pdns.conf file permissions
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', 'chmod', '640', self.POWERDNS_CONF_PATH], check=True)
-            subprocess.run(['sudo', 'chown', '-R', 'root:pdns', self.POWERDNS_CONF_PATH], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-
-        # Initialize the sqlite database with schema
-        if ENABLE_SUBPROCESSES == True:
-            os.system('sudo sqlite3 /var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql')
-
-        # Change ownership of the directory to the `pdns` user and group
-        if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', 'chown', '-R', 'pdns:pdns', '/var/lib/powerdns'], check=True)
-        else:
-            print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
-
-        self.NEED_RESTART = True
-
+            print(colours.error(self, 'PowerDNS installer has been disabled. See `config/adams.conf`'))
+            sleep(3)
     #################################################### END: pdns(self)
 
     def nginx(self):
-        print(colours.error(self, 'nginx() method not yet complete.'))
-        sleep(1)
+        if ENABLE_NGINX == True:
+            print(colours.error(self, 'install.nginx() method not yet complete.'))
+            sleep(1)
+        else:
+            print(colours.error(self, 'NGINX installer has been disabled. See `config/adams.conf`'))
+            sleep(3)
     #################################################### END: nginx(self)
 
     def parseURL(self, url):
