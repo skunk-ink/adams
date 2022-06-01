@@ -27,7 +27,6 @@ from time import sleep as sleep
 from colours import colours
 from display import clear_screen
 
-USER_DIR = os.path.expanduser('~')                  # User home directory
 ADAMS_PATH = os.getcwd()                            # A.D.A.M.S. directory
 ADAMS_CONFIG = ADAMS_PATH + '/config/adams.conf'    # Location of A.D.A.M.S. config
 
@@ -142,9 +141,9 @@ elif platform == 'win32':
     from msvcrt import getch as getch
 
 class install:
-    """ NEED_RESTART = False
+    NEED_RESTART = False
     ADAMS_PATH = os.getcwd()                                        # A.D.A.M.S. directory
-    USER_DIR = os.path.expanduser('~')                              # User home directory """
+    USER_DIR = os.path.expanduser('~')                              # User home directory
     HSD_INSTALL_PATH = USER_DIR + '/.hsd'                           # HSD installation directory
     HSD_PATH = ADAMS_PATH + '/hsd'                                  # Handshake directory
     HSD_BIN_PATH = ADAMS_PATH + '/hsd/bin'                          # Handshake binaries build directory
