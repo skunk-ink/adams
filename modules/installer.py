@@ -242,7 +242,7 @@ class install:
                         sleep(1)
 
                     if ENABLE_SUBPROCESSES == True:
-                        subprocess.run(['sudo', 'reboot', 'now'], check=True)
+                        subprocess.run(['sudo', 'reboot'], check=True)
                     else:
                         print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
         except KeyboardInterrupt:
