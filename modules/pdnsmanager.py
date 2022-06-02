@@ -23,6 +23,7 @@ import os
 import sys
 
 from sys import platform
+from hsmanager import hsmanager
 from time import sleep as sleep
 from colours import colours
 from display import clear_screen
@@ -117,7 +118,7 @@ class pdnsManager:
         updateHNS = cli.get_input(self, '\n\tUpdate handshake records (Y/N)? [default = N] : ')
         if updateHNS.lower() == 'y':
             if ENABLE_LOGGING == True: print('pdnsManager: var namespace = ' + namespace) # Log output
-            # hsdManager.createRecord(self, namespace)        
+            hsmanager.createRecord(self, namespace)        
     #################################################### END: createZone(self)
 
     def secureZone(self, namespace):

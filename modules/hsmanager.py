@@ -266,28 +266,33 @@ class hsmanager:
     #################################################### END: getBalance(self, walletID:str)
 
     def sendAuctionOpen(self, _domainName:str):
-        self.authenticate()
+        self.authenticate()     # Unlock wallet
         return hsw.rpc_sendOPEN(_domainName)['result']
     #################################################### END: sendAuctionOpen(self, _domainName:str)
 
     def sendAuctionBid(self, _domainName:str, _bidAmount:float, _lockupBlind:float, _accountName:str='default'):
-        self.authenticate()
+        self.authenticate()     # Unlock wallet
         return hsw.rpc_sendBID(_domainName, _bidAmount, _lockupBlind, _accountName)['result']
     #################################################### END: sendAuctionBid(self, _domainName:str, _bidAmount:float, _lockupBlind:float, _accountName:str='default')
 
     def sendAuctionReveal(self, _domainName:str):
-        self.authenticate()
+        self.authenticate()     # Unlock wallet
         return hsw.rpc_sendREVEAL(_domainName)['result']
     #################################################### END: sendAuctionReveal(self, _domainName:str)
 
     def sendAuctionRedeem(self, _domainName:str):
-        self.authenticate()
+        self.authenticate()     # Unlock wallet
         return hsw.rpc_sendREDEEM(_domainName)['result']
     #################################################### END: sendAuctionRedeem(self, _domainName:str)
 
-    def createRecord(self, namespace):
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tDomain Name : ')
+    def viewRecords(self, _domainName:str):
+        self.authenticate()
+        return hsd.rpc_getNameInfo(_domainName)['result']
+
+    def createRecord(self, _domainName:str):
+        self.authenticate()     # Unlock wallet
+        if _domainName == '':
+            _domainName = cli.get_input(self, '\n\tDomain Name : ')
 
         # Check if wallet is unlocked
         results = hsw.rpc_getWalletInfo()['result']
@@ -313,16 +318,16 @@ class hsmanager:
                     passwordOK = False
                     isUnlocked = False
 
-        record = {'records': [{'type': 'NS', 'ns': 'ns1.' + namespace + '.'}]}
+        record = {'records': [{'type': 'NS', 'ns': 'ns1.' + _domainName + '.'}]}
 
         if ENABLE_SUBPROCESSES == True:
-            hsw.rpc_sendUPDATE(namespace, record)
+            hsw.rpc_sendUPDATE(_domainName, record)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         print(colours.green(self, '\n [+] ') + 'Record created')
         sleep(2)
-    #################################################### END: createRecord(self, namespace)
+    #################################################### END: createRecord(self, _domainName)
 
 class cli:
     hs_manager = None
@@ -434,7 +439,7 @@ class cli:
         
         if menu_id.upper() == 'MAIN':       # Main Menu Options
             menu_title = ['HSD_MANAGMENT',
-                          'Handshake Management']
+                          colours().bold(colours().underline('Handshake Management'))]
                           
             menu_options = [colours().cyan('1') + ': Wallet Management',
                             colours().cyan('2') + ': HNS Records Management',
@@ -444,17 +449,20 @@ class cli:
             
         elif menu_id.upper() == 'HSW':      # Handshake Wallet Menu Options
             menu_title = ['HANDSHAKE_WALLET',
-                          'Handshake Wallet Management']
+                          colours().bold(colours().underline('Handshake Wallet Management'))]
                           
-            menu_options = [colours().cyan('1') + ': Accounts and balances',
-                            colours().cyan('2') + ': Send HNS',
-                            colours().cyan('3') + ': Receive HNS',
+            menu_options = [colours().bold(colours().underline('Wallet:')),
                             '',
-                            'Auction Commands:',
-                            colours().cyan('4') + ': Send Open',
-                            colours().cyan('5') + ': Send Bid',
-                            colours().cyan('6') + ': Send Reveal',
-                            colours().cyan('7') + ': Send Redeem',
+                            colours().cyan('1') + ': ' + colours().underline('A') + 'ccounts and balances',
+                            colours().cyan('2') + ': ' + colours().underline('S') + 'end HNS',
+                            colours().cyan('3') + ': ' + colours().underline('R') + 'eceive HNS',
+                            '',
+                            colours().bold(colours().underline('Auction:')),
+                            '',
+                            colours().cyan('4') + ': Open',
+                            colours().cyan('5') + ': Bid',
+                            colours().cyan('6') + ': Reveal',
+                            colours().cyan('7') + ': Redeem',
                             '',
                             colours().cyan('B') + ': Back to HSD Management',
                             colours().cyan('Q') + ': Quit A.D.A.M.S.']
@@ -463,8 +471,8 @@ class cli:
             menu_title = ['HANDSHAKE_RECORDS',
                           'Handshake Records Management']
                           
-            menu_options = [colours().cyan('1') + ': View Records',
-                            colours().cyan('2') + ': Create/Update Record',
+            menu_options = [colours().cyan('1') + ': ' + colours().underline('V') + 'iew Records',
+                            colours().cyan('2') + ': ' + colours().underline('C') + 'reate/' + colours().underline('U') + 'pdate Record',
                             '',
                             colours().cyan('B') + ': Back to HSD Management',
                             colours().cyan('Q') + ': Quit A.D.A.M.S.']
@@ -642,70 +650,18 @@ class cli:
                     
                     print(colours().error('Transaction UI not implemented.'))
                     sleep(2)
-                    self.hsdWallet('MAIN')
-
-                    menu_title = ['HANDSHAKE_RECORDS',
-                                'Send HNS']
-                                
-                    menu_options = [colours().cyan('1') + ': View Records',
-                                    colours().cyan('2') + ': Create/Update Record',
-                                    '',
-                                    colours().cyan('B') + ': Back to HSD Management',
-                                    colours().cyan('Q') + ': Quit A.D.A.M.S.'] 
-
-                    self.print_header()
-                    self.print_options()
-        
-                    user_input = self.get_input('\n\tWhat would you like to do? : ')
-                    
-                    if user_input.upper() == '1':
-                        #View account option
-                        pass
-
-                    elif user_input.upper() == 'B':
-                        self.hsdWallet('MAIN')
-
-                    elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
-                        clear_screen()    # Clear console window
-                        sys.exit(0)  
                                     
                 elif menu_id.upper() == 'RECEIVE_HNS':      # Handshake Wallet Menu Options
                     
                     print(colours().error('Transaction UI not implemented.'))
                     sleep(2)
-                    self.hsdWallet('MAIN')
 
-                    menu_title = ['HANDSHAKE_RECORDS',
-                                'Receive HNS']
-                                
-                    menu_options = [colours().cyan('1') + ': View Records',
-                                    colours().cyan('2') + ': Create/Update Record',
-                                    '',
-                                    colours().cyan('B') + ': Back to HSD Management',
-                                    colours().cyan('Q') + ': Quit A.D.A.M.S.'] 
-
-                    self.print_header()
-                    self.print_options()
-        
-                    user_input = self.get_input('\n\tWhat would you like to do? : ')
-                    
-                    if user_input.upper() == '1':
-                        #View account option
-                        pass
-
-                    elif user_input.upper() == 'B':
-                        self.hsdWallet('MAIN')
-
-                    elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
-                        clear_screen()    # Clear console window
-                        sys.exit(0)  
-                                    
                 elif menu_id.upper() == 'SEND_OPEN':      # Send OPEN on auction
 
-                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
+                    domainName = self.get_input('\n\tEnter name of HNS domain to start auction : ')
 
                     try:
-                        hs_manager.sendAuctionOpen(domainName)
+                        print(hs_manager.sendAuctionOpen(domainName))
                         print(colours.green(self, '\n [+] ') + 'Auction started for `' + domainName + '`')
                     except:
                         print(colours.yellow(self, '\n [!] ') + 'Failed to start auction for `' + domainName + '`')
@@ -716,12 +672,12 @@ class cli:
                                     
                 elif menu_id.upper() == 'SEND_BID':      # Send BID on auction
 
-                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
-                    bid = self.get_input('\n\tEnter your bid : ')
-                    lockupBlind = self.get_input('\n\tEnter your blind bid : ')
+                    domainName = self.get_input('\n\tEnter name of the HNS domain to bid on: ')
+                    bid = self.get_input('\n\tEnter your bid in HNS: ')
+                    lockupBlind = self.get_input('\n\tEnter your blind bid in HNS : ')
 
                     try:
-                        hs_manager.sendAuctionBid(domainName, bid, lockupBlind)
+                        print(hs_manager.sendAuctionBid(domainName, bid, lockupBlind))
                         print(colours.green(self, '\n [+] ') + 'Bid sent for `' + domainName + '`')
                     except:
                         print(colours.yellow(self, '\n [!] ') + 'Failed to send bid for `' + domainName + '`')
@@ -732,10 +688,10 @@ class cli:
                                                         
                 elif menu_id.upper() == 'SEND_REVEAL':      # Send REVEAL on auction
 
-                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
+                    domainName = self.get_input('\n\tEnter name of HNS domain to reveal bid on : ')
 
                     try:
-                        hs_manager.sendAuctionReveal(domainName)
+                        print(hs_manager.sendAuctionReveal(domainName))
                         print(colours.green(self, '\n [+] ') + 'Reveal sent for `' + domainName + '`')
                     except:
                         print(colours.yellow(self, '\n [!] ') + 'Failed to send reveal for `' + domainName + '`')
@@ -746,10 +702,10 @@ class cli:
                                                         
                 elif menu_id.upper() == 'SEND_REDEEM':      # Send REVEAL on auction
 
-                    domainName = self.get_input('\n\tEnter name of HNS domain : ')
+                    domainName = self.get_input('\n\tEnter name of HNS domain to redeem : ')
 
                     try:
-                        hs_manager.sendAuctionRedeem(domainName)
+                        print(hs_manager.sendAuctionRedeem(domainName))
                         print(colours.green(self, '\n [+] ') + 'Redeemed `' + domainName + '`')
                     except:
                         print(colours.yellow(self, '\n [!] ') + 'Failed to redeem `' + domainName + '`')
@@ -765,66 +721,94 @@ class cli:
 
     def hsdNode(self):
         global menu_title
+        global menu_options
+
+        try:                                
+            while True:  # Run Handshake Wallet Management
+                # Check if wallet is unlocked
+                results = hsw.rpc_getWalletInfo()['result']
+                for result in results:
+                    if results['unlocked_until'] > 0:
+                        isUnlocked = True
+                    else:
+                        isUnlocked = False
+
+                # If wallet is locked, prompt for password
+                if isUnlocked == False:
+                    passwordOK = False
+
+                    while passwordOK == False:
+                        password = cli.get_input_pass(self, '\n\tEnter your wallet password : ')
+                        result = hsw.rpc_walletPassphrase(password)['error']
+
+                        if result == None:
+                            passwordOK = True
+                            isUnlocked = True
+                        else:
+                            print(colours.yellow(self, '\n [!] ') + 'Invalid password!')
+                            passwordOK = False
+                            isUnlocked = False
+
+                if menu_id.upper() == 'MAIN':       # Main Menu Options
+                    self.set_menu('HSD_NODE')            # Initialize Handshake Daemon Management Menu
+                    self.print_header()
+                    self.print_options()
         
-        self.set_menu('HSD')    # Initialize Handshake Daemon Management Menu
+                    user_input = self.get_input('\n\tWhat would you like to do? : ')
+                    
+                    if user_input.upper() == '1' or user_input.upper() == 'V':
+                        menu_options = []
+                        menu_id = 'VIEW_RECORDS'
 
-        try:
-            while True:  # Display Handshake Daemon Management Menu
-                self.print_header()
-                self.print_options()
-                
-                user_input = self.get_input('\n\tWhat would you like to do? : ')
-                
-                if user_input.upper() == '1':   # Wallet Management
-                    self.hsdWallet()
+                    elif user_input.upper() == '2' or user_input.upper() == 'C':
+                        menu_options = []
+                        menu_id = 'CREATE_RECORD'
 
-                elif user_input.upper() == '2': # HNS Records Management
-                    self.hsdRecordsManagerCli()
+                    elif user_input.upper() == 'B':
+                        self.main_menu()
 
-                elif user_input.upper() == 'B':
-                    self.main_menu()
+                    elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
+                        clear_screen()    # Clear console window
+                        sys.exit(0)  
+                    
+                elif menu_id.upper() == 'CREATE_RECORD':      # Handshake Wallet Menu Options
+                    user_input = None
+                    while True:
+                        menu_title = ['HANDSHAKE_NODE_CREATE_RECORD',
+                                    'Create new record']
+                        menu_options = []
+                        self.menu_display = []
 
-                elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
-                    clear_screen()    # Clear console window
-                    sys.exit(0)
+                        menu_options.append('')
+                        menu_options.append(colours().cyan('B') + ': Back to Wallet Management')
+                        menu_options.append(colours().cyan('Q') + ': Quit A.D.A.M.S.')
 
+                        clear_screen()
+
+                        if user_input == None or user_input == ' ':
+                            self.print_header()
+                            self.print_options()
+
+                            user_input = self.get_input('\n\tWhat would you like to do? : ')
+
+                        else:
+
+                            self.print_header()
+                            self.print_options()
+                            self.print_display()
+                            
+                            user_input = self.get_input('\n\tWhat would you like to do? : ')
+                        if user_input.upper() == 'B' or user_input.upper() == ' ':
+                            self.hsdNode('MAIN')
+
+                        elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
+                            clear_screen()    # Clear console window
+                            sys.exit(0)
+                    
         except KeyboardInterrupt:
             self.main_menu()
             pass
-    #################################################### END: hsdManagerCli()
-
-    def hsdRecordsManagerCli(self):
-        global menu_title
-        
-        self.set_menu('HSD_RECORDS')  # Initialize Handshake Wallet Management Menu
-
-        try:
-            while True:  # Display Handshake Wallet Management Menu
-                self.print_header()
-                self.print_options()
-                
-                user_input = self.get_input('\n\tWhat would you like to do? : ')
-                
-                if user_input.upper() == '1':
-                    #self.skynetWallet()
-                    print(colours().error('Records management not yet implemented.'))
-                    sleep(1)
-
-                elif user_input.upper() == '2':
-                    #self.skynetContracts()
-                    print(colours().error('Records management not yet implemented.'))
-                    sleep(1)
-
-                elif user_input.upper() == 'B':
-                    self.main_menu()
-
-                elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
-                    clear_screen()    # Clear console window
-                    sys.exit(0)    
-        except KeyboardInterrupt:
-            self.main_menu()
-            pass
-    #################################################### END: hsdWalletManagerCli(self)
+    #################################################### END: hsdNode()
 
 if __name__ == "__main__":
     clear_screen()

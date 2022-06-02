@@ -85,6 +85,9 @@ class colours:
     def bold(self, text):
         return bold + text + endc
         
+    def underline(self, text):
+        return underline + text + endc
+        
         # Custom Font Styles
     def title(self, text):
         return green + bold + text + endc + endc
