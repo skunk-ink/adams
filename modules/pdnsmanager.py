@@ -101,34 +101,29 @@ for line in lines:
                 sleep(1)
 
 class pdnsManager:
-    def createZone(self, namespace):
+    def createZone(self, _domainName):
 
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tDomain Name : ')
+        if _domainName == '':
+            _domainName = cli.get_input(self, '\n\tDomain Name : ')
 
         # Create a new zone
         if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'create-zone', namespace , 'ns1.' + namespace], check=True)
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'create-zone', _domainName , 'ns1.' + _domainName], check=True)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         print(colours.green(self, '\n [+] ') + 'Zone created')
-        sleep(2)
-
-        updateHNS = cli.get_input(self, '\n\tUpdate handshake records (Y/N)? [default = N] : ')
-        if updateHNS.lower() == 'y':
-            if ENABLE_LOGGING == True: print('pdnsManager: var namespace = ' + namespace) # Log output
-            hsmanager.createRecord(self, namespace)        
+        sleep(2)     
     #################################################### END: createZone(self)
 
-    def secureZone(self, namespace):
+    def secureZone(self, _domainName):
         
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tEnter zone name to secure : ')
+        if _domainName == '':
+            _domainName = cli.get_input(self, '\n\tEnter zone name to secure : ')
 
         # Secure an existing zone
         if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'secure-zone', namespace], check=True)
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'secure-zone', _domainName], check=True)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
@@ -136,29 +131,34 @@ class pdnsManager:
         sleep(2)
     #################################################### END: secureZone(self)
 
-    def createRecord(self, namespace, record_name, record_type, record_value):
+    def createRecord(self, _domainName, record_name, record_type, record_value):
 
-        if namespace == '':
-            namespace = cli.get_input(self, '\n\tDomain Name : ')
-
-        if record_name == '':
-            record_name = cli.get_input(self, '\n\tRecord Name : ')
+        if _domainName == '':
+            _domainName = cli.get_input(self, '\n\tDomain Name : ')
 
         if record_type == '':
             record_type = str(cli.get_input(self, '\n\tRecord Type : ')).upper()
+
+        if record_name == '':
+            record_name = cli.get_input(self, '\n\tRecord Name : ')
 
         if record_value == '':
             record_value = cli.get_input(self, '\n\tRecord Value : ')
 
         # Update PowerDNS Record
         if ENABLE_SUBPROCESSES == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'add-record', namespace + '.', record_name, record_type, record_value], check=True)
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'add-record', _domainName + '.', record_name, record_type, record_value], check=True)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         print(colours.green(self, '\n [+] ') + 'Record created')
         sleep(2)
-    #################################################### END: createRecord(self)
+
+        updateHNS = cli.get_input(self, '\n\tUpdate handshake records (Y/N)? [default = N] : ')
+        if updateHNS.lower() == 'y':
+            if ENABLE_LOGGING == True: print('pdnsManager: var _domainName = ' + _domainName) # Log output
+            hsmanager.createRecord(self, _domainName, record_type, record_value)   
+    #################################################### END: createRecord(self, _domainName, record_name, record_type, record_value)
         
 class cli:
     menu_title = ''

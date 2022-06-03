@@ -20,7 +20,6 @@
 from getpass import getpass
 import os
 import sys
-from xml import dom
 
 from handshake import api
 from sys import platform
@@ -191,6 +190,7 @@ class hsmanager:
                     print(colours.yellow(self, '\n [!] ') + 'Invalid password!')
                     passwordOK = False
                     isUnlocked = False
+    #################################################### END: authenticate(self)
 
     def getWallets(self):
         return hsw.listWallets()
@@ -208,11 +208,11 @@ class hsmanager:
             accounts.append(account)
 
         return accounts
-    #################################################### END: getWallets(self)
+    #################################################### END: getAccounts(self)
 
     def getAccountInfo(self, accountID:str='default'):
         return hsw.getAccountInfo(HNS_WALLET_ID, accountID)
-    #################################################### END: getWallets(self)
+    #################################################### END: getAccountInfo(self, accountID:str='default')
 
     def getAddress(self):
         return hsw.rpc_getAccountAddress()['result']
@@ -287,12 +287,16 @@ class hsmanager:
 
     def viewRecords(self, _domainName:str):
         self.authenticate()
-        return hsd.rpc_getNameInfo(_domainName)['result']
+        return hsd.rpc_getNameResource(_domainName)['result']
+    #################################################### END: viewRecords(self, _domainName:str)
 
-    def createRecord(self, _domainName:str):
-        self.authenticate()     # Unlock wallet
+    def createRecord(self, _domainName:str=None, _recordType:str=None, _nsValue:str=None, _recordValue:str=None,
+                           _address:str=None, _keyTag:int=None, _algo:int=None, _digestType:int=None, _digest:str=None):
+        record = None
+        isRecordType = False
+        #self.authenticate()     # Unlock wallet
         if _domainName == '':
-            _domainName = cli.get_input(self, '\n\tDomain Name : ')
+            _domainName = cli().get_input(self, '\n\tDomain Name : ')
 
         # Check if wallet is unlocked
         results = hsw.rpc_getWalletInfo()['result']
@@ -307,7 +311,7 @@ class hsmanager:
             passwordOK = False
 
             while passwordOK == False:
-                password = cli.get_input_pass(self, '\n\tEnter your wallet password : ')
+                password = cli().get_input_pass(self, '\n\tEnter your wallet password : ')
                 result = hsw.rpc_walletPassphrase(password)['error']
 
                 if result == None:
@@ -318,15 +322,87 @@ class hsmanager:
                     passwordOK = False
                     isUnlocked = False
 
-        record = {'records': [{'type': 'NS', 'ns': 'ns1.' + _domainName + '.'}]}
+        if _domainName == None:
+            _domainName = cli().get_input('\n\tDomain Name : ')
+
+        if _recordType == None:
+            isRecordType = False
+            _recordType = ''
+
+        if _recordType.upper() == 'DS' or _recordType.upper() == 'NS' or _recordType.upper() == 'GLUE4' or _recordType.upper() == 'GLUE6' \
+        or _recordType.upper() == 'SYNTH4' or _recordType.upper() == 'SYNTH6' or _recordType.upper() == 'TXT':
+            isRecordType = True
+
+        if isRecordType == False:
+            while isRecordType == False:
+                print('\t\t\nRecord Types = \'DS\', \'NS\', \'GLUE4\', \'GLUE6\', \'SYNTH4\', \'SYNTH6\', \'TXT\'')
+                _recordType = str(cli().get_input('\n\tRecord Type : '))
+
+                if _recordType.upper() == 'DS' or _recordType.upper() == 'NS' or _recordType.upper() == 'GLUE4' or _recordType.upper() == 'GLUE6' \
+                or _recordType.upper() == 'SYNTH4' or _recordType.upper() == 'SYNTH6' or _recordType.upper() == 'TXT':
+                    isRecordType = True
+                else:
+                    print(colours().yellow('\n [!] \'') + _recordType + '\' is not a valid record type.')
+                    isRecordType = False
+
+        if _recordType.upper() == 'DS':
+            _keyTag = int(cli().get_input('\n\tKey Tag : '))
+            _algo = int(cli().get_input('\n\tAlgorithm : '))
+            _digestType = int(cli().get_input('\n\tDigest Type : '))
+            _digest = str(cli().get_input('\n\tDigest : '))
+
+            record = { 'records': [{ 'type': _recordType.upper() , 'keyTag': str(_keyTag), 'algorithm': str(_algo), 'digestType': str(_digestType), 'digest': _digest }] }
+
+        elif _recordType.upper() == 'NS':
+            _nsValue = cli().get_input('\n\tNS : ')
+
+            isRecordType = True
+            record = { 'records': [{ 'type': _recordType.upper(), 'ns': _nsValue }] }
+
+        elif _recordType.upper() == 'GLUE4':
+            _nsValue = cli().get_input('\n\tNS : ')
+            _address = cli().get_input('\n\tAddress : ')
+
+            isRecordType = True
+            record = { 'records': [{ 'type': _recordType.upper(), 'ns': _nsValue, 'address': _address }] }
+
+        elif _recordType.upper() == 'GLUE6':
+            _nsValue = cli().get_input('\n\tNS : ')
+            _address = cli().get_input('\n\tAddress : ')
+
+            isRecordType = True
+            record = { 'records': [{ 'type': _recordType.upper(), 'ns': _nsValue, 'address': _address }] }
+
+        elif _recordType.upper() == 'SYNTH4':
+            _address = cli().get_input('\n\tAddress : ')
+
+            isRecordType = True
+            record = { 'records': [{ 'type': _recordType.upper(), 'address': _address }] }
+
+        elif _recordType.upper() == 'SYNTH6':
+            _address = cli().get_input('\n\tAddress : ')
+
+            isRecordType = True
+            record = { 'records': [{ 'type': _recordType.upper(), 'address': _address }] }
+
+        elif _recordType.upper() == 'TXT':
+            _recordValue = cli().get_input('\n\tTXT : ')
+
+            isRecordType = True
+            record = { 'records': [{ 'type': _recordType.upper(), 'txt': [ _recordValue ] }] }
+        else:
+            print(colours().yellow('\n [!] \'') + _recordType + '\' is not a valid record type.')
+            isRecordType = False
 
         if ENABLE_SUBPROCESSES == True:
-            hsw.rpc_sendUPDATE(_domainName, record)
+            result = hsw.rpc_sendUPDATE(_domainName, record)
         else:
             print(colours.yellow(self, '\n [!] ') + 'Subprocess disabled')
 
         print(colours.green(self, '\n [+] ') + 'Record created')
         sleep(2)
+        getch()
+        return result
     #################################################### END: createRecord(self, _domainName)
 
 class cli:
@@ -354,13 +430,16 @@ class cli:
                 user_input = self.get_input('\n\tWould you like to create a wallet with the ID of `' + HNS_WALLET_ID + '`? [yes or no] : ')
 
                 if user_input.lower() == 'yes' or user_input.lower() == 'y':
-                    hs_manager.createWallet(HNS_WALLET_ID)
+                    result = hs_manager.createWallet(HNS_WALLET_ID)
+
+                    if ENABLE_LOGGING == True:
+                        print(result)
 
                     for wallet in hs_manager.getWallets():
                         if str(wallet) == HNS_WALLET_ID:
                             walletFound = True
                 else:
-                    HNS_WALLET_ID = self.get_input('\n\tEnter a name for your HNS Wallet [default = "adams"] : ')
+                    HNS_WALLET_ID = self.get_input('\n\tEnter a name for your HNS Wallet [default = \'adams\'] : ')
 
                     if HNS_WALLET_ID == '':
                         HNS_WALLET_ID = 'adams'
@@ -719,7 +798,7 @@ class cli:
             pass
     #################################################### END: hsdWallet(self)
 
-    def hsdNode(self):
+    def hsdNode(self, menu_id:str='MAIN'):
         global menu_title
         global menu_options
 
