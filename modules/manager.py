@@ -182,7 +182,7 @@ class cli:
         print()
     #################################################### END: print_options()
 
-    def set_menu(self, menu_id):
+    def set_menu(self, menu_id:str='MAIN'):
         global menu_title
         global menu_options
         

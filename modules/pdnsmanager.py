@@ -144,6 +144,7 @@ class pdnsManager:
 
         if record_value == '':
             record_value = cli.get_input(self, '\n\tRecord Value : ')
+            record_value = '"' + record_value + '"'
 
         # Update PowerDNS Record
         if ENABLE_SUBPROCESSES == True:
@@ -157,7 +158,8 @@ class pdnsManager:
         updateHNS = cli.get_input(self, '\n\tUpdate handshake records (Y/N)? [default = N] : ')
         if updateHNS.lower() == 'y':
             if ENABLE_LOGGING == True: print('pdnsManager: var _domainName = ' + _domainName) # Log output
-            hsmanager.createRecord(self, _domainName, record_type, record_value)   
+            print(hsmanager().createRecord(_domainName=_domainName, _recordType=record_type, _recordValue=record_value))
+            getch()
     #################################################### END: createRecord(self, _domainName, record_name, record_type, record_value)
         
 class cli:

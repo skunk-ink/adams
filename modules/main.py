@@ -25,15 +25,6 @@ from time import sleep
 from display import clear_screen
 from colours import colours
 from splash import splash
-    
-PATH = os.getcwd()      # A.D.A.M.S. Directory
-
-if platform == "linux":
-    from getch import getch as getch
-    DATA_PATH = os.getcwd() + '/data/'      # Linux directory format
-elif platform == "win32":
-    from msvcrt import getch as getch
-    DATA_PATH = os.getcwd() + '\data\\'     # Windows directory format
 
 class main:
 

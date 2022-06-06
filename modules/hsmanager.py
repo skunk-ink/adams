@@ -408,7 +408,7 @@ class hsmanager:
 class cli:
     hs_manager = None
     menu_title = ''
-    menu_options = ''
+    menu_options = []
     menu_display = []
 
     def __init__(self, _type:str=None):
