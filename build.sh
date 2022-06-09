@@ -28,7 +28,7 @@ pip install skunkworks-repo
 export PATH=~/.local/bin:$PATH
 
 echo -e "\n ${GREEN}[+]${NC} Building A.D.A.M.S. binary..."
-pyinstaller --clean --name adams --distpath ./ -F modules/main.py
+pyinstaller --clean --name adams --distpath ./ -F modules/adams.py
 
 if [ -f "/usr/local/bin/adams" ];
 then
@@ -38,9 +38,9 @@ fi
 sudo ln adams /usr/local/bin
 
 if [ "$1" == "--run" ] || [ "$1" == "-r" ]; then
-    ./adams
+    adams
 elif [ "$1" == "--installer" ] || [ "$1" == "-i" ]; then
-    python3 modules/installer.py
+    adams install
 elif [ "$1" == "--manager" ] || [ "$1" == "-m" ]; then
-    python3 modules/manager.py
+    adams manager
 fi
