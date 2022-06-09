@@ -20,17 +20,17 @@
 import sys as sys
 
 from sys import platform
-from display import clear_screen
-from colours import colours
+from skunkworks_ui.cli import Menu
+from skunkworks_ui.style import *
 
 if platform == "linux":
     from getch import getch as getch
 elif platform == "win32":
     from msvcrt import getch as getch
 
-class splash:
+class Splash(Menu):
     def __init__(self):
-        clear_screen()
+        self.clear_screen()
         self.print_splash()
     
     #################################################### END: __init__(self)
@@ -39,27 +39,27 @@ class splash:
         #Pallets: ░ ▄ ▀ █ ─ `
         try: 
             print()
-            print(colours().yellow("\t                  _                                    "))
-            print(colours().yellow("\t     __ _      __| |     __ _      _ _ _      ____     "))
-            print(colours().yellow("\t    / _` |    / _` |    / _` |    | ` ` |    / __/     "))
-            print(colours().yellow("\t   | (_| |   | (_| |   | (_| |    | | | |    \__ \     "))
-            print(colours().yellow("\t    \__,_| ⍟  \__,_|") + colours().green("▄") + colours().yellow("⍟") + colours().green(" ▄") + colours().yellow("\__,_|") + colours().green("█") + colours().yellow("⍟") + colours().green(" ▄") + colours().yellow("|_|_|_| ⍟  /___/ ⍟  "))
-            print(colours().green("\t                   ███           ███                   "))
-            print(colours().green("\t                 ███               ███                 "))
-            print(colours().green("\t                ██                   ██                "))
-            print(colours().green("\t                         ") + colours().green("▄▄█▄▄                         "))
-            print(colours().green("\t               ") + colours().white("▄       ") + colours().green("███") + colours().white_bg("───") + colours().green("███       ") + colours().white("▄               "))
-            print(colours().green("\t              ") + colours().white("███     ") + colours().green("███") + colours().white_bg("──") + colours().green("█") + colours().white_bg("──") + colours().green("███     ") + colours().white("███              "))
-            print(colours().green("\t               ") + colours().white("▀       ") + colours().green("██") + colours().white_bg("──") + colours().green(colours().white_bg("▄")) + colours().white_bg("──") + colours().green("██       ") + colours().white("▀               "))
-            print(colours().green("\t                         ") + colours().green("▀▀█▀▀                         "))
-            print(colours().green("\t                ██                   ██                "))
-            print(colours().green("\t                 ███               ███                 "))
-            print(colours().yellow("\t    Automated Decentralization And Management System   "))
-            print(colours().green("\t                    ▀▀▀█████████▀▀▀                    "))
-            print(colours().white("\t                                                       "))
-            print(colours().white("\t                     press any key                     "))
-            print(colours().white("\t                                                       "))
-            print(colours().white("\t                 WHERE'S THE ANY KEY!?                 "))
+            print(yellow_font("\t                  _                                    "))
+            print(yellow_font("\t     __ _      __| |     __ _      _ _ _      ____     "))
+            print(yellow_font("\t    / _` |    / _` |    / _` |    | ` ` |    / __/     "))
+            print(yellow_font("\t   | (_| |   | (_| |   | (_| |    | | | |    \__ \     "))
+            print(yellow_font("\t    \__,_| ⍟  \__,_|") + green_font("▄") + yellow_font("⍟") + green_font(" ▄") + yellow_font("\__,_|") + green_font("█") + yellow_font("⍟") + green_font(" ▄") + yellow_font("|_|_|_| ⍟  /___/ ⍟  "))
+            print(green_font("\t                   ███           ███                   "))
+            print(green_font("\t                 ███               ███                 "))
+            print(green_font("\t                ██                   ██                "))
+            print(green_font("\t                         ") + green_font("▄▄█▄▄                         "))
+            print(green_font("\t               ") + white_font("▄       ") + green_font("███") + white_bg("───") + green_font("███       ") + white_font("▄               "))
+            print(green_font("\t              ") + white_font("███     ") + green_font("███") + white_bg("──") + green_font("█") + white_bg("──") + green_font("███     ") + white_font("███              "))
+            print(green_font("\t               ") + white_font("▀       ") + green_font("██") + white_bg("──") + green_font(white_bg("▄")) + white_bg("──") + green_font("██       ") + white_font("▀               "))
+            print(green_font("\t                         ") + green_font("▀▀█▀▀                         "))
+            print(green_font("\t                ██                   ██                "))
+            print(green_font("\t                 ███               ███                 "))
+            print(yellow_font("\t    Automated Decentralization And Management System   "))
+            print(green_font("\t                    ▀▀▀█████████▀▀▀                    "))
+            print(white_font("\t                                                       "))
+            print(white_font("\t                     press any key                     "))
+            print(white_font("\t                                                       "))
+            print(white_font("\t                 WHERE'S THE ANY KEY!?                 "))
             print()
 
         except AttributeError as e:
@@ -75,27 +75,27 @@ class splash:
         #Pallets: ░ ▄ █ ─ ` 
         try:
             print()
-            print(colours().yellow("\t                  _                                    "))
-            print(colours().yellow("\t     __ _      __| |     __ _      _ _ _      ____     "))
-            print(colours().yellow("\t    / _` |    / _` |    / _` |    | ` ` |    / __/     "))
-            print(colours().yellow("\t   | (_| |   | (_| |   | (_| |    | | | |    \__ \     "))
-            print(colours().yellow("\t    \__,_| ⍟  \__,_|") + colours().blue("▄") + colours().yellow("⍟") + colours().blue(" ▄") + colours().yellow("\__,_|") + colours().blue("█") + colours().yellow("⍟") + colours().blue(" ▄") + colours().yellow("|_|_|_| ⍟  /___/ ⍟  "))
-            print(colours().blue("\t                   ███           ███                   "))
-            print(colours().blue("\t                 ███               ███                 "))
-            print(colours().blue("\t                ██                   ██                "))
-            print(colours().blue("\t                         ") + colours().blue("▄▄█▄▄                         "))
-            print(colours().blue("\t               ") + colours().white("▄       ") + colours().blue("███") + colours().white_bg("───") + colours().blue("███       ") + colours().white("▄               "))
-            print(colours().blue("\t              ") + colours().white("███     ") + colours().blue("███") + colours().white_bg("──") + colours().blue("█") + colours().white_bg("──") + colours().blue("███     ") + colours().white("███              "))
-            print(colours().blue("\t               ") + colours().white("▀       ") + colours().blue("██") + colours().white_bg("──") + colours().blue(colours().white_bg("▄")) + colours().white_bg("──") + colours().blue("██       ") + colours().white("▀               "))
-            print(colours().blue("\t                         ") + colours().blue("▀▀█▀▀                         "))
-            print(colours().blue("\t                ██                   ██                "))
-            print(colours().blue("\t                 ███               ███                 "))
-            print(colours().yellow("\t    Automated Decentralization And Management System   "))
-            print(colours().blue("\t                    ▀▀▀█████████▀▀▀                    "))
-            print(colours().white("\t                                                       "))
-            print(colours().white("\t                     press any key                     "))
-            print(colours().white("\t                                                       "))
-            print(colours().white("\t                 WHERE'S THE ANY KEY!?                 "))
+            print(yellow_font("\t                  _                                    "))
+            print(yellow_font("\t     __ _      __| |     __ _      _ _ _      ____     "))
+            print(yellow_font("\t    / _` |    / _` |    / _` |    | ` ` |    / __/     "))
+            print(yellow_font("\t   | (_| |   | (_| |   | (_| |    | | | |    \__ \     "))
+            print(yellow_font("\t    \__,_| ⍟  \__,_|") + blue_font("▄") + yellow_font("⍟") + blue_font(" ▄") + yellow_font("\__,_|") + blue_font("█") + yellow_font("⍟") + blue_font(" ▄") + yellow_font("|_|_|_| ⍟  /___/ ⍟  "))
+            print(blue_font("\t                   ███           ███                   "))
+            print(blue_font("\t                 ███               ███                 "))
+            print(blue_font("\t                ██                   ██                "))
+            print(blue_font("\t                         ") + blue_font("▄▄█▄▄                         "))
+            print(blue_font("\t               ") + white_font("▄       ") + blue_font("███") + white_bg("───") + blue_font("███       ") + white_font("▄               "))
+            print(blue_font("\t              ") + white_font("███     ") + blue_font("███") + white_bg("──") + blue_font("█") + white_bg("──") + blue_font("███     ") + white_font("███              "))
+            print(blue_font("\t               ") + white_font("▀       ") + blue_font("██") + white_bg("──") + blue_font(white_bg("▄")) + white_bg("──") + blue_font("██       ") + white_font("▀               "))
+            print(blue_font("\t                         ") + blue_font("▀▀█▀▀                         "))
+            print(blue_font("\t                ██                   ██                "))
+            print(blue_font("\t                 ███               ███                 "))
+            print(yellow_font("\t    Automated Decentralization And Management System   "))
+            print(blue_font("\t                    ▀▀▀█████████▀▀▀                    "))
+            print(white_font("\t                                                       "))
+            print(white_font("\t                     press any key                     "))
+            print(white_font("\t                                                       "))
+            print(white_font("\t                 WHERE'S THE ANY KEY!?                 "))
             print()
 
         except AttributeError as e:
