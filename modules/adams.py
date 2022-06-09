@@ -155,7 +155,7 @@ class Installer(Menu):
             while True: # Display A.D.A.M.S. Installer Menu
                 self.display()
                 
-                user_input = self.get_input(prompt_style('\n\tWhat would you like to do? : '))
+                user_input = self.get_input(prompt_style('What would you like to do? : '))
                 
                 if user_input.upper() == '1':   # Install A.D.A.M.S.
                     install('adams')
