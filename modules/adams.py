@@ -41,7 +41,7 @@ class Main(Menu):
                     else:
                         print("`" + str(menu[2]) + "` is an invalid `" + str(menu[1]) + "` command.")
                 else:
-                    install.cli()
+                    Installer()
             elif str(menu[1]).lower() == 'manage' or str(menu[1]).lower() == 'manager' or str(menu[1]).lower() == '--manager' or menu[1] == '-m':
                 if len(menu) > 2:
                     if str(menu[2]).lower() == 'skynet-webportal' or str(menu[2]).lower() == 'skynet':

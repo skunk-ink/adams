@@ -37,10 +37,10 @@ fi
 
 sudo ln adams /usr/local/bin
 
-if [ "$1" == "--run" ] || [ "$1" == "-r" ]; then
+if [ "$1" == "--run" ] || [ "$1" == "-r" ] || [ "$1" == "run" ]; then
     adams
-elif [ "$1" == "--installer" ] || [ "$1" == "-i" ]; then
+elif [ "$1" == "--install" ] || [ "$1" == "-i" ] || [ "$1" == "install" ]; then
     adams install
-elif [ "$1" == "--manager" ] || [ "$1" == "-m" ]; then
+elif [ "$1" == "--manager" ] || [ "$1" == "-m" ] || [ "$1" == "manager" ]; then
     adams manager
 fi
