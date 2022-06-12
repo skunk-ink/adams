@@ -3,6 +3,7 @@ import sys
 import os
 import interface
 
+from time import sleep
 from sys import platform
 from splash import Splash
 from install import Install as install
@@ -45,8 +46,7 @@ for line in lines:
                 enable_logging = False
 
             if enable_logging == True:
-                print('Disable Logging: ' + str(enable_logging))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Logging: ' + str(enable_logging))
 
         elif config[0] == 'enable_subprocesses':
             if config[1].lower() == 'true':
@@ -55,8 +55,7 @@ for line in lines:
                 enable_subprocesses = False
                 
             if enable_logging == True:
-                print('Disable Subprocesses: ' + str(enable_subprocesses))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Subprocesses: ' + str(enable_subprocesses))
 
         elif config[0] == 'enable_adams':
             if config[1].lower() == 'true':
@@ -65,8 +64,7 @@ for line in lines:
                 enable_adams = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_adams))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Install Methods: ' + str(enable_adams))
 
         elif config[0] == 'enable_skynet':
             if config[1].lower() == 'true':
@@ -75,8 +73,7 @@ for line in lines:
                 enable_skynet = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_skynet))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Install Methods: ' + str(enable_skynet))
 
         elif config[0] == 'enable_handshake':
             if config[1].lower() == 'true':
@@ -85,8 +82,7 @@ for line in lines:
                 enable_handshake = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_handshake))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Install Methods: ' + str(enable_handshake))
 
         elif config[0] == 'enable_power_dns':
             if config[1].lower() == 'true':
@@ -95,8 +91,7 @@ for line in lines:
                 enable_power_dns = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_power_dns))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Install Methods: ' + str(enable_power_dns))
 
         elif config[0] == 'enable_nginx':
             if config[1].lower() == 'true':
@@ -105,8 +100,7 @@ for line in lines:
                 enable_nginx = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_nginx))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Install Methods: ' + str(enable_nginx))
 
         elif config[0] == 'enable_dependencies':
             if config[1].lower() == 'true':
@@ -115,8 +109,7 @@ for line in lines:
                 enable_dependencies = False
                 
             if enable_logging == True:
-                print('Disable Dependencies: ' + str(enable_dependencies))
-                Menu.wait(1)
+                print('[Logging] `adams.py` disabled Dependencies: ' + str(enable_dependencies))
 
 
     ############################################################
@@ -391,13 +384,74 @@ class AdamsManager(Menu):
 
 class HSDManager(Menu):
     hsd = interface.HSD()
+    _HSD_PATH = _ADAMS_PATH + '/hsd/'
+    _HSD_CONFIG = _USER_DIR + '/.hsd/hsd.conf'          # Location of HSD node config
+    _HSW_CONFIG = _USER_DIR + '/.hsd/hsw.conf'          # Location of HSD wallet config
+    _HNS_WALLET_ID = None                               # HSD Wallet ID
     
     def __init__(self, type:str = None):
+        # Load configurations file
+        with open(_ADAMS_CONFIG) as configFile:
+            lines = configFile.readlines()
 
-        self._HSD_PATH = _ADAMS_PATH + '/hsd/'
-        self._HSD_CONFIG = _USER_DIR + '/.hsd/hsd.conf'          # Location of HSD node config
-        self._HSW_CONFIG = _USER_DIR + '/.hsd/hsw.conf'          # Location of HSD wallet config
-        self._HNS_WALLET_ID = None                               # HSD Wallet ID
+        for line in lines:
+            if line.startswith('#') or line == '':
+                pass
+            else:
+                config = line.split(':')
+                i = 0
+
+                for value in config:
+                    config[i] = value.strip().lower()
+                    i += 1
+
+                if config[0] == 'hns_wallet_id':
+                    _HNS_WALLET_ID = config[1]
+
+                    if enable_logging == True:
+                        print('[Logging] HNS Wallet ID: ' + str(_HNS_WALLET_ID))
+                        self.wait(1)
+
+        # Load HSD configurations
+        with open(self._HSD_CONFIG, 'r') as hsdConfig:
+            lines = hsdConfig.readlines()
+            
+        for line in lines:
+            if line.startswith('api-key:'):
+                keyValue = line.split(':')
+                HSD_API_KEY = str(keyValue[1]).strip()
+            elif line.startswith('network:'):
+                keyValue = line.split(':')
+                networkType = str(keyValue[1]).strip()
+
+                if networkType.lower() == 'main':
+                    HSD_PORT = 12037
+                elif networkType.lower() == 'testnet':
+                    HSD_PORT = 13037
+                elif networkType.lower() == 'regtest':
+                    HSD_PORT = 14037
+                elif networkType.lower() == 'simnet':
+                    HSD_PORT = 15037
+
+        with open(self._HSW_CONFIG, 'r') as hswConfig:
+            lines = hswConfig.readlines()
+
+        for line in lines:
+            if line.startswith('api-key:'):
+                keyValue = line.split(':')
+                HSW_API_KEY = str(keyValue[1]).strip()
+            elif line.startswith('network:'):
+                keyValue = line.split(':')
+                networkType = str(keyValue[1]).strip()
+
+                if networkType.lower() == 'main':
+                    HSW_PORT = 12039
+                elif networkType.lower() == 'testnet':
+                    HSW_PORT = 13039
+                elif networkType.lower() == 'regtest':
+                    HSW_PORT = 14039
+                elif networkType.lower() == 'simnet':
+                    HSW_PORT = 15039
 
         if os.path.exists(self._HSD_CONFIG) == False and os.path.exists(self._HSW_CONFIG) == False and os.path.exists(self._HSD_PATH) == False:
             try:
@@ -436,7 +490,7 @@ class HSDManager(Menu):
                     result = self.hsd.createWallet(_HNS_WALLET_ID)
 
                     if enable_logging == True:
-                        print(result)
+                        print('[Logging] ' + str(result))
 
                     for wallet in self.hsd.getWallets():
                         if str(wallet) == _HNS_WALLET_ID:
@@ -615,26 +669,7 @@ class HSDManager(Menu):
         while True:
             accounts = self.hsd.getAccounts()
             
-            self.title = green_font(title_style('Wallet Accounts for `' + self._HNS_WALLET_ID + '`'))
-            self.options = {
-                                bold_font(underline_font('Wallet')): '',
-                                '': '',
-                                cyan_font('1'): 'Accounts and balances',
-                                cyan_font('2'): 'Send HNS',
-                                cyan_font('3'): 'Receive HNS',
-                                '': '',
-                                bold_font(underline_font('Auction:')): '',
-                                '': '',
-                                cyan_font('4'): 'Open Auction',
-                                cyan_font('5'): 'Bid on Auction',
-                                cyan_font('6'): 'Reveal Bid',
-                                cyan_font('7'): 'Redeem Name',
-                                '': '',
-                                cyan_font('B'): 'Back to Managment',
-                                cyan_font('Q'): 'Quit A.D.A.M.S.'
-                            }
-            menu_title = ['HANDSHAKE_WALLET',
-                        'Wallet Accounts for `' + self._HNS_WALLET_ID + '`']
+            self.title = green_font(title_style('Wallet Accounts for `' + str(self._HNS_WALLET_ID) + '`'))
             self.options = {}
             accounts_display = {}
             accountIndex = 0
@@ -643,7 +678,7 @@ class HSDManager(Menu):
                 accountIndex += 1
                 self.options[cyan_font(str(accountIndex))] = ': View `' + str(account) + '`'
 
-            self.options['']
+            self.options['space'] = ''
             self.options[cyan_font('B')] = ': Back to Wallet Management'
             self.options[cyan_font('Q')] = ': Quit A.D.A.M.S.'
 
@@ -662,7 +697,8 @@ class HSDManager(Menu):
 
                     if user_input == str(accountIndex):
                         results = self.hsd.getAccountInfo(str(account))
-
+                        print(results)
+                        self.pause()
                         accounts_display[green_font('Account ID')] = '  : ' + str(results['name'])
                         balance = results['balance']
                         accounts_display[green_font('Balance')] = '     : ' + str(balance['account'])

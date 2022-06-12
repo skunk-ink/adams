@@ -58,8 +58,7 @@ for line in lines:
                 enable_logging = False
 
             if enable_logging == True:
-                print('Disable Logging: ' + str(enable_logging))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Logging: ' + str(enable_logging))
 
         elif config[0] == 'enable_subprocesses':
             if config[1].lower() == 'true':
@@ -68,8 +67,7 @@ for line in lines:
                 enable_subprocesses = False
                 
             if enable_logging == True:
-                print('Disable Subprocesses: ' + str(enable_subprocesses))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Subprocesses: ' + str(enable_subprocesses))
 
         elif config[0] == 'enable_adams':
             if config[1].lower() == 'true':
@@ -78,8 +76,7 @@ for line in lines:
                 enable_adams = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_adams))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Install Methods: ' + str(enable_adams))
 
         elif config[0] == 'enable_skynet':
             if config[1].lower() == 'true':
@@ -88,8 +85,7 @@ for line in lines:
                 enable_skynet = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_skynet))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Install Methods: ' + str(enable_skynet))
 
         elif config[0] == 'enable_handshake':
             if config[1].lower() == 'true':
@@ -98,8 +94,7 @@ for line in lines:
                 enable_handshake = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_handshake))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Install Methods: ' + str(enable_handshake))
 
         elif config[0] == 'enable_power_dns':
             if config[1].lower() == 'true':
@@ -108,8 +103,7 @@ for line in lines:
                 enable_power_dns = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_power_dns))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Install Methods: ' + str(enable_power_dns))
 
         elif config[0] == 'enable_nginx':
             if config[1].lower() == 'true':
@@ -118,8 +112,7 @@ for line in lines:
                 enable_nginx = False
                 
             if enable_logging == True:
-                print('Disable Install Methods: ' + str(enable_nginx))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Install Methods: ' + str(enable_nginx))
 
         elif config[0] == 'enable_dependencies':
             if config[1].lower() == 'true':
@@ -128,8 +121,7 @@ for line in lines:
                 enable_dependencies = False
                 
             if enable_logging == True:
-                print('Disable Dependencies: ' + str(enable_dependencies))
-                Menu.wait(1)
+                print('[Logging] `install.py` disabled Dependencies: ' + str(enable_dependencies))
 
 if platform == 'linux':
     from getch import getch as getch
@@ -232,7 +224,7 @@ class Install(Menu):
                 userInput = self.get_input('\n\tWould you like to restart now? : ')
                 if userInput.lower() == 'yes':
                     if enable_logging == True:
-                        print(yellow_font('\n [!] ') + 'Reboot initiated...')
+                        print(yellow_font('\n [!] ') + '[Logging] Reboot initiated...')
                         self.wait(1)
 
                     if enable_subprocesses == True:

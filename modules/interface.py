@@ -38,8 +38,7 @@ for line in lines:
                 _enable_logging = False
 
             if _enable_logging == True:
-                print('Disable Logging: ' + str(_enable_logging))
-                Menu.wait(1)
+                print('[Logging] `interface.py` disabled Logging: ' + str(_enable_logging))
 
         elif config[0] == 'enable_subprocesses':
             if config[1].lower() == 'true':
@@ -48,8 +47,7 @@ for line in lines:
                 _enable_subprocesses = False
                 
             if _enable_logging == True:
-                print('Disable Subprocesses: ' + str(_enable_subprocesses))
-                Menu.wait(1)
+                print('[Logging] `interface.py` disabled Subprocesses: ' + str(_enable_subprocesses))
 
 class HSD(Menu):
     global _USER_DIR
@@ -121,13 +119,20 @@ class HSD(Menu):
                     _HSW_PORT = 15039
     else:
         print(red_font('\n [!] ') + 'Could not locate `hsw.conf` configuration file.')
-
+    
     def __init__(self):
         global hsd
         global hsw
 
         hsd = api.hsd(api_key=self._HSD_API_KEY, port=self._HSD_PORT)
         hsw = api.hsw(api_key=self._HSW_API_KEY, port=self._HSW_PORT)
+
+        if _enable_logging == True:
+            print('[Logging] HSD Port   : ' + str(self._HSD_PORT))
+            print('[Logging] HSD Api-Key: ' + str(self._HSD_API_KEY))
+            print('[Logging] HSW Port   : ' + str(self._HSW_PORT))
+            print('[Logging] HSW Api-Key: ' + str(self._HSW_API_KEY))
+            self.pause()
         #################################################### END: __init__(self)
 
     def authenticate(self):
@@ -175,7 +180,7 @@ class HSD(Menu):
         #################################################### END: getAccounts(self)
 
     def getAccountInfo(self, accountID:str='default'):
-        return hsw.getAccountInfo(self._HNS_WALLET_ID, accountID)
+        return hsw.getAccountInfo(str(self._HNS_WALLET_ID), accountID)
         #################################################### END: getAccountInfo(self, accountID:str='default')
 
     def getAddress(self):
