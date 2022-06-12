@@ -1,10 +1,122 @@
 # Import
 import sys
+import os
+import interface
+
+from sys import platform
 from splash import Splash
 from install import Install as install
 from skunkworks_ui.cli import Menu
 from skunkworks_ui.style import *
 
+## Globals
+_USER_DIR = os.path.expanduser('~')                 # User home directory
+_ADAMS_PATH = os.getcwd()                           # A.D.A.M.S. directory
+_ADAMS_CONFIG = _ADAMS_PATH + '/config/adams.conf'  # Location of A.D.A.M.S. config
+
+enable_subprocesses = True              # Ghost run, does not affect the system
+enable_dependencies = True              # Enable dependency check on all install methods
+enable_logging = False                  # Enable console logs
+
+if platform == 'linux':
+    from getch import getch as getch
+elif platform == 'win32':
+    from msvcrt import getch as getch
+
+# Load configurations file
+with open(_ADAMS_CONFIG) as configFile:
+    lines = configFile.readlines()
+
+for line in lines:
+    if line.startswith('#') or line == '':
+        pass
+    else:
+        config = line.split(':')
+        i = 0
+
+        for value in config:
+            config[i] = value.strip().lower()
+            i += 1
+
+        if config[0] == 'enable_logging':
+            if config[1].lower() == 'true':
+                enable_logging = True
+            else:
+                enable_logging = False
+
+            if enable_logging == True:
+                print('Disable Logging: ' + str(enable_logging))
+                Menu.wait(1)
+
+        elif config[0] == 'enable_subprocesses':
+            if config[1].lower() == 'true':
+                enable_subprocesses = True
+            else:
+                enable_subprocesses = False
+                
+            if enable_logging == True:
+                print('Disable Subprocesses: ' + str(enable_subprocesses))
+                Menu.wait(1)
+
+        elif config[0] == 'enable_adams':
+            if config[1].lower() == 'true':
+                enable_adams = True
+            else:
+                enable_adams = False
+                
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_adams))
+                Menu.wait(1)
+
+        elif config[0] == 'enable_skynet':
+            if config[1].lower() == 'true':
+                enable_skynet = True
+            else:
+                enable_skynet = False
+                
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_skynet))
+                Menu.wait(1)
+
+        elif config[0] == 'enable_handshake':
+            if config[1].lower() == 'true':
+                enable_handshake = True
+            else:
+                enable_handshake = False
+                
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_handshake))
+                Menu.wait(1)
+
+        elif config[0] == 'enable_power_dns':
+            if config[1].lower() == 'true':
+                enable_power_dns = True
+            else:
+                enable_power_dns = False
+                
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_power_dns))
+                Menu.wait(1)
+
+        elif config[0] == 'enable_nginx':
+            if config[1].lower() == 'true':
+                enable_nginx = True
+            else:
+                enable_nginx = False
+                
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_nginx))
+                Menu.wait(1)
+
+        elif config[0] == 'enable_dependencies':
+            if config[1].lower() == 'true':
+                enable_dependencies = True
+            else:
+                enable_dependencies = False
+                
+            if enable_logging == True:
+                print('Disable Dependencies: ' + str(enable_dependencies))
+                Menu.wait(1)
 
 
     ############################################################
@@ -75,7 +187,7 @@ class Main(Menu):
                             cyan_font('1'): 'Management',
                             cyan_font('2'): 'Installer',
                             'space': '',
-                            cyan_font('Q'): 'Quit'
+                            cyan_font('Q'): 'Quit A.D.A.M.S.'
                         }
 
         try:
@@ -220,10 +332,10 @@ class AdamsManager(Menu):
     def main_menu(self):
         self.title = green_font(title_style('A.D.A.M.S. Management'))
         self.options = {
-                            cyan_font('1'): underline_font('S') + 'kynet Webportal',
-                            cyan_font('2'): underline_font('H') + 'andshake Node',
-                            cyan_font('3'): underline_font('P') + 'owerDNS Server',
-                            cyan_font('4'): underline_font('N') + 'GINX Webserver',
+                            cyan_font('1'): 'Skynet Webportal',
+                            cyan_font('2'): 'Handshake Node',
+                            cyan_font('3'): 'PowerDNS Server',
+                            cyan_font('4'): 'NGINX Webserver',
                             '': '',
                             cyan_font('B'): 'Back to Managment',
                             cyan_font('Q'): 'Quit A.D.A.M.S.'
@@ -278,7 +390,100 @@ class AdamsManager(Menu):
     ############################################################
 
 class HSDManager(Menu):
-    def __init__(self):
+    hsd = interface.HSD()
+    
+    def __init__(self, type:str = None):
+
+        self._HSD_PATH = _ADAMS_PATH + '/hsd/'
+        self._HSD_CONFIG = _USER_DIR + '/.hsd/hsd.conf'          # Location of HSD node config
+        self._HSW_CONFIG = _USER_DIR + '/.hsd/hsw.conf'          # Location of HSD wallet config
+        self._HNS_WALLET_ID = None                               # HSD Wallet ID
+
+        if os.path.exists(self._HSD_CONFIG) == False and os.path.exists(self._HSW_CONFIG) == False and os.path.exists(self._HSD_PATH) == False:
+            try:
+                print('\033[41m\033[97m\n\t Handshake node not detected! Please install. \033[0m\033[0m')
+                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+                self.pause()
+                Installer('handshake')
+            except KeyboardInterrupt:
+                self.clear_screen()
+                return
+
+        elif os.path.exists(self._HSD_CONFIG) == False or os.path.exists(self._HSW_CONFIG) == False or os.path.exists(self._HSD_PATH) == False:
+            try:
+                print('\033[41m\033[97m\n\t Handshake node misconfigured! Please reinstall. \033[0m\033[0m')
+                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+                self.pause()
+                Installer('handshake')
+            except KeyboardInterrupt:
+                self.clear_screen()
+                return
+
+        walletFound = False
+
+        for wallet in self.hsd.getWallets():
+            if str(wallet) == _HNS_WALLET_ID:
+                walletFound = True
+                
+        if walletFound == False:
+            print(yellow_font('\n [!] ') + '`' + _HNS_WALLET_ID + '` wallet not found.')
+
+            # Prompt user to create wallet
+            while walletFound == False:
+                user_input = self.get_input('\n\tWould you like to create a wallet with the ID of `' + _HNS_WALLET_ID + '`? [yes or no] : ')
+
+                if user_input.lower() == 'yes' or user_input.lower() == 'y':
+                    result = self.hsd.createWallet(_HNS_WALLET_ID)
+
+                    if enable_logging == True:
+                        print(result)
+
+                    for wallet in self.hsd.getWallets():
+                        if str(wallet) == _HNS_WALLET_ID:
+                            walletFound = True
+                else:
+                    _HNS_WALLET_ID = self.get_input('\n\tEnter a name for your HNS Wallet [default = \'adams\'] : ')
+
+                    if _HNS_WALLET_ID == '':
+                        _HNS_WALLET_ID = 'adams'
+
+                    self.hsd.createWallet(_HNS_WALLET_ID)
+
+                    for wallet in self.hsd.getWallets():
+                        if str(wallet) == _HNS_WALLET_ID:
+                            walletFound = True
+
+        #### UPDATE CONFIG FILE: adams.conf
+        # Read `adams.conf` to memory
+        with open(_ADAMS_CONFIG, 'r') as script:
+            adamsConfig = script.readlines()
+
+        lnCount = 0
+
+        # Replace 'hnsWalletID' in 'adams.conf' with newly created wallet id
+        for line in adamsConfig:
+            if line.startswith('hnsWalletID:'):
+                adamsConfig[lnCount] = 'hnsWalletID: ' + _HNS_WALLET_ID + '\n'
+
+            lnCount += 1
+
+        # Write new 'adams.conf' file
+        with open(_ADAMS_CONFIG, 'w') as script:
+            script.writelines(adamsConfig)
+
+        # Set wallet RPC to specified wallet id
+            self.hsd.setWallet(_HNS_WALLET_ID)
+
+        self.clear_screen()
+
+        if type == None or type.upper() == "MAIN": 
+            self.main_menu()
+        elif type.upper() == "HSW" or type.upper() == "WALLET": 
+            self.wallet_menu
+        elif type.upper() == "HSD" or type.upper() == "NODE": 
+            pass
+            # self.hsdNode()
+
         self.clear_screen()
         self.main_menu()
         #################################################### END: __init__(self, menu:str = None)
@@ -286,8 +491,8 @@ class HSDManager(Menu):
     def main_menu(self):
         self.title = green_font(title_style('Handshake Management'))
         self.options = {
-                            cyan_font('1'): underline_font('W') + 'allet Management',
-                            cyan_font('2'): underline_font('H') + 'NS Records Management',
+                            cyan_font('1'): 'Wallet Management',
+                            cyan_font('2'): 'HNS Records Management',
                             '': '',
                             cyan_font('B'): 'Back to Managment',
                             cyan_font('Q'): 'Quit A.D.A.M.S.'
@@ -328,9 +533,9 @@ class HSDManager(Menu):
         self.options = {
                             bold_font(underline_font('Wallet')): '',
                             '': '',
-                            cyan_font('1'): underline_font('A') + 'ccounts and balances',
-                            cyan_font('2'): underline_font('S') + 'end HNS',
-                            cyan_font('3'): underline_font('R') + 'eceive HNS',
+                            cyan_font('1'): 'Accounts and balances',
+                            cyan_font('2'): 'Send HNS',
+                            cyan_font('3'): 'Receive HNS',
                             '': '',
                             bold_font(underline_font('Auction:')): '',
                             '': '',
@@ -344,42 +549,48 @@ class HSDManager(Menu):
                         }
         
         try:
-            while True:  # Display PowerDNS Management Menu
+            while True:  # Display Handshake Wallet Menu
                 self.display()
                 
                 user_input = self.get_input(prompt_style('What would you like to do? : '))
                 
-                # Skynet Webportal
+                # Accounts and balances
                 if user_input.lower() == '1' or user_input.lower() == 'a' or user_input.lower() == 'accounts':
-                    print('HSDManager.accounts()')
-                    self.wait(1)
-
-                # Handshake Node
+                    self.display_accounts()
+                # Send HNS
                 elif user_input.lower() == '2' or user_input.lower() == 's' or user_input.lower() == 'send':
                     print('HSDManager.send()')
                     self.wait(1)
 
-                # Handshake Node
+                # Receive HNS
                 elif user_input.lower() == '3' or user_input.lower() == 'r' or user_input.lower() == 'receive':
                     print('HSDManager.receive()')
                     self.wait(1)
 
-                # Handshake Node
+                # Open Auction
                 elif user_input.lower() == '4' or user_input.lower() == 'open':
-                    print('HSDManager.open()')
-                    self.wait(1)
+                    domainName = self.get_input('\n\tEnter name of HNS domain to start auction : ')
 
-                # Handshake Node
+                    try:
+                        print(self.hsd.sendAuctionOpen(domainName))
+                        print(green_font('\n [+] ') + 'Auction started for `' + domainName + '`')
+                    except:
+                        print(yellow_font(self, '\n [!] ') + 'Failed to start auction for `' + domainName + '`')
+                    
+                    self.wait(2)
+
+                # Bid on Auction
                 elif user_input.lower() == '5' or user_input.lower() == 'bid':
+                    
                     print('HSDManager.bid()')
                     self.wait(1)
 
-                # Handshake Node
+                # Reveal Bid
                 elif user_input.lower() == '6' or user_input.lower() == 'reveal':
                     print('HSDManager.reveal()')
                     self.wait(1)
 
-                # Handshake Node
+                # Redeem Name
                 elif user_input.lower() == '7' or user_input.lower() == 'redeem':
                     print('HSDManager.redeem()')
                     self.wait(1)
@@ -398,6 +609,81 @@ class HSDManager(Menu):
         except KeyboardInterrupt:
             self.quit()
         #################################################### END: wallet(self)
+
+    def display_accounts(self):
+        user_input = None
+        while True:
+            accounts = self.hsd.getAccounts()
+            
+            self.title = green_font(title_style('Wallet Accounts for `' + self._HNS_WALLET_ID + '`'))
+            self.options = {
+                                bold_font(underline_font('Wallet')): '',
+                                '': '',
+                                cyan_font('1'): 'Accounts and balances',
+                                cyan_font('2'): 'Send HNS',
+                                cyan_font('3'): 'Receive HNS',
+                                '': '',
+                                bold_font(underline_font('Auction:')): '',
+                                '': '',
+                                cyan_font('4'): 'Open Auction',
+                                cyan_font('5'): 'Bid on Auction',
+                                cyan_font('6'): 'Reveal Bid',
+                                cyan_font('7'): 'Redeem Name',
+                                '': '',
+                                cyan_font('B'): 'Back to Managment',
+                                cyan_font('Q'): 'Quit A.D.A.M.S.'
+                            }
+            menu_title = ['HANDSHAKE_WALLET',
+                        'Wallet Accounts for `' + self._HNS_WALLET_ID + '`']
+            self.options = {}
+            accounts_display = {}
+            accountIndex = 0
+            
+            for account in accounts:
+                accountIndex += 1
+                self.options[cyan_font(str(accountIndex))] = ': View `' + str(account) + '`'
+
+            self.options['']
+            self.options[cyan_font('B')] = ': Back to Wallet Management'
+            self.options[cyan_font('Q')] = ': Quit A.D.A.M.S.'
+
+            self.clear_screen()
+
+            if user_input == None or user_input == ' ':
+                self.display()
+
+                user_input = self.get_input('\n\tWhat would you like to do? : ')
+
+            else:
+                accountIndex = 0
+
+                for account in accounts:
+                    accountIndex += 1
+
+                    if user_input == str(accountIndex):
+                        results = self.hsd.getAccountInfo(str(account))
+
+                        accounts_display[green_font('Account ID')] = '  : ' + str(results['name'])
+                        balance = results['balance']
+                        accounts_display[green_font('Balance')] = '     : ' + str(balance['account'])
+                        accounts_display[green_font('Initialized')] = ' : ' + str(results['initialized'])
+                        accounts_display[green_font('Watch Only')] = '  : ' + str(results['watchOnly'])
+                        accounts_display[green_font('Address')] = '     : ' + results['receiveAddress']
+
+                self.display()
+                
+                for option in accounts_display:     # Print menu options to screen
+                    print('\t  ' + option)
+                print()
+                
+                user_input = self.get_input('\n\tWhat would you like to do? : ')
+            if user_input.upper() == 'B' or user_input.upper() == ' ':
+                self.wallet_menu()
+
+            elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
+                self.clear_screen()    # Clear console window
+                self.quit ()
+
 ## END CLASS: HSDManager(Menu) #############################
 
 

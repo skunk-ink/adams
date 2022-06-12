@@ -26,15 +26,15 @@ from sys import platform
 from skunkworks_ui.cli import Menu
 from skunkworks_ui.style import *
 
-enableSubprocesses = True               # Ghost run, does not affect the system
-enableDependencyInstall = True          # Enable dependency check on all install methods
-enableLogging = False                   # Enable console logs
+enable_subprocesses = True              # Ghost run, does not affect the system
+enable_dependencies = True              # Enable dependency check on all install methods
+enable_logging = False                  # Enable console logs
 
-enableAdamsInstall = True               # Enable A.D.A.M.S. Installer
-enableSkynetWebportalInstall = True     # Enable Skynet Webportal Installer
-enableHandshakeInstall = True           # Enable Handshake Daemon Installer
-enablePowerDnsInstall = True            # Enable PowerDNS Installer
-enableNginxInstall = True               # Enable NGINX Installer
+enable_adams = True                     # Enable A.D.A.M.S. Installer
+enable_skynet = True                    # Enable Skynet Webportal Installer
+enable_handshake = True                 # Enable Handshake Daemon Installer
+enable_power_dns = True                 # Enable PowerDNS Installer
+enable_nginx = True                     # Enable NGINX Installer
 
 # Load configurations file
 with open('./config/adams.conf') as configFile:
@@ -51,84 +51,84 @@ for line in lines:
             config[i] = value.strip().lower()
             i += 1
 
-        if config[0] == 'enablelogging':
+        if config[0] == 'enable_logging':
             if config[1].lower() == 'true':
-                enableLogging = True
+                enable_logging = True
             else:
-                enableLogging = False
+                enable_logging = False
 
-            if enableLogging == True:
-                print('Disable Logging: ' + str(enableLogging))
+            if enable_logging == True:
+                print('Disable Logging: ' + str(enable_logging))
                 Menu.wait(1)
 
-        elif config[0] == 'enablesubprocesses':
+        elif config[0] == 'enable_subprocesses':
             if config[1].lower() == 'true':
-                enableSubprocesses = True
+                enable_subprocesses = True
             else:
-                enableSubprocesses = False
+                enable_subprocesses = False
                 
-            if enableLogging == True:
-                print('Disable Subprocesses: ' + str(enableSubprocesses))
+            if enable_logging == True:
+                print('Disable Subprocesses: ' + str(enable_subprocesses))
                 Menu.wait(1)
 
-        elif config[0] == 'enableadamsinstall':
+        elif config[0] == 'enable_adams':
             if config[1].lower() == 'true':
-                enableAdamsInstall = True
+                enable_adams = True
             else:
-                enableAdamsInstall = False
+                enable_adams = False
                 
-            if enableLogging == True:
-                print('Disable Install Methods: ' + str(enableAdamsInstall))
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_adams))
                 Menu.wait(1)
 
-        elif config[0] == 'enableskynetwebportalinstall':
+        elif config[0] == 'enable_skynet':
             if config[1].lower() == 'true':
-                enableSkynetWebportalInstall = True
+                enable_skynet = True
             else:
-                enableSkynetWebportalInstall = False
+                enable_skynet = False
                 
-            if enableLogging == True:
-                print('Disable Install Methods: ' + str(enableSkynetWebportalInstall))
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_skynet))
                 Menu.wait(1)
 
-        elif config[0] == 'enablehandshakeinstall':
+        elif config[0] == 'enable_handshake':
             if config[1].lower() == 'true':
-                enableHandshakeInstall = True
+                enable_handshake = True
             else:
-                enableHandshakeInstall = False
+                enable_handshake = False
                 
-            if enableLogging == True:
-                print('Disable Install Methods: ' + str(enableHandshakeInstall))
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_handshake))
                 Menu.wait(1)
 
-        elif config[0] == 'enablepowerdnsinstall':
+        elif config[0] == 'enable_power_dns':
             if config[1].lower() == 'true':
-                enablePowerDnsInstall = True
+                enable_power_dns = True
             else:
-                enablePowerDnsInstall = False
+                enable_power_dns = False
                 
-            if enableLogging == True:
-                print('Disable Install Methods: ' + str(enablePowerDnsInstall))
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_power_dns))
                 Menu.wait(1)
 
-        elif config[0] == 'enablenginxinstall':
+        elif config[0] == 'enable_nginx':
             if config[1].lower() == 'true':
-                enableNginxInstall = True
+                enable_nginx = True
             else:
-                enableNginxInstall = False
+                enable_nginx = False
                 
-            if enableLogging == True:
-                print('Disable Install Methods: ' + str(enableNginxInstall))
+            if enable_logging == True:
+                print('Disable Install Methods: ' + str(enable_nginx))
                 Menu.wait(1)
 
-        elif config[0] == 'enabledependencyinstall':
+        elif config[0] == 'enable_dependencies':
             if config[1].lower() == 'true':
-                enableDependencyInstall = True
+                enable_dependencies = True
             else:
-                enableDependencyInstall = False
+                enable_dependencies = False
                 
-            if enableLogging == True:
-                print('Disable Dependencies: ' + str(enableDependencyInstall))
+            if enable_logging == True:
+                print('Disable Dependencies: ' + str(enable_dependencies))
                 Menu.wait(1)
 
 if platform == 'linux':
@@ -160,10 +160,10 @@ class Install(Menu):
 
         try:
             if type == 'adams':
-                if enableAdamsInstall == True:
+                if enable_adams == True:
                     print(red_font('\nInstalling A.D.A.M.S.'))
 
-                    self.installDepends(self.getDependencies(sys.platform, 'all'))
+                    self.install_depends(self.get_dependencies(sys.platform, 'all'))
 
                     self.handshake()
                     self.powerdns()
@@ -176,10 +176,10 @@ class Install(Menu):
                     self.wait(3)
 
             elif type == 'skynet-webportal':
-                if enableSkynetWebportalInstall == True:
+                if enable_skynet == True:
                     print(red_font('\nInstalling Skynet Webportal'))
 
-                    self.installDepends(self.getDependencies(sys.platform, 'skynet-webportal'))
+                    self.install_depends(self.get_dependencies(sys.platform, 'skynet-webportal'))
 
                     self.skynet_webportal()
                     print(prompt_style('\n Skynet Webportal install complete! Press any key to continue.'))
@@ -189,10 +189,10 @@ class Install(Menu):
                     self.wait(3)
 
             elif type == 'handshake':
-                if enableHandshakeInstall == True:
+                if enable_handshake == True:
                     print(red_font('\nInstalling Handshake Daemon'))
 
-                    self.installDepends(self.getDependencies(sys.platform, 'handshake'))
+                    self.install_depends(self.get_dependencies(sys.platform, 'handshake'))
 
                     self.handshake()
                     print(prompt_style('\n Handshake Daemon install complete! Press any key to continue.'))
@@ -202,10 +202,10 @@ class Install(Menu):
                     self.wait(3)
 
             elif type == 'powerdns':
-                if enablePowerDnsInstall == True:
+                if enable_power_dns == True:
                     print(red_font('\nInstalling PowerDNS'))
 
-                    self.installDepends(self.getDependencies(sys.platform, 'powerdns'))
+                    self.install_depends(self.get_dependencies(sys.platform, 'powerdns'))
 
                     self.powerdns()
                     print(prompt_style('\n PowerDNS install complete! Press any key to continue.'))
@@ -215,10 +215,10 @@ class Install(Menu):
                     self.wait(3)
 
             elif type == 'nginx':
-                if enableNginxInstall == True:
+                if enable_nginx == True:
                     print(red_font('\nInstalling NGINX Webserver'))
 
-                    self.installDepends(self.getDependencies(sys.platform, 'nginx'))
+                    self.install_depends(self.get_dependencies(sys.platform, 'nginx'))
 
                     self.nginx()
                     print(prompt_style('\n NGINX install complete! Press any key to continue.'))
@@ -231,11 +231,11 @@ class Install(Menu):
                 print(yellow_font('\n [!]') + ' RESTART NEEDED: Type "yes" to reboot now, or "no" to return to menu')
                 userInput = self.get_input('\n\tWould you like to restart now? : ')
                 if userInput.lower() == 'yes':
-                    if enableLogging == True:
+                    if enable_logging == True:
                         print(yellow_font('\n [!] ') + 'Reboot initiated...')
                         self.wait(1)
 
-                    if enableSubprocesses == True:
+                    if enable_subprocesses == True:
                         subprocess.run(['sudo', 'reboot', 'now'], check=True)
                     else:
                         print(yellow_font('\n [!] ') + 'Subprocess disabled')
@@ -243,13 +243,13 @@ class Install(Menu):
             return
     #################################################### END: __init__(self, type)
 
-    def getDependencies(self, sysPlatform, depends):
+    def get_dependencies(self, sys_platform, depends):
         dependencies = {}
 
         if depends == '':
             depends = 'all'
 
-        sysPlatform = sysPlatform.lower()
+        sys_platform = str(sys_platform).lower()
         depends = depends.lower()
 
         # Parse DEPENDS.json
@@ -258,10 +258,10 @@ class Install(Menu):
             for platform in data:
 
                 # Get Windows dependencies
-                if platform.lower() == 'windows' and sysPlatform == 'win32':
-                    for packageType in data[platform]:
-                        if packageType == 'exec':
-                            for package in packageType:
+                if platform.lower() == 'windows' and sys_platform == 'win32':
+                    for package_type in data[platform]:
+                        if package_type == 'exec':
+                            for package in package_type:
                                 try:
                                     dependencies['exec'].append(package)
                                 except KeyError:
@@ -269,10 +269,10 @@ class Install(Menu):
                                     dependencies['exec'].append(package)
 
                 # Get Linux dependencies
-                elif platform.lower() == 'linux' and sysPlatform == 'linux':
-                    for packageType in data[platform]:
-                        for packages in packageType:
-                            for package in packageType[packages]:
+                elif platform.lower() == 'linux' and sys_platform == 'linux':
+                    for package_type in data[platform]:
+                        for packages in package_type:
+                            for package in package_type[packages]:
                                 try:
                                     dependencies[packages].append(package)
                                 except KeyError:
@@ -282,9 +282,9 @@ class Install(Menu):
                 # Get Skynet Webportal dependencies
                 elif platform.lower() == 'skynet-webportal':
                     if depends == 'all' or depends == 'skynet-webportal':
-                        for packageType in data[platform]:
-                            for packages in packageType:
-                                for package in packageType[packages]:
+                        for package_type in data[platform]:
+                            for packages in package_type:
+                                for package in package_type[packages]:
                                     exists = False
                                     try:
                                         if packages in dependencies[packages]:
@@ -299,9 +299,9 @@ class Install(Menu):
                 # Get Handshake dependencies
                 elif platform.lower() == 'handshake':
                     if depends == 'all' or depends == 'handshake':
-                        for packageType in data[platform]:
-                            for packages in packageType:
-                                for package in packageType[packages]:
+                        for package_type in data[platform]:
+                            for packages in package_type:
+                                for package in package_type[packages]:
                                     exists = False
                                     try:
                                         if package in dependencies[packages]:
@@ -316,9 +316,9 @@ class Install(Menu):
                 # Get PowerDNS dependencies
                 elif platform.lower() == 'powerdns':
                     if depends == 'all' or depends == 'powerdns':
-                        for packageType in data[platform]:
-                            for packages in packageType:
-                                for package in packageType[packages]:                                
+                        for package_type in data[platform]:
+                            for packages in package_type:
+                                for package in package_type[packages]:                                
                                     exists = False
                                     try:
                                         if package in dependencies[packages]:
@@ -333,9 +333,9 @@ class Install(Menu):
                 # Get NGINX dependencies
                 elif platform.lower() == 'nginx':
                     if depends == 'all' or depends == 'nginx':
-                        for packageType in data[platform]:
-                            for packages in packageType:
-                                for package in packageType[packages]:                                
+                        for package_type in data[platform]:
+                            for packages in package_type:
+                                for package in package_type[packages]:                                
                                     exists = False
                                     try:
                                         if package in dependencies[packages]:
@@ -348,49 +348,49 @@ class Install(Menu):
                                         dependencies[packages].append(package)
 
         # Discard un-needed dependencies for platform
-        if sysPlatform == 'win32':
+        if sys_platform == 'win32':
             try:
                 del dependencies['apt']
             except KeyError:
                 pass
-        elif sysPlatform == 'linux':
+        elif sys_platform == 'linux':
             try:
                 del dependencies['exe']
             except KeyError:
                 pass
 
         return dependencies
-    #################################################### END: getDependencies(self, sysPlatform, depends)
+    #################################################### END: get_dependencies(self, sys_platform, depends)
 
-    def printDepends(self, depends):
+    def print_depends(self, depends):
         self.clear_screen()
         print(yellow_font(' [!]') + ' The following dependencies will be installed:')
 
         columns = 0
         packages = ''
 
-        for packageType in depends:
-            if packageType == 'exe':
+        for package_type in depends:
+            if package_type == 'exe':
                 print(green_font('\n  -- Windows Executable --'))
 
-            elif packageType == 'apt':
+            elif package_type == 'apt':
                 print(green_font('\n  -- Linux APT Package --'))
 
-            elif packageType == 'pip':
+            elif package_type == 'pip':
                 print(green_font('\n  -- Python Package --'))
 
-            elif packageType == 'git':
+            elif package_type == 'git':
                 print(green_font('\n  -- Github Repository --'))
 
-            elif packageType == 'npm':
+            elif package_type == 'npm':
                 print(green_font('\n  -- Node Package --'))
 
-            elif packageType == 'wget':
+            elif package_type == 'wget':
                 print(green_font('\n  -- WGET (HTTPS) --'))
 
-            count = len(depends[packageType])
+            count = len(depends[package_type])
 
-            for package in depends[packageType]:
+            for package in depends[package_type]:
                 if len(package.strip()) <= 26:
                     while len(package) < 27:
                         package += ' '
@@ -412,56 +412,56 @@ class Install(Menu):
         print()
         print(prompt_style('Press any key to continue, or "ctrl+c" to return to main menu.'))
         self.pause()
-    #################################################### END: printDepends(self, depends)
+    #################################################### END: print_depends(self, depends)
 
-    def installDepends(self, depends):
-        if enableDependencyInstall == True:
-            self.printDepends(depends)
+    def install_depends(self, depends):
+        if enable_dependencies == True:
+            self.print_depends(depends)
 
             # If installing PowerDNS check for APT sources
             if 'pdns-server' in depends['apt']:
-                hasRepo = False
-                hasPackage = False
+                has_repo = False
+                has_package = False
 
                 # Check for existing PowerDNS APT sources
                 if os.path.exists('/etc/apt/sources.list.d/pdns.list'):
 
-                    with open("/etc/apt/sources.list.d/pdns.list") as sourceFile:
+                    with open('/etc/apt/sources.list.d/pdns.list') as sourceFile:
                         sources = sourceFile.readlines()
 
                     for line in sources:
-                        if "http://repo.powerdns.com/ubuntu" in line:
-                            hasRepo = True
+                        if 'http://repo.powerdns.com/ubuntu' in line:
+                            has_repo = True
 
-                        if "Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600" in line:
-                            hasPackage = True
+                        if 'Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600' in line:
+                            has_package = True
 
                 # If PowerDNS APT sources do not exists, create them
-                if hasRepo is False:
+                if has_repo is False:
                     print(green_font('\n [+] ') + 'Adding PowerDNS sources...')
-                    addSource = 'echo "deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main" > /etc/apt/sources.list.d/pdns.list'
-                    if enableSubprocesses == True:
-                        subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.ADAMS_PATH, check=True)
+                    add_source = 'echo "deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-46 main" > /etc/apt/sources.list.d/pdns.list'
+                    if enable_subprocesses == True:
+                        subprocess.run(['sudo', 'sh', '-c', add_source], cwd=self.ADAMS_PATH, check=True)
                     else:
                         print(yellow_font('\n [!] ') + 'Subprocess disabled')
                     print()
                 else:
                     print(yellow_font('\n [!] ') + 'Existing PowerDNS sources found')
 
-                if hasPackage is False:
-                    addSource = 'echo "Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600" > /etc/apt/preferences.d/pdns'
-                    if enableSubprocesses == True:
-                        subprocess.run(['sudo', 'sh', '-c', addSource], cwd=self.ADAMS_PATH, check=True)
+                if has_package is False:
+                    add_source = 'echo "Package: pdns-*\nPin: origin repo.powerdns.com\nPin-Priority: 600" > /etc/apt/preferences.d/pdns'
+                    if enable_subprocesses == True:
+                        subprocess.run(['sudo', 'sh', '-c', add_source], cwd=self.ADAMS_PATH, check=True)
                     else:
                         print(yellow_font('\n [!] ') + 'Subprocess disabled')
                 else:
                     print(yellow_font('\n [+] ') + 'Existing PowerDNS sources found...')
 
 
-                if hasRepo is False or hasPackage is False:    
+                if has_repo is False or has_package is False:    
                     # Downloaded and add PowerDNS APT Key
                     print(green_font('\n [+] ') + 'Adding APT-KEY...')
-                    if enableSubprocesses == True:
+                    if enable_subprocesses == True:
                         subprocess.run(['wget', 'https://repo.powerdns.com/FD380FBB-pub.asc'], cwd=self.ADAMS_PATH, check=True)
                         subprocess.run(['sudo', 'apt-key', 'add', 'FD380FBB-pub.asc'], cwd=self.ADAMS_PATH, check=True)
                         subprocess.run(['rm', '-fr', 'FD380FBB-pub.asc'], cwd=self.ADAMS_PATH, check=True)
@@ -470,22 +470,22 @@ class Install(Menu):
                     else:
                         print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
-            for packageType in depends:
+            for package_type in depends:
                 # Install Windows Executable
-                if packageType == 'exe':
+                if package_type == 'exe':
                     print(red_font('\n\n  -- Installing Windows Executables --'))
-                    for package in depends[packageType]:
+                    for package in depends[package_type]:
                         package = str(package).strip()
                         print(green_font('\n [+] ') + 'Installing "' + package + '"...')
                         pass
 
                 # Install Linux APT Package
-                elif packageType == 'apt':
+                elif package_type == 'apt':
                     print(red_font('\n\n  -- Installing Linux APT Packages --'))
-                    for package in depends[packageType]:
+                    for package in depends[package_type]:
                         package = str(package).strip()
                         print(green_font('\n [+] ') + 'Installing "' + package + '"...')
-                        if enableSubprocesses == True:
+                        if enable_subprocesses == True:
                             subprocess.run(['sudo', 'apt', 'install', '-y', package], check=True)
 
                             if package == 'npm':
@@ -502,24 +502,24 @@ class Install(Menu):
                             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
                 # Install Python Packages
-                elif packageType == 'pip':
+                elif package_type == 'pip':
                     print(red_font('\n\n  -- Installing Python Packages --'))
-                    for package in depends[packageType]:
+                    for package in depends[package_type]:
                         package = str(package).strip()
                         print(green_font('\n [+] ') + 'Installing "' + package + '"...')
-                        if enableSubprocesses == True:
+                        if enable_subprocesses == True:
                             subprocess.run(['pip', 'install', package], check=True)
                         else:
                             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
                 # Clone Github Repository
-                elif packageType == 'git':
+                elif package_type == 'git':
                     print(red_font('\n\n  -- Cloning Github Repositories --'))
-                    for package in depends[packageType]:
-                        packageName = self.parseURL(package)
+                    for package in depends[package_type]:
+                        packageName = self.parse_url(package)
                         if os.path.exists(self.ADAMS_PATH + '/' + packageName[:-4]) == False:
                             print(green_font('\n [+] ') + 'Cloning "' + str(package) + '"...')
-                            if enableSubprocesses == True:
+                            if enable_subprocesses == True:
                                 subprocess.run(['git', 'clone', package], cwd=self.ADAMS_PATH, check=True)
                             else:
                                 print(yellow_font('\n [!] ') + 'Subprocess disabled')
@@ -527,25 +527,25 @@ class Install(Menu):
                             print(yellow_font('\n [+] ') + 'Existing "' + packageName + '" repository found')
 
                 # Install Node Package
-                elif packageType == 'npm':
+                elif package_type == 'npm':
                     print(red_font('\n\n  -- Installing Node Packages --'))
-                    for package in depends[packageType]:
+                    for package in depends[package_type]:
                         package = str(package).strip()
                         print(green_font('\n [+] ') + 'Installing "' + package + '"...')
-                        if enableSubprocesses == True:
+                        if enable_subprocesses == True:
                             subprocess.run(['npm', 'install', package], cwd=self.ADAMS_PATH, check=True)
                         else:
                             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
                 # Download/Install WGET Package
-                elif packageType == 'wget':
+                elif package_type == 'wget':
                     print(red_font('\n\n  -- Installing WGET Packages --'))
-                    for package in depends[packageType]:
+                    for package in depends[package_type]:
                         package = str(package).strip()
-                        packageName = self.parseURL(package)
+                        packageName = self.parse_url(package)
                         if os.path.isfile(self.ADAMS_PATH + '/' + packageName) == False:
                             print(green_font('\n [+] ') + 'Downloading "' + str(packageName) + '"...')
-                            if enableSubprocesses == True:
+                            if enable_subprocesses == True:
                                 subprocess.run(['wget', package], cwd=self.ADAMS_PATH, check=True)
                             else:
                                 print(yellow_font('\n [!] ') + 'Subprocess disabled')
@@ -556,12 +556,12 @@ class Install(Menu):
                             
                             if os.path.isfile(self.ADAMS_PATH + '/' + packageName) == True and os.path.isdir(self.ADAMS_PATH + '/' + packageName[-6:]) == False:
                                 print('\t Unpacking "' + str(packageName) + '"...')
-                                if enableSubprocesses == True:
+                                if enable_subprocesses == True:
                                     subprocess.run(['tar', '-xvf', packageName], cwd=self.ADAMS_PATH, check=True)
                                 else:
                                     print(yellow_font('\n [!] ') + 'Subprocess disabled')
                                 print('\t Cleaning up "' + str(packageName) + '"...')
-                                if enableSubprocesses == True:
+                                if enable_subprocesses == True:
                                     subprocess.run(['rm', '-fr', packageName], cwd=self.ADAMS_PATH, check=True)
                                 else:
                                     print(yellow_font('\n [!] ') + 'Subprocess disabled')
@@ -570,20 +570,20 @@ class Install(Menu):
         else:
             print(error_style('Dependencies installer has been disabled. See `config/adams.conf`'))
             self.wait(3)
-    #################################################### END: installDepends(self, depends)
+    #################################################### END: install_depends(self, depends)
 
     def skynet_webportal(self):
         print(error_style('skynet_webportal() method not yet complete.'))
         self.wait(1)
 
         ''' print(green_font(' [+] ') + 'Installing Yarn')
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             subprocess.run(['npm', 'install', 'yarn'], cwd=(self.SKYNET_PATH + '/packages/website'))
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
         print(green_font(' [+] ') + 'Building Skynet Portal Page')
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             subprocess.run(['yarn', 'build'], cwd=(self.SKYNET_PATH + '/packages/website'))
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
@@ -593,31 +593,31 @@ class Install(Menu):
     def handshake(self):
         print(green_font('\n [+] ') + 'Installing Handshake Node')
 
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             # Build HSD binaries
             subprocess.run(['npm', 'install', '-g', '--production'], cwd=self.HSD_PATH, check=True)
 
             # Read default 'hsd.service' file
             with open(self.HSD_SERVICE_SCRIPT, 'r') as script:
-                hsdServiceScript = script.readlines()
+                hsd_service_script = script.readlines()
 
-            lnCount = 0
+            line_count = 0
             username = self.USER_DIR.split('/')
-            iName = len(username) - 1
+            name_index = len(username) - 1
 
             # Set the 'hsd.service' variables 'ExecStart' and 'User'
-            for line in hsdServiceScript:
+            for line in hsd_service_script:
                 if line.startswith('ExecStart='):
-                    hsdServiceScript[lnCount] = 'ExecStart=' + self.USER_DIR + '/.npm-global/bin/hsd\n'
+                    hsd_service_script[line_count] = 'ExecStart=' + self.USER_DIR + '/.npm-global/bin/hsd\n'
 
                 if line.startswith('User='):
-                    hsdServiceScript[lnCount] = 'User=' + str(username[iName]) + '\n'
+                    hsd_service_script[line_count] = 'User=' + str(username[name_index]) + '\n'
 
-                lnCount += 1
+                line_count += 1
 
             # Write new 'hsd.service' file
             with open(self.HSD_SERVICE_SCRIPT, 'w') as script:
-                script.writelines(hsdServiceScript)
+                script.writelines(hsd_service_script)
                 
             # Create HSD system service 'hsd.service'
             subprocess.run(['sudo', 'cp', self.HSD_SERVICE_SCRIPT, self.HSD_SYS_SERVICES_PATH], check=True)
@@ -632,40 +632,40 @@ class Install(Menu):
             subprocess.run(['sudo', 'systemctl', 'enable', 'hsd'])
 
             # Generate new API key
-            nodeString = 'bcrypto=require("bcrypto"); console.log(bcrypto.random.randomBytes(32).toString("hex"))'
-            apiKey = str(subprocess.check_output(['node', '-e', nodeString], cwd=self.HSD_PATH, shell=False))
-            apiKey = apiKey.strip("b'")
-            apiKey = apiKey.strip("\\n'")
+            node_string = 'bcrypto=require("bcrypto"); console.log(bcrypto.random.randomBytes(32).toString("hex"))'
+            api_key = str(subprocess.check_output(['node', '-e', node_string], cwd=self.HSD_PATH, shell=False))
+            api_key = api_key.strip("b'")
+            api_key = api_key.strip("\\n'")
 
             # Read default 'hsd.conf' file
             with open(self.HSD_CONFIG, 'r') as script:
-                hsdConfig = script.readlines()
+                hsd_config = script.readlines()
 
-            lnCount = 0
+            line_count = 0
 
-            # Replace 'api-key' in 'hsd.conf' with newly generated apiKey
-            for line in hsdConfig:
+            # Replace 'api-key' in 'hsd.conf' with newly generated api_key
+            for line in hsd_config:
                 if line.startswith('api-key:'):
-                    hsdConfig[lnCount] = 'api-key: ' + apiKey + '\n'
+                    hsd_config[line_count] = 'api-key: ' + api_key + '\n'
 
-                lnCount += 1
+                line_count += 1
 
             # Write new 'hsd.conf' file
             with open(self.HSD_CONFIG, 'w') as script:
-                script.writelines(hsdConfig)
+                script.writelines(hsd_config)
 
             # Read default 'hsw.conf' file
             with open(self.HSW_CONFIG, 'r') as script:
                 hswConfig = script.readlines()
 
-            lnCount = 0
+            line_count = 0
 
-            # Replace 'api-key' in 'hsw.conf' with newly generated apiKey
+            # Replace 'api-key' in 'hsw.conf' with newly generated api_key
             for line in hswConfig:
                 if line.startswith('api-key:'):
-                    hswConfig[lnCount] = 'api-key: ' + apiKey + '\n'
+                    hswConfig[line_count] = 'api-key: ' + api_key + '\n'
 
-                lnCount += 1
+                line_count += 1
 
             # Write new 'hsw.conf' file
             with open(self.HSW_CONFIG, 'w') as script:
@@ -693,74 +693,74 @@ class Install(Menu):
 
     def powerdns(self):
         files = os.listdir(self.ADAMS_PATH)
-        checkFor = 'pdnsmanager'
+        check_for = 'pdnsmanager'
 
         print(green_font('\n [+] ') + 'Configuring PowerDNS')
         print(green_font('\n [+] ') + 'Installing PowerDNS Manager')
 
         for file in files:
-            if checkFor in file:
-                if enableSubprocesses == True:
+            if check_for in file:
+                if enable_subprocesses == True:
                     subprocess.run(['mv', file, 'pdnsmanager/'], cwd=self.ADAMS_PATH, check=True)
                 else:
                     print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
         # Check and disable existing stub resolver
-        dnsExists = False
-        stubListenterExists = False
+        dns_exists = False
+        stub_listenter_exists = False
 
         # Check resolved.conf for configuration
-        with open("/etc/systemd/resolved.conf") as resolveFile:
-            lines = resolveFile.readlines()
+        with open('/etc/systemd/resolved.conf') as resolved_file:
+            lines = resolved_file.readlines()
 
         for line in lines:
             if line == 'DNS=1.1.1.1':
-                dnsExists = True
+                dns_exists = True
 
             if line == 'DNSStubListener=no':
-                stubListenterExists = True
+                stub_listenter_exists = True
 
         # Add configurations to resolved.conf
         print(green_font('\n [+] ') + 'Disabling Stub Resolver...')
-        if dnsExists == False or stubListenterExists == False:
-            addLine = 'echo "# PowerDNS Configurations" >> /etc/systemd/resolved.conf'
-            if enableSubprocesses == True:
-                subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
+        if dns_exists == False or stub_listenter_exists == False:
+            add_line = 'echo "# PowerDNS Configurations" >> /etc/systemd/resolved.conf'
+            if enable_subprocesses == True:
+                subprocess.run(['sudo', 'sh', '-c', add_line], check=True)
             else:
                 print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
-        if dnsExists == False:
-            addLine = 'echo "DNS=1.1.1.1" >> /etc/systemd/resolved.conf'
-            if enableSubprocesses == True:
-                subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
+        if dns_exists == False:
+            add_line = 'echo "DNS=1.1.1.1" >> /etc/systemd/resolved.conf'
+            if enable_subprocesses == True:
+                subprocess.run(['sudo', 'sh', '-c', add_line], check=True)
             else:
                 print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
-        if stubListenterExists == False:
-            addLine = 'echo "DNSStubListener=no" >> /etc/systemd/resolved.conf'
-            if enableSubprocesses == True:
-                subprocess.run(['sudo', 'sh', '-c', addLine], check=True)
+        if stub_listenter_exists == False:
+            add_line = 'echo "DNSStubListener=no" >> /etc/systemd/resolved.conf'
+            if enable_subprocesses == True:
+                subprocess.run(['sudo', 'sh', '-c', add_line], check=True)
             else:
                 print(yellow_font('\n [!] ') + 'Subprocess disabled')
             print()
 
         # Create Symlink
         print(green_font('\n [+] ') + 'Creating Symlink')
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             subprocess.run(['sudo', 'ln', '-sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], check=True)
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
         # Configure pdns.conf file
         print(green_font('\n [+] ') + 'Configuring "' + self.POWERDNS_CONF_PATH + '"')
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             subprocess.run(['sudo', 'rm', '-fr', self.POWERDNS_CONF_PATH], check=True)
             subprocess.run(['sudo', 'cp', self.POWERDNS_CONF_FILE, self.POWERDNS_CONF_PATH], check=True)
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
         
         # Set pdns.conf file permissions
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             subprocess.run(['sudo', 'chmod', '640', self.POWERDNS_CONF_PATH], check=True)
             subprocess.run(['sudo', 'chown', '-R', 'root:pdns', self.POWERDNS_CONF_PATH], check=True)
         else:
@@ -768,11 +768,11 @@ class Install(Menu):
 
 
         # Initialize the sqlite database with schema
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             os.system('sudo sqlite3 /var/lib/powerdns/pdns.sqlite3 < /usr/share/doc/pdns-backend-sqlite3/schema.sqlite3.sql')
 
         # Change ownership of the directory to the `pdns` user and group
-        if enableSubprocesses == True:
+        if enable_subprocesses == True:
             subprocess.run(['sudo', 'chown', '-R', 'pdns:pdns', '/var/lib/powerdns'], check=True)
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
@@ -785,15 +785,15 @@ class Install(Menu):
         self.wait(1)
     #################################################### END: nginx(self)
 
-    def parseURL(self, url):
+    def parse_url(self, url):
         url = str(url).strip()
-        charPos = 0
+        char_pos = 0
         count = 0
-        nameLength = len(url)
+        name_length = len(url)
 
         for character in url:
             if character == '/':
-                charPos = count
+                char_pos = count
             count += 1
 
-        return url[(charPos + 1) - nameLength:]
+        return url[(char_pos + 1) - name_length:]
