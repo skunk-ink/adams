@@ -131,7 +131,7 @@ class Main(Menu):
                 [ ] menu : Name of module to import.
         """
         if len(menu) > 1:
-            if str(menu[1]).lower() == 'install' or str(menu[1]).lower() == '--install' or menu[1] == '-i':
+            if str(menu[1]).lower() == 'install' or str(menu[1]).lower() == 'installer' or str(menu[1]).lower() == '--install' or str(menu[1]).lower() == '-i':
                 if len(menu) > 2:
                     if str(menu[2]).lower() == 'adams':
                         install('adams')
@@ -147,7 +147,7 @@ class Main(Menu):
                         print("`" + str(menu[2]) + "` is an invalid `" + str(menu[1]) + "` command.")
                 else:
                     Installer()
-            elif str(menu[1]).lower() == 'manage' or str(menu[1]).lower() == 'manager' or str(menu[1]).lower() == '--manager' or menu[1] == '-m':
+            elif str(menu[1]).lower() == 'manage' or str(menu[1]).lower() == 'manager' or str(menu[1]).lower() == 'management' or str(menu[1]).lower() == '--manager' or str(menu[1]).lower() == '-m':
                 if len(menu) > 2:
                     if str(menu[2]).lower() == 'skynet-webportal' or str(menu[2]).lower() == 'skynet':
                         pass
@@ -390,6 +390,27 @@ class HSDManager(Menu):
     _HNS_WALLET_ID = None                               # HSD Wallet ID
     
     def __init__(self, type:str = None):
+        # Check for HSD and HSW config files
+        if os.path.exists(self._HSD_CONFIG) == False and os.path.exists(self._HSW_CONFIG) == False and os.path.exists(self._HSD_PATH) == False:
+            try:
+                print('\033[41m\033[97m\n\t Handshake node not detected! Please install. \033[0m\033[0m')
+                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+                self.pause()
+                Installer('handshake')
+            except KeyboardInterrupt:
+                self.clear_screen()
+                return
+
+        elif os.path.exists(self._HSD_CONFIG) == False or os.path.exists(self._HSW_CONFIG) == False or os.path.exists(self._HSD_PATH) == False:
+            try:
+                print('\033[41m\033[97m\n\t Handshake node misconfigured! Please reinstall. \033[0m\033[0m')
+                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+                self.pause()
+                Installer('handshake')
+            except KeyboardInterrupt:
+                self.clear_screen()
+                return
+
         # Load configurations file
         with open(_ADAMS_CONFIG) as configFile:
             lines = configFile.readlines()
@@ -452,26 +473,6 @@ class HSDManager(Menu):
                     HSW_PORT = 14039
                 elif networkType.lower() == 'simnet':
                     HSW_PORT = 15039
-
-        if os.path.exists(self._HSD_CONFIG) == False and os.path.exists(self._HSW_CONFIG) == False and os.path.exists(self._HSD_PATH) == False:
-            try:
-                print('\033[41m\033[97m\n\t Handshake node not detected! Please install. \033[0m\033[0m')
-                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
-                self.pause()
-                Installer('handshake')
-            except KeyboardInterrupt:
-                self.clear_screen()
-                return
-
-        elif os.path.exists(self._HSD_CONFIG) == False or os.path.exists(self._HSW_CONFIG) == False or os.path.exists(self._HSD_PATH) == False:
-            try:
-                print('\033[41m\033[97m\n\t Handshake node misconfigured! Please reinstall. \033[0m\033[0m')
-                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
-                self.pause()
-                Installer('handshake')
-            except KeyboardInterrupt:
-                self.clear_screen()
-                return
 
         walletFound = False
 
