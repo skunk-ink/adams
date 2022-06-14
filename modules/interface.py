@@ -1,4 +1,6 @@
 import os
+import subprocess
+
 from sys import platform
 from handshake import api
 from skunkworks_ui.cli import Menu
@@ -121,6 +123,7 @@ class HSD(Menu):
         print(red_font('\n [!] ') + 'Could not locate `hsw.conf` configuration file.')
     
     def __init__(self):
+        super().__init__()
         global hsd
         global hsw
 
@@ -372,3 +375,64 @@ class HSD(Menu):
         self.wait(2)
         return result
         #################################################### END: createRecord(self, domain_name)
+
+class PDNS(Menu):
+    def createZone(self, _domainName):
+
+        if _domainName == '':
+            _domainName = self.get_input('\n\tDomain Name : ')
+
+        # Create a new zone
+        if _enable_subprocesses == True:
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'create-zone', _domainName , 'ns1.' + _domainName], check=True)
+        else:
+            print(yellow_font('\n [!] ') + 'Subprocess disabled')
+
+        print(green_font('\n [+] ') + 'Zone created')
+        self.wait(2)     
+    #################################################### END: createZone(self)
+
+    def secureZone(self, _domainName):
+        
+        if _domainName == '':
+            _domainName = self.get_input('\n\tEnter zone name to secure : ')
+
+        # Secure an existing zone
+        if _enable_subprocesses == True:
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'secure-zone', _domainName], check=True)
+        else:
+            print(yellow_font('\n [!] ') + 'Subprocess disabled')
+
+        print(green_font('\n [+] ') + 'Zone secured')
+        self.wait(2)
+    #################################################### END: secureZone(self)
+
+    def createRecord(self, _domainName, record_name, record_type, record_value):
+
+        if _domainName == '':
+            _domainName = self.get_input('\n\tDomain Name : ')
+
+        if record_type == '':
+            record_type = str(self.get_input('\n\tRecord Type : ')).upper()
+
+        if record_name == '':
+            record_name = self.get_input('\n\tRecord Name : ')
+
+        if record_value == '':
+            record_value = self.get_input('\n\tRecord Value : ')
+            record_value = '"' + record_value + '"'
+
+        # Update PowerDNS Record
+        if _enable_subprocesses == True:
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'add-record', _domainName + '.', record_name, record_type, record_value], check=True)
+        else:
+            print(yellow_font('\n [!] ') + 'Subprocess disabled')
+
+        print(green_font('\n [+] ') + 'Record created')
+        self.wait(2)
+
+        updateHNS = self.get_input('\n\tUpdate handshake records (Y/N)? [default = N] : ')
+        if updateHNS.lower() == 'y':
+            if _enable_logging == True: print('pdnsManager: var _domainName = ' + _domainName) # Log output
+            print(HSD.createRecord(_domainName=_domainName, _recordType=record_type, _recordValue=record_value))
+    #################################################### END: createRecord(self, _domainName, record_name, record_type, record_value)

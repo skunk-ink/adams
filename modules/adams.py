@@ -571,7 +571,7 @@ class HSDManager(Menu):
                     self.wait(1)
 
                 elif user_input.lower() == 'b':
-                    break
+                    AdamsManager()
 
                 elif user_input.lower() == 'exit' or user_input.lower() == 'q' or user_input.lower() == 'quit':
                     self.quit()  
@@ -582,7 +582,8 @@ class HSDManager(Menu):
             self.main_menu()
 
         except KeyboardInterrupt:
-            self.quit()
+            AdamsManager()
+            # self.quit()
         #################################################### END: main_menu(self)
     
     def wallet_menu(self):
@@ -733,7 +734,31 @@ class HSDManager(Menu):
     ############################################################
 
 class PDNSManager(Menu):
+    pdns = interface.PDNS()
+    _POWERDNS_PATH = _ADAMS_PATH + '/pdnsmanager'             # PowerDNS directory
+    _POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'           # PowerDNS configuration file
+
     def __init__(self):
+        if os.path.exists(self._POWERDNS_PATH) == False and os.path.exists(self._POWERDNS_CONF_PATH) == False:
+            try:
+                print('\033[41m\033[97m\n\t PowerDNS not detected! Please install. \033[0m\033[0m')
+                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+                self.pause()
+                Installer('powerdns')
+            except KeyboardInterrupt:
+                self.clear_screen()
+                sys.exit(0)
+
+        elif os.path.exists(self._POWERDNS_PATH) == False or os.path.exists(self._POWERDNS_CONF_PATH) == False:
+            try:
+                print('\033[41m\033[97m\n\t PowerDNS misconfigured! Please reinstall. \033[0m\033[0m')
+                print('\033[93m\033[1m\n\tPress any key to install now, or use \033[96m`ctrl+c`\033[93m to return.\033[0m\033[0m')
+                self.pause()
+                Installer('powerdns')
+            except KeyboardInterrupt:
+                self.clear_screen()
+                sys.exit(0)
+
         self.clear_screen()
         self.main_menu()
         #################################################### END: __init__(self, menu:str = None)
@@ -756,22 +781,19 @@ class PDNSManager(Menu):
                 user_input = self.get_input(prompt_style('What would you like to do? : '))
                 
                 if user_input.lower() == '1':   # Create new zone
-                    print('PDNSManager.new_zone()')
-                    self.wait(1)
+                    self.pdns.createZone()
 
                 elif user_input.lower() == '2': # Secure existing zone
-                    print('pdnsManager.secureZone()')
-                    self.wait(1)
+                    self.pdns.secureZone()
 
                 elif user_input.lower() == '3': # Create new record
-                    print('pdnsManager.createRecord()')
-                    self.wait(1)
+                    self.pdns.createRecord()
 
                 elif user_input.lower() == 'b':
-                    break
+                    AdamsManager()
 
                 elif user_input.lower() == 'exit' or user_input.lower() == 'q' or user_input.lower() == 'quit':
-                    self.quit()  
+                    self.quit()
 
         except AttributeError as e:
             print(error_style(str(e)))
