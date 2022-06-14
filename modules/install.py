@@ -402,7 +402,7 @@ class Install(Menu):
                     packages = ''
         
         print()
-        print(prompt_style('Press any key to continue, or "ctrl+c" to return to main menu.'))
+        print(prompt_style('Press any key to continue, or ') + cyan_font(bold_font('`ctrl+c`')) + prompt_style(' to return to main menu.'))
         self.pause()
     #################################################### END: print_depends(self, depends)
 

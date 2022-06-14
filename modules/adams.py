@@ -149,7 +149,9 @@ class Main(Menu):
                     Installer()
             elif str(menu[1]).lower() == 'manage' or str(menu[1]).lower() == 'manager' or str(menu[1]).lower() == 'management' or str(menu[1]).lower() == '--manager' or str(menu[1]).lower() == '-m':
                 if len(menu) > 2:
-                    if str(menu[2]).lower() == 'skynet-webportal' or str(menu[2]).lower() == 'skynet':
+                    if str(menu[2]).lower() == 'adams':
+                        AdamsManager()
+                    elif str(menu[2]).lower() == 'skynet-webportal' or str(menu[2]).lower() == 'skynet':
                         pass
                         # SkyManager()
                     elif str(menu[2]).lower() == 'handshake' or str(menu[2]).lower() == 'hsd':
@@ -399,7 +401,7 @@ class HSDManager(Menu):
                 Installer('handshake')
             except KeyboardInterrupt:
                 self.clear_screen()
-                return
+                Main('main')
 
         elif os.path.exists(self._HSD_CONFIG) == False or os.path.exists(self._HSW_CONFIG) == False or os.path.exists(self._HSD_PATH) == False:
             try:
@@ -409,7 +411,7 @@ class HSDManager(Menu):
                 Installer('handshake')
             except KeyboardInterrupt:
                 self.clear_screen()
-                return
+                Main('main')
 
         # Load configurations file
         with open(_ADAMS_CONFIG) as configFile:
