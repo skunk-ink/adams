@@ -112,6 +112,19 @@ for line in lines:
                 print('[Logging] `adams.py` disabled Dependencies: ' + str(enable_dependencies))
 
 
+
+"""
+ /$$      /$$  /$$$$$$  /$$$$$$ /$$   /$$       /$$      /$$ /$$$$$$$$ /$$   /$$ /$$   /$$
+| $$$    /$$$ /$$__  $$|_  $$_/| $$$ | $$      | $$$    /$$$| $$_____/| $$$ | $$| $$  | $$
+| $$$$  /$$$$| $$  \ $$  | $$  | $$$$| $$      | $$$$  /$$$$| $$      | $$$$| $$| $$  | $$
+| $$ $$/$$ $$| $$$$$$$$  | $$  | $$ $$ $$      | $$ $$/$$ $$| $$$$$   | $$ $$ $$| $$  | $$
+| $$  $$$| $$| $$__  $$  | $$  | $$  $$$$      | $$  $$$| $$| $$__/   | $$  $$$$| $$  | $$
+| $$\  $ | $$| $$  | $$  | $$  | $$\  $$$      | $$\  $ | $$| $$      | $$\  $$$| $$  | $$
+| $$ \/  | $$| $$  | $$ /$$$$$$| $$ \  $$      | $$ \/  | $$| $$$$$$$$| $$ \  $$|  $$$$$$/
+|__/     |__/|__/  |__/|______/|__/  \__/      |__/     |__/|________/|__/  \__/ \______/  
+"""
+
+
     ############################################################
     ##                                                        ##
     ##                  A.D.A.M.S. Main Menu                  ##
@@ -170,6 +183,7 @@ class Main(Menu):
                 self.main_menu()
             else:
                 print("No module named `" + str(menu[1] + "` found."))
+                self.pause()
         else:
             Splash()
             self.clear_screen()
@@ -206,9 +220,22 @@ class Main(Menu):
             self.wait(2)
             self.main_menu()
         except KeyboardInterrupt:
-            return
+            self.main_menu()
     #################################################### END: main_menu()
 ## END CLASS: Main(Menu) ###############################
+
+
+
+"""
+ /$$$$$$ /$$   /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$       /$$      
+|_  $$_/| $$$ | $$ /$$__  $$|__  $$__//$$__  $$| $$      | $$      
+  | $$  | $$$$| $$| $$  \__/   | $$  | $$  \ $$| $$      | $$      
+  | $$  | $$ $$ $$|  $$$$$$    | $$  | $$$$$$$$| $$      | $$      
+  | $$  | $$  $$$$ \____  $$   | $$  | $$__  $$| $$      | $$      
+  | $$  | $$\  $$$ /$$  \ $$   | $$  | $$  | $$| $$      | $$      
+ /$$$$$$| $$ \  $$|  $$$$$$/   | $$  | $$  | $$| $$$$$$$$| $$$$$$$$
+|______/|__/  \__/ \______/    |__/  |__/  |__/|________/|________/
+"""
 
 
     ############################################################
@@ -280,20 +307,33 @@ class Installer(Menu):
                     install('nginx')
                     
                 elif user_input.upper() == 'B':
-                    return
+                    Main('main')
 
                 elif user_input.upper() == 'EXIT' or user_input.upper() == 'Q' or user_input.upper() == 'QUIT':
                     self.clear_screen()    # Clear console window
-                    sys.exit(0)
+                    self.quit()
 
         except AttributeError as e:
             print(error_style(str(e)))
             self.wait(2)
             self.main_menu()
         except KeyboardInterrupt:
-            return
+            Main('main')
     #################################################### END: main_menu()
 ## END CLASS: Installer(Menu) ##########################
+
+
+
+"""
+  /$$$$$$      /$$$$$$$      /$$$$$$      /$$      /$$      /$$$$$$    
+ /$$__  $$    | $$__  $$    /$$__  $$    | $$$    /$$$     /$$__  $$   
+| $$  \ $$    | $$  \ $$   | $$  \ $$    | $$$$  /$$$$    | $$  \__/   
+| $$$$$$$$    | $$  | $$   | $$$$$$$$    | $$ $$/$$ $$    |  $$$$$$    
+| $$__  $$    | $$  | $$   | $$__  $$    | $$  $$$| $$     \____  $$   
+| $$  | $$    | $$  | $$   | $$  | $$    | $$\  $ | $$     /$$  \ $$   
+| $$  | $$ /$$| $$$$$$$//$$| $$  | $$ /$$| $$ \/  | $$ /$$|  $$$$$$//$$
+|__/  |__/|__/|_______/|__/|__/  |__/|__/|__/     |__/|__/ \______/|__/
+"""
 
 
     ############################################################
@@ -353,8 +393,7 @@ class AdamsManager(Menu):
 
                 # PowerDNS Server
                 elif user_input.lower() == '3' or user_input.lower() == 'p' or user_input.lower() == 'pdns' or user_input.lower() == 'powerdns':
-                    print('pdnsManager.createRecord()')
-                    self.wait(1)
+                    PDNSManager()
 
                 # NGINX Webserver
                 elif user_input.lower() == '4' or user_input.lower() == 'n' or user_input.lower() == 'nginx': 
@@ -362,7 +401,7 @@ class AdamsManager(Menu):
                     self.wait(1)
 
                 elif user_input.lower() == 'b':
-                    break
+                    Main(['adams', 'main'])
 
                 elif user_input.lower() == 'exit' or user_input.lower() == 'q' or user_input.lower() == 'quit':
                     self.quit()  
@@ -373,9 +412,22 @@ class AdamsManager(Menu):
             self.main_menu()
 
         except KeyboardInterrupt:
-            self.quit()
+            Main(['adams', 'main'])
         #################################################### END: main_menu(self)
 ## END CLASS: AdamsManager(Menu) ###########################
+
+
+
+"""
+ /$$   /$$  /$$$$$$  /$$   /$$ /$$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$  /$$   /$$ /$$$$$$$$
+| $$  | $$ /$$__  $$| $$$ | $$| $$__  $$ /$$__  $$| $$  | $$ /$$__  $$| $$  /$$/| $$_____/
+| $$  | $$| $$  \ $$| $$$$| $$| $$  \ $$| $$  \__/| $$  | $$| $$  \ $$| $$ /$$/ | $$      
+| $$$$$$$$| $$$$$$$$| $$ $$ $$| $$  | $$|  $$$$$$ | $$$$$$$$| $$$$$$$$| $$$$$/  | $$$$$   
+| $$__  $$| $$__  $$| $$  $$$$| $$  | $$ \____  $$| $$__  $$| $$__  $$| $$  $$  | $$__/   
+| $$  | $$| $$  | $$| $$\  $$$| $$  | $$ /$$  \ $$| $$  | $$| $$  | $$| $$\  $$ | $$      
+| $$  | $$| $$  | $$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$  | $$| $$  | $$| $$ \  $$| $$$$$$$$
+|__/  |__/|__/  |__/|__/  \__/|_______/  \______/ |__/  |__/|__/  |__/|__/  \__/|________/
+"""
 
 
     ############################################################
@@ -434,47 +486,6 @@ class HSDManager(Menu):
                     if enable_logging == True:
                         print('[Logging] HNS Wallet ID: ' + str(_HNS_WALLET_ID))
                         self.wait(1)
-
-        # Load HSD configurations
-        with open(self._HSD_CONFIG, 'r') as hsdConfig:
-            lines = hsdConfig.readlines()
-            
-        for line in lines:
-            if line.startswith('api-key:'):
-                keyValue = line.split(':')
-                HSD_API_KEY = str(keyValue[1]).strip()
-            elif line.startswith('network:'):
-                keyValue = line.split(':')
-                networkType = str(keyValue[1]).strip()
-
-                if networkType.lower() == 'main':
-                    HSD_PORT = 12037
-                elif networkType.lower() == 'testnet':
-                    HSD_PORT = 13037
-                elif networkType.lower() == 'regtest':
-                    HSD_PORT = 14037
-                elif networkType.lower() == 'simnet':
-                    HSD_PORT = 15037
-
-        with open(self._HSW_CONFIG, 'r') as hswConfig:
-            lines = hswConfig.readlines()
-
-        for line in lines:
-            if line.startswith('api-key:'):
-                keyValue = line.split(':')
-                HSW_API_KEY = str(keyValue[1]).strip()
-            elif line.startswith('network:'):
-                keyValue = line.split(':')
-                networkType = str(keyValue[1]).strip()
-
-                if networkType.lower() == 'main':
-                    HSW_PORT = 12039
-                elif networkType.lower() == 'testnet':
-                    HSW_PORT = 13039
-                elif networkType.lower() == 'regtest':
-                    HSW_PORT = 14039
-                elif networkType.lower() == 'simnet':
-                    HSW_PORT = 15039
 
         walletFound = False
 
@@ -587,7 +598,7 @@ class HSDManager(Menu):
         #################################################### END: main_menu(self)
     
     def wallet_menu(self):
-        self.title = green_font(title_style('Handshake Management'))
+        self.title = green_font(title_style('Handshake Wallet Management'))
         self.options = {
                             bold_font(underline_font('Wallet')): '',
                             '': '',
@@ -609,6 +620,11 @@ class HSDManager(Menu):
         try:
             while True:  # Display Handshake Wallet Menu
                 self.display()
+                    
+                print(green_font('    Wallet ID : ') + str(self.hsd.walletName()))
+                print(green_font('    Balance   : ') + str(self.hsd.getBalance(self.hsd.walletName())) + ' HNS')
+                print(green_font('    Address   : ') + str(self.hsd.getAddress()))
+                print()
                 
                 user_input = self.get_input(prompt_style('What would you like to do? : '))
                 
@@ -639,18 +655,40 @@ class HSDManager(Menu):
 
                 # Bid on Auction
                 elif user_input.lower() == '5' or user_input.lower() == 'bid':
-                    
-                    print('HSDManager.bid()')
+                    domainName = self.get_input('\n\tEnter name of the HNS domain to bid on: ')
+                    bid = self.get_input('\n\tEnter your bid in HNS: ')
+                    lockupBlind = self.get_input('\n\tEnter your blind bid in HNS : ')
+
+                    try:
+                        print(self.hsd.sendAuctionBid(domainName, bid, lockupBlind))
+                        print(green_font('\n [+] ') + 'Bid sent for `' + domainName + '`')
+                    except:
+                        print(yellow_font('\n [!] ') + 'Failed to send bid for `' + domainName + '`')
+
                     self.wait(1)
 
                 # Reveal Bid
                 elif user_input.lower() == '6' or user_input.lower() == 'reveal':
-                    print('HSDManager.reveal()')
+                    domainName = self.get_input('\n\tEnter name of HNS domain to reveal bid on : ')
+
+                    try:
+                        print(self.hsd.sendAuctionReveal(domainName))
+                        print(green_font('\n [+] ') + 'Reveal sent for `' + domainName + '`')
+                    except:
+                        print(yellow_font('\n [!] ') + 'Failed to send reveal for `' + domainName + '`')
+
                     self.wait(1)
 
                 # Redeem Name
                 elif user_input.lower() == '7' or user_input.lower() == 'redeem':
-                    print('HSDManager.redeem()')
+                    domainName = self.get_input('\n\tEnter name of HNS domain to redeem : ')
+
+                    try:
+                        print(self.hsd.sendAuctionRedeem(domainName))
+                        print(green_font('\n [+] ') + 'Redeemed `' + domainName + '`')
+                    except:
+                        print(yellow_font('\n [!] ') + 'Failed to redeem `' + domainName + '`')
+
                     self.wait(1)
 
                 elif user_input.lower() == 'b':
@@ -665,7 +703,7 @@ class HSDManager(Menu):
             self.main_menu()
 
         except KeyboardInterrupt:
-            self.quit()
+            self.main_menu()
         #################################################### END: wallet(self)
 
     def display_accounts(self):
@@ -725,6 +763,19 @@ class HSDManager(Menu):
                 self.quit ()
 
 ## END CLASS: HSDManager(Menu) #############################
+
+
+
+"""""
+ /$$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$ /$$$$$$$        /$$$$$$$  /$$   /$$  /$$$$$$ 
+| $$__  $$ /$$__  $$| $$  /$ | $$| $$_____/| $$__  $$      | $$__  $$| $$$ | $$ /$$__  $$
+| $$  \ $$| $$  \ $$| $$ /$$$| $$| $$      | $$  \ $$      | $$  \ $$| $$$$| $$| $$  \__/
+| $$$$$$$/| $$  | $$| $$/$$ $$ $$| $$$$$   | $$$$$$$/      | $$  | $$| $$ $$ $$|  $$$$$$ 
+| $$____/ | $$  | $$| $$$$_  $$$$| $$__/   | $$__  $$      | $$  | $$| $$  $$$$ \____  $$
+| $$      | $$  | $$| $$$/ \  $$$| $$      | $$  \ $$      | $$  | $$| $$\  $$$ /$$  \ $$
+| $$      |  $$$$$$/| $$/   \  $$| $$$$$$$$| $$  | $$      | $$$$$$$/| $$ \  $$|  $$$$$$/
+|__/       \______/ |__/     \__/|________/|__/  |__/      |_______/ |__/  \__/ \______/ 
+"""
 
 
     ############################################################
@@ -801,7 +852,7 @@ class PDNSManager(Menu):
             self.main_menu()
 
         except KeyboardInterrupt:
-            self.quit()
+            AdamsManager()
         #################################################### END: main_menu(self)
 ## END CLASS: PDNSManager(Menu) ############################
 

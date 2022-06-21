@@ -51,6 +51,20 @@ for line in lines:
             if _enable_logging == True:
                 print('[Logging] `interface.py` disabled Subprocesses: ' + str(_enable_subprocesses))
 
+
+
+"""
+ /$$   /$$  /$$$$$$  /$$   /$$ /$$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$  /$$   /$$ /$$$$$$$$
+| $$  | $$ /$$__  $$| $$$ | $$| $$__  $$ /$$__  $$| $$  | $$ /$$__  $$| $$  /$$/| $$_____/
+| $$  | $$| $$  \ $$| $$$$| $$| $$  \ $$| $$  \__/| $$  | $$| $$  \ $$| $$ /$$/ | $$      
+| $$$$$$$$| $$$$$$$$| $$ $$ $$| $$  | $$|  $$$$$$ | $$$$$$$$| $$$$$$$$| $$$$$/  | $$$$$   
+| $$__  $$| $$__  $$| $$  $$$$| $$  | $$ \____  $$| $$__  $$| $$__  $$| $$  $$  | $$__/   
+| $$  | $$| $$  | $$| $$\  $$$| $$  | $$ /$$  \ $$| $$  | $$| $$  | $$| $$\  $$ | $$      
+| $$  | $$| $$  | $$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$  | $$| $$  | $$| $$ \  $$| $$$$$$$$
+|__/  |__/|__/  |__/|__/  \__/|_______/  \______/ |__/  |__/|__/  |__/|__/  \__/|________/
+"""
+
+
 class HSD(Menu):
     global _USER_DIR
     global _ADAMS_PATH
@@ -123,7 +137,6 @@ class HSD(Menu):
         print(red_font('\n [!] ') + 'Could not locate `hsw.conf` configuration file.')
     
     def __init__(self):
-        super().__init__()
         global hsd
         global hsw
 
@@ -242,10 +255,10 @@ class HSD(Menu):
         return hsw.rpc_sendOPEN(domain_name)['result']
         #################################################### END: sendAuctionOpen(self, domain_name:str)
 
-    def sendAuctionBid(self, domain_name:str, _bidAmount:float, _lockupBlind:float, _accountName:str='default'):
+    def sendAuctionBid(self, domain_name:str, bid_amount:float, lockup_blind:float, account_name:str='default'):
         self.authenticate()     # Unlock wallet
-        return hsw.rpc_sendBID(domain_name, _bidAmount, _lockupBlind, _accountName)['result']
-        #################################################### END: sendAuctionBid(self, domain_name:str, _bidAmount:float, _lockupBlind:float, _accountName:str='default')
+        return hsw.rpc_sendBID(domain_name, bid_amount, lockup_blind, account_name)['result']
+        #################################################### END: sendAuctionBid(self, domain_name:str, bid_amount:float, lockup_blind:float, account_name:str='default')
 
     def sendAuctionReveal(self, domain_name:str):
         self.authenticate()     # Unlock wallet
@@ -264,6 +277,17 @@ class HSD(Menu):
 
     def createRecord(self, domain_name:str=None, record_type:str=None, ns_value:str=None, record_value:str=None,
                            address:str=None, key_tag:int=None, algo:int=None, digest_type:int=None, digest:str=None):
+        print(green_font('\n [+] ') + 'Creating HNS record...')
+        print('\tDomain name : ' + str(domain_name))
+        print('\tRecord type : ' + str(record_type))
+        print('\tNS value : ' + str(ns_value))
+        print('\tRecord value : ' + str(record_value))
+        print('\tAddress : ' + str(address))
+        print('\tKey tag : ' + str(key_tag))
+        print('\tAlgorithm : ' + str(algo))
+        print('\tDigest type : ' + str(digest_type))
+        print('\tDigest : ' + str(digest))
+
         record = None
         is_record_type = False
         #self.authenticate()     # Unlock wallet
@@ -358,7 +382,8 @@ class HSD(Menu):
             record = { 'records': [{ 'type': record_type.upper(), 'address': address }] }
 
         elif record_type.upper() == 'TXT':
-            record_value = self.get_input('\n\tTXT : ')
+            if record_value == None:
+                record_value = self.get_input('\n\tTXT Record Value : ')
 
             is_record_type = True
             record = { 'records': [{ 'type': record_type.upper(), 'txt': [ record_value ] }] }
@@ -372,19 +397,37 @@ class HSD(Menu):
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
         print(green_font('\n [+] ') + 'Record created')
-        self.wait(2)
+        print(record)
+        self.wait(1)
         return result
         #################################################### END: createRecord(self, domain_name)
 
-class PDNS(Menu):
-    def createZone(self, _domainName):
 
-        if _domainName == '':
-            _domainName = self.get_input('\n\tDomain Name : ')
+
+"""
+ /$$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$ /$$$$$$$        /$$$$$$$  /$$   /$$  /$$$$$$ 
+| $$__  $$ /$$__  $$| $$  /$ | $$| $$_____/| $$__  $$      | $$__  $$| $$$ | $$ /$$__  $$
+| $$  \ $$| $$  \ $$| $$ /$$$| $$| $$      | $$  \ $$      | $$  \ $$| $$$$| $$| $$  \__/
+| $$$$$$$/| $$  | $$| $$/$$ $$ $$| $$$$$   | $$$$$$$/      | $$  | $$| $$ $$ $$|  $$$$$$ 
+| $$____/ | $$  | $$| $$$$_  $$$$| $$__/   | $$__  $$      | $$  | $$| $$  $$$$ \____  $$
+| $$      | $$  | $$| $$$/ \  $$$| $$      | $$  \ $$      | $$  | $$| $$\  $$$ /$$  \ $$
+| $$      |  $$$$$$/| $$/   \  $$| $$$$$$$$| $$  | $$      | $$$$$$$/| $$ \  $$|  $$$$$$/
+|__/       \______/ |__/     \__/|________/|__/  |__/      |_______/ |__/  \__/ \______/ 
+"""
+
+
+class PDNS(Menu):
+    def __init__(self):
+        pass
+
+    def createZone(self, domain_name:str=None):
+
+        if domain_name == '' or domain_name == None:
+            domain_name = self.get_input('\n\tDomain Name : ')
 
         # Create a new zone
         if _enable_subprocesses == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'create-zone', _domainName , 'ns1.' + _domainName], check=True)
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'create-zone', domain_name , 'ns1.' + domain_name], check=True)
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
@@ -392,14 +435,14 @@ class PDNS(Menu):
         self.wait(2)     
     #################################################### END: createZone(self)
 
-    def secureZone(self, _domainName):
+    def secureZone(self, domain_name:str=None):
         
-        if _domainName == '':
-            _domainName = self.get_input('\n\tEnter zone name to secure : ')
+        if domain_name == '' or domain_name == None:
+            domain_name = self.get_input('\n\tEnter zone name to secure : ')
 
         # Secure an existing zone
         if _enable_subprocesses == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'secure-zone', _domainName], check=True)
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'secure-zone', domain_name], check=True)
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
@@ -407,32 +450,33 @@ class PDNS(Menu):
         self.wait(2)
     #################################################### END: secureZone(self)
 
-    def createRecord(self, _domainName, record_name, record_type, record_value):
+    def createRecord(self, domain_name:str=None, record_name:str=None, record_type:str=None, record_value:str=None):
 
-        if _domainName == '':
-            _domainName = self.get_input('\n\tDomain Name : ')
+        if domain_name == '' or domain_name == None:
+            domain_name = self.get_input('\n\tDomain Name : ')
 
-        if record_type == '':
+        if record_type == '' or record_type == None:
             record_type = str(self.get_input('\n\tRecord Type : ')).upper()
 
-        if record_name == '':
+        if record_name == '' or record_name == None:
             record_name = self.get_input('\n\tRecord Name : ')
 
-        if record_value == '':
+        if record_value == '' or record_value == None:
             record_value = self.get_input('\n\tRecord Value : ')
-            record_value = '"' + record_value + '"'
+            record_value = record_value
 
         # Update PowerDNS Record
         if _enable_subprocesses == True:
-            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'add-record', _domainName + '.', record_name, record_type, record_value], check=True)
+            subprocess.run(['sudo', '-u', 'pdns', 'pdnsutil', 'add-record', domain_name + '.', record_name, record_type, '"' + record_value + '"'], check=True)
         else:
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
 
         print(green_font('\n [+] ') + 'Record created')
-        self.wait(2)
+        self.wait(1)
 
-        updateHNS = self.get_input('\n\tUpdate handshake records (Y/N)? [default = N] : ')
-        if updateHNS.lower() == 'y':
-            if _enable_logging == True: print('pdnsManager: var _domainName = ' + _domainName) # Log output
-            print(HSD.createRecord(_domainName=_domainName, _recordType=record_type, _recordValue=record_value))
-    #################################################### END: createRecord(self, _domainName, record_name, record_type, record_value)
+        update_hns_record = self.get_input('\n\tUpdate handshake records (Y/N)? [default = N] : ')
+        if update_hns_record.lower() == 'y':
+            if _enable_logging == True: print('pdnsManager: var domain_name = ' + domain_name) # Log output
+            print(HSD().createRecord(domain_name=domain_name, record_type=record_type, record_value=record_value))
+            self.pause()
+    #################################################### END: createRecord(self, domain_name, record_name, record_type, record_value)

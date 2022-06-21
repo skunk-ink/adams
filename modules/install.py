@@ -130,21 +130,41 @@ elif platform == 'win32':
 
 class Install(Menu):
     NEED_RESTART = False
-    ADAMS_PATH = os.getcwd()                                      # A.D.A.M.S. directory
-    USER_DIR = os.path.expanduser('~')                      # User home directory
-    HSD_INSTALL_PATH = USER_DIR + '/.hsd'                   # HSD installation directory
-    HSD_PATH = ADAMS_PATH + '/hsd'                                # Handshake directory
-    HSD_BIN_PATH = ADAMS_PATH + '/hsd/bin'                        # Handshake binaries build directory
-    HSD_SERVICE_SCRIPT = ADAMS_PATH + '/config/hsd.service'       # Premade Handshake daemon service script
-    HSD_SYS_SERVICES_PATH = '/etc/systemd/system'           # Location of system services
-    HSD_CONFIG = ADAMS_PATH + '/config/hsd.conf'                  # Location of HSD node config
-    HSW_CONFIG = ADAMS_PATH + '/config/hsw.conf'                  # Location of HSD wallet config
-    SKYNET_PATH = ADAMS_PATH + '/skynet-webportal'                # Skynet Webportal directory
-    ANSIBLE_PLAYBOOKS_PATH = ADAMS_PATH + '/ansible-playbooks'    # Ansible Playbooks directory
-    ANSIBLE_PRIVATE_PATH = ADAMS_PATH + '/ansible-private'        # Ansible Private directory
-    POWERDNS_PATH = ADAMS_PATH + '/pdns'                          # PowerDNS directory
-    POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'          # PowerDNS configuration file
-    POWERDNS_CONF_FILE = ADAMS_PATH + '/config/pdns.conf'         # Premade PowerDNS configuration file
+    ADAMS_PATH = os.getcwd()                                        # A.D.A.M.S. directory
+    USER_DIR = os.path.expanduser('~')                              # User home directory
+
+    SKYNET_PATH = ADAMS_PATH + '/skynet-webportal'                  # Skynet Webportal directory
+    ANSIBLE_PLAYBOOKS_PATH = ADAMS_PATH + '/ansible-playbooks'      # Ansible Playbooks directory
+    ANSIBLE_PRIVATE_PATH = ADAMS_PATH + '/ansible-private'          # Ansible Private directory
+    
+    HSD_INSTALL_PATH = USER_DIR + '/.hsd'                           # HSD installation directory
+    HSD_PATH = ADAMS_PATH + '/hsd'                                  # Handshake directory
+    HSD_BIN_PATH = ADAMS_PATH + '/hsd/bin'                          # Handshake binaries build directory
+    HSD_SERVICE_SCRIPT = ADAMS_PATH + '/config/hsd.service'         # Premade Handshake daemon service script
+    HSD_SYS_SERVICES_PATH = '/etc/systemd/system'                   # Location of system services
+    HSD_CONFIG = ADAMS_PATH + '/config/hsd.conf'                    # Location of HSD node config
+    HSW_CONFIG = ADAMS_PATH + '/config/hsw.conf'                    # Location of HSD wallet config
+
+    POWERDNS_PATH = ADAMS_PATH + '/pdns'                            # PowerDNS directory
+    POWERDNS_CONF_PATH = '/etc/powerdns/pdns.conf'                  # PowerDNS configuration file
+    POWERDNS_CONF_FILE = ADAMS_PATH + '/config/pdns.conf'           # Premade PowerDNS configuration file
+
+    NGINX_WWW_PATH = '/var/www/adams'                               # NGINX webroot directory
+    NGINX_CONF_PATH = '/etc/nginx/sites-available/adams'            # NGINX configuration directory
+
+
+
+    """
+     /$$$$$$ /$$   /$$ /$$$$$$ /$$$$$$$$
+    |_  $$_/| $$$ | $$|_  $$_/|__  $$__/
+      | $$  | $$$$| $$  | $$     | $$   
+      | $$  | $$ $$ $$  | $$     | $$   
+      | $$  | $$  $$$$  | $$     | $$   
+      | $$  | $$\  $$$  | $$     | $$   
+     /$$$$$$| $$ \  $$ /$$$$$$   | $$   
+    |______/|__/  \__/|______/   |__/
+"""
+
 
     def __init__(self, type):
 
@@ -234,6 +254,23 @@ class Install(Menu):
         except KeyboardInterrupt:
             return
     #################################################### END: __init__(self, type)
+
+
+
+    """
+                           /$$               /$$                                               /$$                               /$$                    
+                          | $$              | $$                                              | $$                              |__/                    
+      /$$$$$$   /$$$$$$  /$$$$$$        /$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$  /$$$$$$$   /$$$$$$$ /$$  /$$$$$$   /$$$$$$$
+     /$$__  $$ /$$__  $$|_  $$_/       /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$| $$__  $$ /$$__  $$ /$$__  $$| $$__  $$ /$$_____/| $$ /$$__  $$ /$$_____/
+    | $$  \ $$| $$$$$$$$  | $$        | $$  | $$| $$$$$$$$| $$  \ $$| $$$$$$$$| $$  \ $$| $$  | $$| $$$$$$$$| $$  \ $$| $$      | $$| $$$$$$$$|  $$$$$$ 
+    | $$  | $$| $$_____/  | $$ /$$    | $$  | $$| $$_____/| $$  | $$| $$_____/| $$  | $$| $$  | $$| $$_____/| $$  | $$| $$      | $$| $$_____/ \____  $$
+    |  $$$$$$$|  $$$$$$$  |  $$$$/    |  $$$$$$$|  $$$$$$$| $$$$$$$/|  $$$$$$$| $$  | $$|  $$$$$$$|  $$$$$$$| $$  | $$|  $$$$$$$| $$|  $$$$$$$ /$$$$$$$/
+     \____  $$ \_______/   \___//$$$$$$\_______/ \_______/| $$____/  \_______/|__/  |__/ \_______/ \_______/|__/  |__/ \_______/|__/ \_______/|_______/ 
+     /$$  \ $$                 |______/                   | $$                                                                                          
+    |  $$$$$$/                                            | $$                                                                                          
+     \______/                                             |__/                                                                                         
+    """
+
 
     def get_dependencies(self, sys_platform, depends):
         dependencies = {}
@@ -354,6 +391,23 @@ class Install(Menu):
         return dependencies
     #################################################### END: get_dependencies(self, sys_platform, depends)
 
+
+
+    """
+                         /$$             /$$               /$$                                               /$$          
+                        |__/            | $$              | $$                                              | $$          
+      /$$$$$$   /$$$$$$  /$$ /$$$$$$$  /$$$$$$        /$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$$
+     /$$__  $$ /$$__  $$| $$| $$__  $$|_  $$_/       /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$| $$__  $$ /$$__  $$ /$$_____/
+    | $$  \ $$| $$  \__/| $$| $$  \ $$  | $$        | $$  | $$| $$$$$$$$| $$  \ $$| $$$$$$$$| $$  \ $$| $$  | $$|  $$$$$$ 
+    | $$  | $$| $$      | $$| $$  | $$  | $$ /$$    | $$  | $$| $$_____/| $$  | $$| $$_____/| $$  | $$| $$  | $$ \____  $$
+    | $$$$$$$/| $$      | $$| $$  | $$  |  $$$$/    |  $$$$$$$|  $$$$$$$| $$$$$$$/|  $$$$$$$| $$  | $$|  $$$$$$$ /$$$$$$$/
+    | $$____/ |__/      |__/|__/  |__/   \___//$$$$$$\_______/ \_______/| $$____/  \_______/|__/  |__/ \_______/|_______/ 
+    | $$                                     |______/                   | $$                                              
+    | $$                                                                | $$                                              
+    |__/                                                                |__/                                              
+    """
+
+
     def print_depends(self, depends):
         self.clear_screen()
         print(yellow_font(' [!]') + ' The following dependencies will be installed:')
@@ -405,6 +459,23 @@ class Install(Menu):
         print(prompt_style('Press any key to continue, or ') + cyan_font(bold_font('`ctrl+c`')) + prompt_style(' to return to main menu.'))
         self.pause()
     #################################################### END: print_depends(self, depends)
+
+
+
+    """
+     /$$                       /$$               /$$ /$$             /$$                                               /$$          
+    |__/                      | $$              | $$| $$            | $$                                              | $$          
+     /$$ /$$$$$$$   /$$$$$$$ /$$$$$$    /$$$$$$ | $$| $$        /$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$$
+    | $$| $$__  $$ /$$_____/|_  $$_/   |____  $$| $$| $$       /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$| $$__  $$ /$$__  $$ /$$_____/
+    | $$| $$  \ $$|  $$$$$$   | $$      /$$$$$$$| $$| $$      | $$  | $$| $$$$$$$$| $$  \ $$| $$$$$$$$| $$  \ $$| $$  | $$|  $$$$$$ 
+    | $$| $$  | $$ \____  $$  | $$ /$$ /$$__  $$| $$| $$      | $$  | $$| $$_____/| $$  | $$| $$_____/| $$  | $$| $$  | $$ \____  $$
+    | $$| $$  | $$ /$$$$$$$/  |  $$$$/|  $$$$$$$| $$| $$      |  $$$$$$$|  $$$$$$$| $$$$$$$/|  $$$$$$$| $$  | $$|  $$$$$$$ /$$$$$$$/
+    |__/|__/  |__/|_______/    \___/   \_______/|__/|__//$$$$$$\_______/ \_______/| $$____/  \_______/|__/  |__/ \_______/|_______/ 
+                                                       |______/                   | $$                                              
+                                                                                  | $$                                              
+                                                                                  |__/                                              
+    """
+
 
     def install_depends(self, depends):
         if enable_dependencies == True:
@@ -564,6 +635,20 @@ class Install(Menu):
             self.wait(3)
     #################################################### END: install_depends(self, depends)
 
+
+
+    """
+      /$$$$$$  /$$   /$$ /$$     /$$ /$$   /$$ /$$$$$$$$ /$$$$$$$$
+     /$$__  $$| $$  /$$/|  $$   /$$/| $$$ | $$| $$_____/|__  $$__/
+    | $$  \__/| $$ /$$/  \  $$ /$$/ | $$$$| $$| $$         | $$   
+    |  $$$$$$ | $$$$$/    \  $$$$/  | $$ $$ $$| $$$$$      | $$   
+     \____  $$| $$  $$     \  $$/   | $$  $$$$| $$__/      | $$   
+     /$$  \ $$| $$\  $$     | $$    | $$\  $$$| $$         | $$   
+    |  $$$$$$/| $$ \  $$    | $$    | $$ \  $$| $$$$$$$$   | $$   
+     \______/ |__/  \__/    |__/    |__/  \__/|________/   |__/   
+    """
+
+
     def skynet_webportal(self):
         print(error_style('skynet_webportal() method not yet complete.'))
         self.wait(1)
@@ -581,6 +666,20 @@ class Install(Menu):
             print(yellow_font('\n [!] ') + 'Subprocess disabled')
         print() '''
     #################################################### END: skynet_webportal(self)
+
+
+
+    """
+     /$$   /$$  /$$$$$$  /$$   /$$ /$$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$  /$$   /$$ /$$$$$$$$
+    | $$  | $$ /$$__  $$| $$$ | $$| $$__  $$ /$$__  $$| $$  | $$ /$$__  $$| $$  /$$/| $$_____/
+    | $$  | $$| $$  \ $$| $$$$| $$| $$  \ $$| $$  \__/| $$  | $$| $$  \ $$| $$ /$$/ | $$      
+    | $$$$$$$$| $$$$$$$$| $$ $$ $$| $$  | $$|  $$$$$$ | $$$$$$$$| $$$$$$$$| $$$$$/  | $$$$$   
+    | $$__  $$| $$__  $$| $$  $$$$| $$  | $$ \____  $$| $$__  $$| $$__  $$| $$  $$  | $$__/   
+    | $$  | $$| $$  | $$| $$\  $$$| $$  | $$ /$$  \ $$| $$  | $$| $$  | $$| $$\  $$ | $$      
+    | $$  | $$| $$  | $$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$  | $$| $$  | $$| $$ \  $$| $$$$$$$$
+    |__/  |__/|__/  |__/|__/  \__/|_______/  \______/ |__/  |__/|__/  |__/|__/  \__/|________/
+    """
+
 
     def handshake(self):
         print(green_font('\n [+] ') + 'Installing Handshake Node')
@@ -683,6 +782,20 @@ class Install(Menu):
         print()
     #################################################### END: handshake(self)
 
+
+
+    """
+     /$$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$ /$$$$$$$        /$$$$$$$  /$$   /$$  /$$$$$$ 
+    | $$__  $$ /$$__  $$| $$  /$ | $$| $$_____/| $$__  $$      | $$__  $$| $$$ | $$ /$$__  $$
+    | $$  \ $$| $$  \ $$| $$ /$$$| $$| $$      | $$  \ $$      | $$  \ $$| $$$$| $$| $$  \__/
+    | $$$$$$$/| $$  | $$| $$/$$ $$ $$| $$$$$   | $$$$$$$/      | $$  | $$| $$ $$ $$|  $$$$$$ 
+    | $$____/ | $$  | $$| $$$$_  $$$$| $$__/   | $$__  $$      | $$  | $$| $$  $$$$ \____  $$
+    | $$      | $$  | $$| $$$/ \  $$$| $$      | $$  \ $$      | $$  | $$| $$\  $$$ /$$  \ $$
+    | $$      |  $$$$$$/| $$/   \  $$| $$$$$$$$| $$  | $$      | $$$$$$$/| $$ \  $$|  $$$$$$/
+    |__/       \______/ |__/     \__/|________/|__/  |__/      |_______/ |__/  \__/ \______/ 
+    """
+
+
     def powerdns(self):
         files = os.listdir(self.ADAMS_PATH)
         check_for = 'pdnsmanager'
@@ -771,11 +884,51 @@ class Install(Menu):
 
         self.NEED_RESTART = True
     #################################################### END: pdns(self)
+    
+
+
+    """
+     /$$   /$$  /$$$$$$  /$$$$$$ /$$   /$$ /$$   /$$
+    | $$$ | $$ /$$__  $$|_  $$_/| $$$ | $$| $$  / $$
+    | $$$$| $$| $$  \__/  | $$  | $$$$| $$|  $$/ $$/
+    | $$ $$ $$| $$ /$$$$  | $$  | $$ $$ $$ \  $$$$/ 
+    | $$  $$$$| $$|_  $$  | $$  | $$  $$$$  >$$  $$ 
+    | $$\  $$$| $$  \ $$  | $$  | $$\  $$$ /$$/\  $$
+    | $$ \  $$|  $$$$$$/ /$$$$$$| $$ \  $$| $$  \ $$
+    |__/  \__/ \______/ |______/|__/  \__/|__/  |__/
+    """
+
 
     def nginx(self):
-        print(error_style('nginx() method not yet complete.'))
-        self.wait(1)
+        
+        if enable_subprocesses == True:
+            
+            # Create new directory for hosted sites
+            if os.path.isdir(self.NGINX_WWW_PATH) == False:
+                subprocess.run(['sudo', 'mkdir', self.NGINX_WWW_PATH], check=True)
+
+            # Create Nginx configuration file
+            subprocess.run(['sudo', 'cp', self.NGINX_CONF_FILE, self.NGINX_CONF_PATH], check=True)
+        else:
+            print(yellow_font('\n [!] ') + 'Subprocess disabled')
     #################################################### END: nginx(self)
+
+
+
+    """
+                                                                                 /$$
+                                                                                | $$
+      /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$$  /$$$$$$        /$$   /$$  /$$$$$$ | $$
+     /$$__  $$ |____  $$ /$$__  $$ /$$_____/ /$$__  $$      | $$  | $$ /$$__  $$| $$
+    | $$  \ $$  /$$$$$$$| $$  \__/|  $$$$$$ | $$$$$$$$      | $$  | $$| $$  \__/| $$
+    | $$  | $$ /$$__  $$| $$       \____  $$| $$_____/      | $$  | $$| $$      | $$
+    | $$$$$$$/|  $$$$$$$| $$       /$$$$$$$/|  $$$$$$$      |  $$$$$$/| $$      | $$
+    | $$____/  \_______/|__/      |_______/  \_______//$$$$$$\______/ |__/      |__/
+    | $$                                             |______/                       
+    | $$                                                                            
+    |__/                                                                            
+    """
+
 
     def parse_url(self, url):
         url = str(url).strip()
