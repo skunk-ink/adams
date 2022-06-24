@@ -35,7 +35,7 @@ then
     sudo rm -fr /usr/local/bin/adams
 fi
 
-sudo ln adams /usr/local/bin
+sudo ln -s adams /usr/local/bin
 
 if [ "$1" == "--run" ] || [ "$1" == "-r" ] || [ "$1" == "run" ]; then
     adams
